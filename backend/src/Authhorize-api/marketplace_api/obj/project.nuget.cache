@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "rjfz6oCs2DY=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\User\\Desktop\\wildbobr\\market-angular\\backend\\src\\Authhorize-api\\marketplace_api\\marketplace_api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.3\\microsoft.aspnetcore.openapi.9.0.3.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
