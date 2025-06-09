@@ -1,4 +1,4 @@
-@import '@taiga-ui/core/styles/taiga-ui-theme.less';
+
 
 
     @navbar-height: 60px;
@@ -80,35 +80,18 @@ app-root {
 	max-height: auto;
 	padding: 20px 50px;
 	@media (max-width: 1279px) {
-		grid-template-columns: repeat(4, calc(25% - 4px));
+		grid-template-columns: repeat(4, calc(25% - 14px));
 		grid-auto-flow: dense;
 	}
 
 	@media (max-width: 767px) {
-		grid-template-columns: repeat(2, calc(50% - 4px));
+		grid-template-columns: repeat(2, calc(50% - 20px));
 		grid-auto-flow: dense;
 		padding: 10px 25px;
 	}
 	margin-bottom: 50px;
 }
-.card-img {
-	width: 100%;
-	height: 220px; /* можно подогнать под твой макет */
-	object-fit: fill; /* обрежет лишнее, сохранит пропорции */
-	border-radius: 8px;
-}
 
-.card-items {
-	display: grid;
-	grid-template-columns: auto;
-	filter: drop-shadow(7px 5px 15px #0000001c);
-	background-color: #ffffff;
-	gap: 10px;
-	padding: 10px 10px;
-	border-radius: 10px;
-	object-fit: fill;
-	min-width: 100%;
-}
 
 .hover\:bg-primary\/90:hover {
 	background-color: var(--caret-hover);

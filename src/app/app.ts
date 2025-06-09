@@ -53,7 +53,7 @@ export class App {
     this.products = [
       {
         id: 1,
-        name: 'Футболка',
+        name: 'Футболка фывфыв фыв фыв',
         price: 1000,
         description: 'Белая футболка',
         countProduct: 10,
