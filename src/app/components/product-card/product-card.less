@@ -1,0 +1,78 @@
+
+    @navbar-height: 60px;
+    @navbar-mobile-height: 50px;
+    @profile-icon: url('/assets/icon/profile.svg');
+    @home-icon: url('/assets/icon/home.svg');
+    @delivery-icon: url('/assets/icon/delivery.svg');
+    @cart-icon: url('/assets/icon/cart.svg');
+    @root-color: rgba(212, 16, 16, 0.8); /* Цвет похожий на Wildberries */
+    @button-color: rgba(161, 17, 17, 0);
+
+.card-coast {
+	font-weight: 600;
+}
+
+.card--descripion {
+	font-weight: 600;
+}
+
+.card--items {
+	max-width: 100%;
+	max-height: 200px;
+	border-radius: 5px;
+	object-fit: fill;
+	@media (max-width: 352px) {
+		max-width: 138.5px;
+	}
+}
+.card {
+	display: grid;
+	grid-template-columns: repeat(6, calc(16.6667% - 25px));
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	max-height: auto;
+	padding: 20px 50px;
+	@media (max-width: 1279px) {
+		grid-template-columns: repeat(4, calc(25% - 4px));
+		grid-auto-flow: dense;
+	}
+
+	@media (max-width: 767px) {
+		grid-template-columns: repeat(2, calc(50% - 4px));
+		grid-auto-flow: dense;
+		padding: 10px 25px;
+	}
+	margin-bottom: 50px;
+}
+.card-img {
+	width: 100%;
+	height: 220px; /* можно подогнать под твой макет */
+	object-fit: fill; /* обрежет лишнее, сохранит пропорции */
+	border-radius: 8px;
+}
+
+.card-items {
+	display: grid;
+	grid-template-columns: auto;
+	filter: drop-shadow(7px 5px 15px #0000001c);
+	background-color: #ffffff;
+	gap: 10px;
+	padding: 10px 10px;
+	border-radius: 10px;
+	object-fit: fill;
+	min-width: 100%;
+}
+
+.card--ps {
+	font-size: 1rem;
+	@media (max-width: 1279px) {
+		font-size: 0.9rem;
+	}
+	@media (max-width: 767px) {
+		font-size: 0.8rem;
+	}
+	@media (max-width: 326px) {
+		font-size: 0.7rem;
+	}
+}

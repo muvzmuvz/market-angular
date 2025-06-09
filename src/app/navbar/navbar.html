@@ -1,0 +1,62 @@
+
+
+<nav tuiTabBar class="navbar navbar-mobile">
+    <a
+        icon="@tui.home"
+        class="home-icon"
+        routerLinkActive
+        tuiTabBarItem
+        [routerLink]="routes.Breadcrumbs"
+    >
+        Главная страница
+    </a>
+    <a
+        icon="/assets/icon/delivery.svg"
+        class="delivery-icon"
+        routerLinkActive
+        tuiTabBarItem
+        [routerLink]="routes.Pagination"
+    >
+        Доставки
+    </a>
+    <a
+        icon="/assets/icon/cart.svg"
+        class="cart-icon"
+        routerLinkActive
+        tuiTabBarItem
+        [routerLink]="routes.Stepper"
+    >
+        Корзина
+    </a>
+    <a
+        icon="/assets/icon/profile.svg"
+
+        class="profile-icon"
+        routerLinkActive
+        tuiTabBarItem
+        [routerLink]="routes.TabBar"
+    >
+        Профиль
+    </a>
+</nav>
+
+<nav class="navbar-pc">
+  <div class="navbar__logo">
+    <a href="#">WildBobr</a> <!-- Можно заменить на логотип -->
+  </div>
+
+  <div class="navbar__search">
+    <input type="text" placeholder="Поиск товаров..." />
+  </div>
+
+  <ul class="navbar__menu">
+    <a class="nav-pc-link" href="delivery"><span class="nav--pc_icon nav--pc_icon__delivery"></span> Доставки</a>
+        <a class="nav-pc-link" href="cart"><span class="nav--pc_icon nav--pc_icon__cart"></span> Корзина</a>
+    <a class="nav-pc-link" href="profile"><span class="nav--pc_icon nav--pc_icon__profile"></span> Профиль</a>
+  </ul>
+</nav>
+
+
+
+
+

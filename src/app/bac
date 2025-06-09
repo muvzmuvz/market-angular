@@ -1,0 +1,13 @@
+  async fetchProducts() {
+    try {
+      this.isLoading = true;
+      const response = await fetch('http://localhost:3000/api/product/top_product');
+      const data = await response.json();
+      this.products = data;
+      this.updateDisplayedProducts();
+    } catch (error) {
+      console.error('Ошибка загрузки товаров:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
