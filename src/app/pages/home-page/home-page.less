@@ -1,0 +1,182 @@
+
+
+
+    @navbar-height: 60px;
+    @navbar-mobile-height: 50px;
+    @profile-icon: url('/assets/icon/profile.svg');
+    @home-icon: url('/assets/icon/home.svg');
+    @delivery-icon: url('/assets/icon/delivery.svg');
+    @cart-icon: url('/assets/icon/cart.svg');
+    @root-color: rgba(212, 16, 16, 0.8); /* Цвет похожий на Wildberries */
+    @button-color: rgba(161, 17, 17, 0);
+
+
+
+/* Применяем шрифт Taiga UI ко всему телу и корневому элементу */
+/* Если у тебя есть корневой контейнер, например app-root */
+app-root {
+  display: block;
+  margin-top: 150px;
+  padding: 0;
+  height: 100%;
+}
+
+/* Сбрось margin и padding у navbar */
+
+
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+.pagination__button {
+  margin: 0 0.5rem;
+}
+.skeleton {
+  width: 250px;
+  height: 125px;
+  background-color: #eee;
+  border-radius: 1rem;
+}
+:root {
+	--caret-color: rgb(231, 208, 0);
+	--caret-hover: rgb(231, 218, 101);
+	overflow-x: hidden;
+}
+
+.bg-primary {
+	background-color: var(--caret-color);
+	color: white;
+}
+.card-coast {
+	font-weight: 600;
+}
+
+.card--descripion {
+	font-weight: 600;
+}
+
+.card--items {
+	max-width: 100%;
+	max-height: 200px;
+	border-radius: 5px;
+	object-fit: fill;
+	@media (max-width: 352px) {
+		max-width: 138.5px;
+	}
+}
+.card {
+	display: grid;
+	grid-template-columns: repeat(6, calc(16.6667% - 25px));
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	max-height: auto;
+	padding: 20px 50px;
+	@media (max-width: 1279px) {
+		grid-template-columns: repeat(4, calc(25% - 14px));
+		grid-auto-flow: dense;
+	}
+
+	@media (max-width: 767px) {
+		grid-template-columns: repeat(2, calc(50% - 20px));
+		grid-auto-flow: dense;
+		padding: 10px 25px;
+	}
+	margin-bottom: 50px;
+}
+
+
+.hover\:bg-primary\/90:hover {
+	background-color: var(--caret-hover);
+}
+
+/* Стиль для индикатора загрузки */
+.loading {
+	display: grid;
+	grid-template-rows: repeat(6, calc(16.6667% - 25px));
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	max-height: auto;
+	margin: 20px 50px;
+	right: 50;
+	left: 50;
+	@media (max-width: 1279px) {
+		grid-template-rows: repeat(4, calc(25% - 4px));
+		grid-auto-flow: dense;
+	}
+
+	@media (max-width: 767px) {
+		grid-template-rows: repeat(2, calc(50% - 4px));
+		grid-auto-flow: dense;
+		padding: 10px 25px;
+	}
+}
+
+.card--ps {
+	font-size: 1rem;
+	@media (max-width: 1279px) {
+		font-size: 0.9rem;
+	}
+	@media (max-width: 767px) {
+		font-size: 0.8rem;
+	}
+	@media (max-width: 326px) {
+		font-size: 0.7rem;
+	}
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 20px;
+
+	margin-bottom: 70px;
+}
+
+.pagination span {
+	display: flex;
+	align-items: center;
+	font-size: 1rem;
+	@media (max-width: 1279px) {
+		font-size: 0.9rem;
+	}
+	@media (max-width: 767px) {
+		font-size: 0.8rem;
+	}
+	@media (max-width: 326px) {
+		font-size: 0.7rem;
+	}
+}
+
+.pagination button {
+	padding: 8px 12px;
+	color: #804000;
+	font-size: 1rem;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: background-color 0.3s ease;
+	background-color: var(--caret-color);
+	@media (max-width: 1279px) {
+		font-size: 0.9rem;
+	}
+	@media (max-width: 767px) {
+		font-size: 0.8rem;
+	}
+	@media (max-width: 326px) {
+		font-size: 0.7rem;
+	}
+}
+
+.pagination button:disabled {
+	background-color: var(--caret-hover);
+	cursor: not-allowed;
+}
