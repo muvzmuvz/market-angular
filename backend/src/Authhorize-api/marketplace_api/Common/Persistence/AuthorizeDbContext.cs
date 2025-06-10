@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace marketplace_api.Common;
+namespace marketplace_api.Common.Persistence;
 
 public class AuthorizeDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
 {
