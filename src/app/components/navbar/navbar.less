@@ -1,25 +1,24 @@
 
     @navbar-height: 60px;
     @navbar-mobile-height: 50px;
-    @profile-icon: url('/assets/icon/profile.svg');
-    @home-icon: url('/assets/icon/home.svg');
+    @profile-icon: url('/assets/icon/Account.svg');
+    @home-icon: url('/assets/icon/Home.svg');
     @delivery-icon: url('/assets/icon/delivery.svg');
     @cart-icon: url('/assets/icon/cart.svg');
     @root-color: rgba(212, 16, 16, 0.8); /* Цвет похожий на Wildberries */
     @button-color: rgba(161, 17, 17, 0);
-
+	@desktop-padding-default: 28px;
 
 
 
 .navbar-pc {
 	display: grid;
-	grid-template-columns: auto;
 	position: sticky;
 	align-items: center;
 	grid-template-columns: max-content auto max-content;
 	grid-template-rows: auto;
 	gap: 30px;
-	background-color: #ff7043;
+	background-color: #526ed3;
 	padding: 10px 60px;
 	z-index: 100;
     box-shadow: rgb(192, 191, 191) 0px 0px 10px;
@@ -48,8 +47,8 @@
 .nav--pc_icon {
 	background-position: 50%;
 	background-repeat: no-repeat;
-	width: 60px;
-	height: 60px;
+	width: 30px;
+	height: 30px;
 	margin: 0 auto 6px;
 	display: block;
 
@@ -210,41 +209,3 @@
     }
 }
 
-::ng-deep .profile-icon {
-  color: #804000 !important;
-}
-
-::ng-deep .profile-icon tui-svg {
-  fill: #804000 !important;
-}
-
-::ng-deep .cart-icon {
-  color: #804000 !important;
-  width: 100px;
-  height: 100px;
-}
-
-::ng-deep .cart-icon tui-svg {
-  fill: #804000 !important;
-}
-
-::ng-deep .delivery-icon {
-  color: #804000 !important;
-  width: 100px;
-  height: 100px;
-}
-
-::ng-deep .delivery-icon tui-svg {
-  fill: #804000 !important;
-}
-
-
-::ng-deep .home-icon {
-  color: #804000 !important;
-  width: 100px;
-  height: 100px;
-}
-
-::ng-deep .home-icon tui-svg {
-  fill: #804000 !important;
-}

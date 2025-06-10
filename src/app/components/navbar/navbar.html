@@ -2,11 +2,12 @@
 
 <nav tuiTabBar class="navbar navbar-mobile">
     <a
-        icon="@tui.home"
+        icon="/assets/icon/Home.svg"
         class="home-icon"
         routerLinkActive
         tuiTabBarItem
-        [routerLink]="routes.Breadcrumbs"
+        routerLink="/"
+        [routerLinkActiveOptions]="{ exact: true }"
     >
         Главная 
     </a>
@@ -15,7 +16,7 @@
         class="delivery-icon"
         routerLinkActive
         tuiTabBarItem
-        [routerLink]="routes.Pagination"
+        routerLink="/delivery"
     >
         Доставки
     </a>
@@ -24,17 +25,17 @@
         class="cart-icon"
         routerLinkActive
         tuiTabBarItem
-        [routerLink]="routes.Stepper"
+        routerLink="/cart"
     >
         Корзина
     </a>
     <a
-        icon="/assets/icon/profile.svg"
+        icon="/assets/icon/Account.svg"
 
         class="profile-icon"
         routerLinkActive
         tuiTabBarItem
-        [routerLink]="routes.TabBar"
+        routerLink="/profile"
     >
         Профиль
     </a>
