@@ -52,6 +52,9 @@ public static class ServiceCollectionExtensions
        .AddAspNetIdentity<IdentityUser<Guid>>()
        .AddProfileService<CustomProfileService>();
 
+    builder.Services
+      .Configure<IdentityServerSettings>(builder.Configuration.GetSection(nameof(IdentityServerSettings)));
+
     builder.Services.AddAuthentication()
         .AddLocalApi("Bearer", option =>
         {

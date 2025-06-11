@@ -17,7 +17,7 @@ public static class Config
   public static IEnumerable<ApiScope> ApiScopes =>
       new ApiScope[]
       {
-            new ApiScope("api", "My API")
+            new ApiScope("web", "web API")
       };
 
   public static IEnumerable<Client> Clients =>
@@ -27,18 +27,21 @@ public static class Config
             {
                 ClientId = "client",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets = { new Secret("secret".Sha256()) },
+                ClientSecrets = { new Secret("wildbobr".Sha256()) },
                 AllowedScopes = { "api" }
             },
             new Client
             {
                 ClientId = "web",
-                ClientSecrets = { new Secret("secret".Sha256()) },
+                ClientSecrets = { new Secret("wildbobr".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
-                RedirectUris = { "https://localhost:5002/signin-oidc" },
-                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+                RedirectUris = { "https://localhost:4200/signin-oidc" },
+                AllowedCorsOrigins = { "https://localhost:4200"},
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "api", "roles" }
-            }
+                AllowedScopes = { "openid", "profile", "api", "roles" },
+                RequireClientSecret = true
+            },
+            
+
       };
 }
