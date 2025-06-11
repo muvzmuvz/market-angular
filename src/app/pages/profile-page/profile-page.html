@@ -1,79 +1,45 @@
 <app-navbar></app-navbar>
 
 <div class="container">
-    <div class="card">
 
-        <div class="card-header">
-            <h1 class="title">Добро пожаловать {{usename}}</h1>
-            <div class="avatar">
-                <tui-avatar size="xxl" class="lg" src="{{avatar}}"></tui-avatar>
-            </div>
-        </div>
-        <div class="card-body">
-            <p class="description">Это ваша страница профиля.</p>
-            <p class="description">Вы можете редактировать информацию о своем профиле здесь.</p>
-            <p class="description">Это простой пример страницы профиля.</p>
+  <div class="card profile-card">
+    <div class="card-header">
+      <div class="profile-info">
+        <h1 class="title">Добро пожаловать, {{username}}!</h1>
 
+      </div>
 
-        </div>
+      <div class="avatar">
+        <tui-avatar size="xxl" class="lg" src="{{avatar}}"></tui-avatar>
+      </div>
     </div>
-    <div class="card">
-        <div class="orders">
-            <h2 class="title">Ваши заказы</h2>
-            <div class="card-order">
-                <p class="title">Номер заказа: {{orders[0]?.order}}</p>
-                <p class="title">{{orders[1]?.title}}</p>
-                <p class="description">{{orders[1]?.description}}</p>
-                <p class="description">Дата заказа: {{orders[1]?.date | date:'dd.MM.yyyy'}}</p>
-                <p class="description">Сумма заказа: {{orders[1]?.amount | currency}}</p>
-                <p class="description">Изображение:</p>
-                <img src="{{orders[1]?.image}}" alt="" class="order-img">
-            </div>
-            <div class="card-order">
-                <p class="title">Номер заказа: {{orders[1]?.order}}</p>
-                <p class="title">{{orders[0]?.title}}</p>
-                <p class="description">{{orders[0]?.description}}</p>
-                <p class="description">Дата заказа: {{orders[0]?.date | date:'dd.MM.yyyy'}}</p>
-                <p class="description">Сумма заказа: {{orders[0]?.amount | currency}}</p>
-                <p class="description">Изображение:</p>
-                <img src="{{orders[0]?.image}}" alt="" class="order-img">
-            </div>
-            <div class="card-order">
-                <p class="title">Номер заказа: {{orders[2]?.order}}</p>
-                <p class="title">{{orders[0]?.title}}</p>
-                <p class="description">{{orders[0]?.description}}</p>
-                <p class="description">Дата заказа: {{orders[0]?.date | date:'dd.MM.yyyy'}}</p>
-                <p class="description">Сумма заказа: {{orders[0]?.amount | currency}}</p>
-                <p class="description">Изображение:</p>
-                <img src="{{orders[0]?.image}}" alt="" class="order-img">
-            </div>
-            <div class="card-order">
-                <p class="title">Номер заказа: {{orders[3]?.order}}</p>
-                <p class="title">{{orders[0]?.title}}</p>
-                <p class="description">{{orders[0]?.description}}</p>
-                <p class="description">Дата заказа: {{orders[0]?.date | date:'dd.MM.yyyy'}}</p>
-                <p class="description">Сумма заказа: {{orders[0]?.amount | currency}}</p>
-                <p class="description">Изображение:</p>
-                <img src="{{orders[0]?.image}}" alt="" class="order-img">
-            </div>
-        </div>
+
+    <div class="card-body">
+      <p class="description">Это ваша страница профиля.</p>
+      <p class="description">Вы можете редактировать информацию о своем профиле здесь.</p>
+      <p class="description">Это простой пример страницы профиля.</p>
+
     </div>
+            <button class="btn-edit-profile" (click)="editProfile()">Редактировать профиль</button>
+  </div>
+
+  <div class="card orders-card">
+    <h2 class="title orders-title">Мои последние заказы</h2>
+
+    <div class="orders" *ngIf="recentOrders.length > 0; else noOrders">
+      <app-order-card *ngFor="let order of recentOrders" [order]="order"></app-order-card>
+    </div>
+
+    <ng-template #noOrders>
+      <div class="no-orders">
+        <p class="description">У вас пока нет заказов 😔</p>
+        <a href="/" class="btn-view-all">Перейти к покупкам</a>
+      </div>
+    </ng-template>
+
+    <div class="all-orders">
+      <a href="/delivery" class="btn-view-all">Смотреть все заказы</a>
+    </div>
+  </div>
 
 </div>
-
-<!-- <div class="orders">
-        <tui-tiles class="tiles" [debounce]="500" [(order)]="order">
-            <tui-tile *ngFor="let item of items; let index = index" class="tile" [height]="item.h"
-                [style.order]="order.get(index)" [width]="item.w">
-                <div class="content" [class.rick]="item.content === 'rick'">
-                    
-                    <tui-icon icon="@tui.grip-vertical" tuiTileHandle class="handle" />
-                    <tui-icon icon="@tui.grip-vertical" tuiTileHandle class="handle" />
-                    <ng-template #default>
-                        <h2 class="title">{{ item.content }}</h2>
-                        Order - {{ order.get(index) ?? index }}
-                    </ng-template>
-                </div>
-            </tui-tile>
-        </tui-tiles>
-    </div> -->

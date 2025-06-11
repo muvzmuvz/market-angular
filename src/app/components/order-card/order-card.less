@@ -1,0 +1,105 @@
+.order-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #fafafa;
+  overflow-y: hidden;
+  /* Включаем flex и фиксируем высоту */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 270px;
+  justify-content: space-between; /* равномерное распределение элементов по высоте */
+}
+
+/* Ограничиваем высоту блока с описанием */
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden; /* прячем лишний текст */
+  text-overflow: ellipsis; /* добавляем троеточие при обрезке текста */
+}
+
+/* Список товаров растягивается и прокручивается при необходимости */
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  flex-grow: 1; /* занимает доступное пространство */
+  overflow-y: auto; /* вертикальная прокрутка при переполнении */
+}
+
+/* Остальной CSS без изменений */
+
+.item-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.item-img {
+  width: 100px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.item-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+}
+
+.item-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+    overflow: hidden; /* прячем лишний текст */
+  text-overflow: ellipsis; /* добавляем троеточие при обрезке текста */
+}
+
+.item-price {
+  font-weight: 700;
+  color: #1976d2;
+  margin-top: auto;
+  font-size: 15px;
+}
+
+.toggle-btn {
+  background-color: transparent;
+  border: none;
+  color: #1976d2;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 5px 0;
+  text-align: left;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+}
+
+/* Адаптив */
+@media (max-width: 600px) {
+  .item-card {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .item-img {
+    width: 80px;
+    height: 70px;
+  }
+  
+  .item-info {
+    align-items: center;
+    text-align: center;
+  }
+}

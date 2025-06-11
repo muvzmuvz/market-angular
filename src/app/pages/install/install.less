@@ -1,0 +1,65 @@
+
+
+.install-page {
+  background-color: #526ed3;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+
+  .install-title {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .install-form {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+    .install-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .install-input {
+        width:  calc(100% - 1.5rem);
+      padding: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border 0.3s;
+
+      &:focus {
+        border-color: #526ed3;
+        outline: none;
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #526ed3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background-color: darken(#526ed3, 10%);
+      }
+    }
+  }
+}

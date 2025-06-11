@@ -1,0 +1,21 @@
+<div class="order-card" *ngIf="order">
+  <p class="title">Номер заказа: {{ order.order }}</p>
+  <p class="description">Дата заказа: {{ order.date | date: 'dd.MM.yyyy' }}</p>
+  <p class="description">Сумма заказа: {{ order.amount | currency:'RUB' }}</p>
+
+  <div class="items-list">
+    <div class="item-card" *ngFor="let item of visibleItems">
+      <img [src]="item.image" alt="{{item.title}}" class="item-img" *ngIf="item.image"/>
+      <div class="item-info">
+        <p class="item-title">{{ item.title }}</p>
+
+        <p class="item-price">{{ item.price | currency:'RUB' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Кнопка для разворота, показываем только если товаров больше 2 -->
+  <button *ngIf="order.items.length > 2" (click)="toggleExpand()" class="toggle-btn">
+    {{ isExpanded ? 'Скрыть' : 'Показать все' }}
+  </button>
+</div>

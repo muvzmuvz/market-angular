@@ -1,58 +1,139 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    gap: 20px;
-}
-.avatar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: auto;
-    border-radius: 50%;
-
-}
-.orders{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    width: 100%;
-}
-.order-img{
-    max-width: 200px;
-    height: 100px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-.card-order{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    max-width: 100%;
-    gap: 10px;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  box-sizing: border-box;
+  margin-bottom: 50px;
 }
 
-.card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: calc(100% - 50px);
-    margin-bottom: 20px;
-    padding-top: 20px;
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  padding: 24px;
 }
-.card{
-    border: 1px solid #e0e0e0;
-    width: calc(100% - 50px);
-    padding: 10px;
-    border-radius: 8px;
-    justify-content: center;
+
+.profile-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-edit-profile {
+  padding: 8px 16px;
+  background-color: #1976d2;
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-edit-profile:hover {
+  background-color: #115293;
+}
+
+.avatar tui-avatar.lg {
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-body .description {
+  font-size: 16px;
+  color: #555;
+  margin: 8px 0;
+}
+
+/* Заказы */
+
+.orders-title {
+  margin-bottom: 20px;
+}
+
+.orders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.app-order-card {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.app-order-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.all-orders {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.btn-view-all {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #1976d2;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-view-all:hover {
+  background-color: #115293;
+  box-shadow: 0 4px 10px rgba(17,82,147,0.6);
+}
+
+/* No orders */
+
+.no-orders {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 18px;
+  color: #888;
+}
+
+/* Адаптив */
+
+@media (max-width: 700px) {
+  .profile-card .card-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .profile-info {
+    flex-direction: column;
+  }
+  
+  .title {
+    font-size: 22px;
+  }
+  
+  .orders {
+    grid-template-columns: 1fr;
+  }
 }

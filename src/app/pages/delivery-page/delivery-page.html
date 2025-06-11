@@ -1,4 +1,14 @@
 <app-navbar></app-navbar>
 
+<div class="container">
+  <h1 class="title">Все заказы</h1>
 
-<p>delivery-page works!</p>
+  <div *ngIf="orders.length > 0; else noDelivery" class="orders">
+    <!-- Используем компонент вместо ручного шаблона -->
+    <app-order-card *ngFor="let order of orders" [order]="order"></app-order-card>
+  </div>
+
+  <ng-template #noDelivery>
+    <p class="description">Заказов пока нет.</p>
+  </ng-template>
+</div>

@@ -1,0 +1,21 @@
+
+<main class="install-page">
+<h1 class="install-title">Установка маркетплейса</h1>
+
+<form (ngSubmit)="install() " class="install-form">
+  <label class="install-label">Название сайта</label>
+  <input class="install-input" [(ngModel)]="form.siteName" name="siteName" required />
+
+  <label class="install-label">Email администратора</label>
+  <input class="install-input" [(ngModel)]="form.adminEmail" name="adminEmail" required />
+
+  <label class="install-label">Пароль администратора</label>
+  <input class="install-input" type="password" [(ngModel)]="form.adminPassword" name="adminPassword" required />
+
+  <button
+        tuiButton
+        appearance="primary"
+        type="submit">Установить</button>
+</form>
+
+</main>

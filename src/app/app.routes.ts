@@ -3,6 +3,7 @@ import { HomePage } from './pages/home-page/home-page';
 import { ProfilePage } from './pages/profile-page/profile-page';
 import { DeliveryPage } from './pages/delivery-page/delivery-page';
 import { CartPage } from './pages/cart-page/cart-page';
+import { Install } from './pages/install/install';
 
 export const routes: Routes = [
     {
@@ -16,5 +17,8 @@ export const routes: Routes = [
     },
     {
         path:'cart', component: CartPage
+    },
+        {
+        path:'install', component: Install
     }
 ];
