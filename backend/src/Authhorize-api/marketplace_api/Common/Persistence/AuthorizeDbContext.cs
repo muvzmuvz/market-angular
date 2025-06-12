@@ -8,6 +8,7 @@ namespace marketplace_api.Common.Persistence;
 public class AuthorizeDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
 {
   public DbSet<DomainUser> DomainUser { get; set; }
+  public DbSet<SiteConfiguration> SiteConfigurations { get; set; }
 
   public AuthorizeDbContext(DbContextOptions<AuthorizeDbContext> options)
        : base(options)

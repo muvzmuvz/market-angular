@@ -6,4 +6,5 @@ public interface IUserRepository
 {
   public Task<DomainUser> GetUser(Guid userId);
   public Task<DomainUser> CreateUser(DomainUser user);
+  public Task<List<DomainUser>> GetUsers();
 }

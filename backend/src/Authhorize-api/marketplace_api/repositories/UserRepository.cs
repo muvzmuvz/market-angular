@@ -37,4 +37,11 @@ public class UserRepository : IUserRepository
 
     return user;
   }
+
+  public async Task<List<DomainUser>> GetUsers()
+  {
+    var users = await _authorizeDbContext.DomainUser.ToListAsync();
+
+    return users;
+  }
 }
