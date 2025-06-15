@@ -1,6 +1,7 @@
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using marketplace_api.Common.interfaces;
+using marketplace_api.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -8,10 +9,10 @@ namespace marketplace_api.IdentityServer;
 
 public class CustomProfileService : IProfileService
 {
-  private readonly UserManager<IdentityUser<Guid>> _userManager;
+  private readonly UserManager<UserIdentity> _userManager;
 
   public CustomProfileService(
-    UserManager<IdentityUser<Guid>> userManager)
+    UserManager<UserIdentity> userManager)
   {
     _userManager = userManager;
   }
@@ -21,7 +22,10 @@ public class CustomProfileService : IProfileService
     var user = await _userManager.GetUserAsync(context.Subject);
     var roles = await _userManager.GetRolesAsync(user);
 
-    var claims = new List<Claim>();
+    var claims = new List<Claim>()
+    {
+      new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+    };
 
     foreach (var role in roles)
     {

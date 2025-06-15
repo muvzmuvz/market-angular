@@ -25,7 +25,7 @@ public class UserRepository : IUserRepository
       throw new UserAlreadyExists($"данный пользователь уже существует с таким {user.Id}");
     }
 
-    await _authorizeDbContext.SaveChangesAsync();
+    await _authorizeDbContext.DomainUser.AddAsync(user);
 
     return user;
   }
@@ -36,5 +36,30 @@ public class UserRepository : IUserRepository
                 ?? throw new UserNotFoundException($"пользователя с таким {identityUserId} нет");
 
     return user;
+  }
+
+  public async Task<List<DomainUser>> GetUsers()
+  {
+    var users = await _authorizeDbContext.DomainUser.ToListAsync();
+
+    return users;
+  }
+
+  public async Task<DomainUser> UpdateImage(string newImagePath, Guid identityUserId)
+  {
+    var domainUser = await GetUser(identityUserId);
+
+    domainUser.imagePath = newImagePath;
+
+    return domainUser;
+  }
+
+  public async Task<DomainUser> UpdateRole(Role newRole, Guid identityUserId)
+  {
+    var domainUser = await GetUser(identityUserId);
+
+    domainUser.Role = newRole;
+
+    return domainUser;
   }
 }

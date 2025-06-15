@@ -2,5 +2,5 @@ namespace marketplace_api.Models;
 
 public class BaseEntity
 {
-  public Guid Id { get; init ; }
+  public Guid Id { get; init ; } = Guid.NewGuid();
 }

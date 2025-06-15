@@ -1,6 +1,8 @@
 using marketplace_api.Common.interfaces;
 using marketplace_api.Common.Persistence;
 using marketplace_api.IdentityServer;
+using marketplace_api.MappingProfile;
+using marketplace_api.Models;
 using marketplace_api.repositories;
 using marketplace_api.services;
 using Microsoft.AspNetCore.Identity;
@@ -49,24 +51,35 @@ public static class ServiceCollectionExtensions
        .AddInMemoryIdentityResources(Config.IdentityResources)
        .AddInMemoryApiScopes(Config.ApiScopes)
        .AddInMemoryClients(Config.Clients)
-       .AddAspNetIdentity<IdentityUser<Guid>>()
+       .AddAspNetIdentity<UserIdentity>()
        .AddProfileService<CustomProfileService>();
 
     builder.Services
       .Configure<IdentityServerSettings>(builder.Configuration.GetSection(nameof(IdentityServerSettings)));
 
-    builder.Services.AddAuthentication()
-        .AddLocalApi("Bearer", option =>
-        {
-          option.ExpectedScope = "api";
-        });
+    builder.Services.AddAuthentication("Bearer")
+     .AddJwtBearer("Bearer", options =>
+     {
+       options.Authority = "http://localhost:5042"; 
+       options.Audience = "web";
+
+       // Для разработки можно отключить некоторые проверки
+       if (builder.Environment.IsDevelopment())
+       {
+         options.TokenValidationParameters.ValidateIssuer = false;
+         options.RequireHttpsMetadata = false;
+       }
+     });
 
     builder.Services.AddAuthorization(options =>
     {
-      options.AddPolicy("Bearer", policy =>
+      options.AddPolicy("RequireAdminRole", policy =>
+          policy.RequireRole("Admin"));
+
+      options.AddPolicy("ApiScope", policy =>
       {
-        policy.AddAuthenticationSchemes("Bearer");
         policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "api"); // Должно совпадать с ApiScope
       });
     });
 
@@ -80,7 +93,7 @@ public static class ServiceCollectionExtensions
       options.UseNpgsql(configuration.GetConnectionString("DbConfig"));
     });
 
-    builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
+    builder.Services.AddIdentity<UserIdentity, IdentityRole<Guid>>()
       .AddEntityFrameworkStores<AuthorizeDbContext>()
       .AddDefaultTokenProviders();
 
@@ -94,7 +107,18 @@ public static class ServiceCollectionExtensions
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IImageService, ImageService>();
+    builder.Services.AddScoped<IAccountService, AccountService>();
+    builder.Services.AddScoped<ISiteInitializerService, SiteInitializerService>();
+    builder.Services.AddScoped<IUnitOfWork>(
+      serviceProvider => serviceProvider.GetRequiredService<AuthorizeDbContext>());
 
     return builder;
+  }
+
+  public static WebApplicationBuilder AddMapping(this WebApplicationBuilder builder)
+  {
+    builder.Services.AddAutoMapper(typeof(UserProfile));
+
+    return builder; 
   }
 }
