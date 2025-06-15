@@ -1,3 +1,4 @@
+using AutoMapper;
 using marketplace_api.Common.interfaces;
 using marketplace_api.Models;
 using marketplace_api.ModelsDto;
@@ -8,51 +9,45 @@ namespace marketplace_api.services;
 public class AuthService : IAuthService
 {
   private readonly IUserRepository _userRepository;
-  private readonly UserManager<IdentityUser<Guid>> _userManager;
-  private readonly IImageService _imageService;
+  private readonly UserManager<UserIdentity> _userManager;
+  private readonly IMapper _mapper;
+  private readonly IUnitOfWork _unitOfWork;
 
   public AuthService(
     IUserRepository userRepository
-    , UserManager<IdentityUser<Guid>> userManager
-    , IImageService imageService)
+    , UserManager<UserIdentity> userManager
+    , IMapper mapper,
+      IUnitOfWork unitOfWork)
   {
     _userRepository = userRepository;
     _userManager = userManager;
-    _imageService = imageService;
+    _mapper = mapper;
+    _unitOfWork = unitOfWork;
   }
 
-  public async Task<UserDto> RegisterAsync(RegisterDto registerDto)
+  public async Task<UserDto> RegisterAsync(RegisterDto registerDto, Role role)
   {
-    var user = new IdentityUser<Guid>()
-    {
-      UserName = registerDto.Name,
-      Email = registerDto.Email,
-    };
-
-    var imageUri = await _imageService.AploadImage(registerDto.ImageBase64);
-
+    var user = _mapper.Map<UserIdentity>(registerDto);
+    user.SecurityStamp = Guid.NewGuid().ToString();
     var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-    await _userManager.AddToRoleAsync(user, registerDto.Role.ToString());
+    await _userManager.AddToRoleAsync(user, role.ToString());
 
-    var domainUser = new DomainUser
-    {
-      IdentityId = user.Id,
-      Role = registerDto.Role,
-      ExpenseSummary = 0,
-      imagePath = imageUri
-    };
-
+    var domainUser = _mapper.Map<DomainUser>(registerDto);
+    domainUser.Role = role;
+    domainUser.IdentityId = user.Id;
     await _userRepository.CreateUser(domainUser);
+
+    await _unitOfWork.commitChange();
 
     return new UserDto
     {
-      Email = registerDto.Email,
-      ExpenseSummary = 0,
+      Email = user.Email!,
+      ExpenseSummary = domainUser.ExpenseSummary,
       Id = user.Id,
-      ImagePath = imageUri,
-      Name = registerDto.Name,
-      Role = registerDto.Role
+      ImagePath = domainUser.imagePath,
+      Name = user.FirstName,
+      Role = domainUser.Role,
     };
   }
 }

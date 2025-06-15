@@ -12,15 +12,19 @@ public class SiteInitializerService : ISiteInitializerService
   private readonly AuthorizeDbContext _authorizeDbContext;
   private readonly RoleManager<IdentityRole<Guid>> _roleManager;
   private readonly IAuthService _authService;
+  private readonly IUnitOfWork _unitOfWork;
+
 
   public SiteInitializerService(
     AuthorizeDbContext authorizeDbContext
     , RoleManager<IdentityRole<Guid>> roleManager
-    , IAuthService authService)
+    , IAuthService authService,
+      IUnitOfWork unitOfWork)
   {
     _authorizeDbContext = authorizeDbContext;
     _roleManager = roleManager;
     _authService = authService;
+    _unitOfWork = unitOfWork;
   }
 
   public async Task<SiteConfiguration> GetCurrentConfig()
@@ -33,46 +37,30 @@ public class SiteInitializerService : ISiteInitializerService
 
   public async Task InitializeAsync(SiteInitializeDto dto)
   {
+    await ApplyMigrationsAsync();
+    await CreateDefaultRolesAsync();
+
     if (await IsSiteInitialized())
     {
       throw new InvalidOperationException("Site is already initialized");
     }
 
-    using var transaction = await _authorizeDbContext.Database.BeginTransactionAsync();
-
-    try
-    {
-      await ApplyMigrationsAsync();
-
-      await CreateDefaultRolesAsync();
-
-      var siteConfiguration = new SiteConfiguration()
+    var siteConfiguration = new SiteConfiguration()
       {
         SiteName = dto.siteName,
         InitializedAt = DateTime.UtcNow
       };
 
-      await _authService.RegisterAsync(new RegisterDto()
+    await _authService.RegisterAsync(new RegisterDto()
       {
         Email = dto.Email,
-        ImageBase64 = dto.ImageBase64,
         Name = dto.Name,
-        Password = dto.Password,
-        Role = Role.Administrator,
-      });
+        Password = dto.Password
+      }, Role.Administrator);
 
-      await _authorizeDbContext.SiteConfigurations.AddAsync(siteConfiguration);
-      await _authorizeDbContext.SaveChangesAsync();
+    await _authorizeDbContext.SiteConfigurations.AddAsync(siteConfiguration);
 
-      await transaction.CommitAsync();
-    }
-
-    catch (Exception ex)
-    {
-      await transaction.RollbackAsync();
-      throw;
-    }
-    
+    await _unitOfWork.commitChange();
   }
 
 
@@ -95,7 +83,7 @@ public class SiteInitializerService : ISiteInitializerService
 
   private async Task CreateDefaultRolesAsync()
   {
-    string[] roleNames = { "Admin", "Seller", "User" };
+    string[] roleNames = { "Admin", "Seller", "User", "Administrator" };
 
     foreach (var roleName in roleNames)
     {

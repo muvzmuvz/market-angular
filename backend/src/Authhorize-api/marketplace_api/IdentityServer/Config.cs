@@ -17,7 +17,8 @@ public static class Config
   public static IEnumerable<ApiScope> ApiScopes =>
       new ApiScope[]
       {
-            new ApiScope("web", "web API")
+            new ApiScope("web", "web API"),
+            new ApiScope("api", "internal API")
       };
 
   public static IEnumerable<Client> Clients =>
@@ -28,7 +29,7 @@ public static class Config
                 ClientId = "client",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientSecrets = { new Secret("wildbobr".Sha256()) },
-                AllowedScopes = { "api" }
+                AllowedScopes = { "web" }
             },
             new Client
             {
