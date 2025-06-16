@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация и Регистрация</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <input type="checkbox" id="toggle" hidden>
+        <div class="form-box login">
+            <h2>Вход</h2>
+            <form>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+                <p>Нет аккаунта? <label for="toggle">Зарегистрироваться</label></p>
+            </form>
+        </div>
+        <div class="form-box register">
+            <h2>Регистрация</h2>
+            <form>
+                <input type="text" placeholder="Имя пользователя" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Пароль" required>
+                <button type="submit">Зарегистрироваться</button>
+                <p>Уже есть аккаунт? <label for="toggle">Войти</label></p>
+            </form>
+        </div>
+
+    </div>
+</body>
+
+</html>
