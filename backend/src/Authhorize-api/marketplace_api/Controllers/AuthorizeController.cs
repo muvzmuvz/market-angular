@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace marketplace_api.Controllers;
 
-[ApiController]
-[Route("auths")]
-public class AuthorizeController : ControllerBase
+public class AuthorizeController : Controller
 {
   private readonly IAuthService _authService;
 
@@ -22,4 +20,11 @@ public class AuthorizeController : ControllerBase
 
     return Created("register user", result);
   }
+
+  [HttpGet("log")]
+  public IActionResult Log(string returnUrl)
+  {
+    return View();
+  }
+
 }

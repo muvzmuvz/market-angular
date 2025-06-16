@@ -1,6 +1,5 @@
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
-using marketplace_api.Common.interfaces;
 using marketplace_api.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;

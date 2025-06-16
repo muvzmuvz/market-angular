@@ -12,17 +12,32 @@ public class AuthService : IAuthService
   private readonly UserManager<UserIdentity> _userManager;
   private readonly IMapper _mapper;
   private readonly IUnitOfWork _unitOfWork;
+  private readonly SignInManager<UserIdentity> _signInManager;
+
 
   public AuthService(
     IUserRepository userRepository
     , UserManager<UserIdentity> userManager
     , IMapper mapper,
-      IUnitOfWork unitOfWork)
+      IUnitOfWork unitOfWork,
+      SignInManager<UserIdentity> signInManager)
   {
     _userRepository = userRepository;
     _userManager = userManager;
     _mapper = mapper;
     _unitOfWork = unitOfWork;
+    _signInManager = signInManager;
+    _signInManager = signInManager;
+  }
+
+  public async Task Login(LoginDto loginDto)
+  {
+    var user = await _userManager.FindByEmailAsync(loginDto.Username)
+          ?? throw new Exception("не найден user");
+
+    var result = await _signInManager.PasswordSignInAsync(loginDto.Username
+      , loginDto.Password
+      , false, false);
   }
 
   public async Task<UserDto> RegisterAsync(RegisterDto registerDto, Role role)

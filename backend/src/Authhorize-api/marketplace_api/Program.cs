@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+
 
 builder.AddData(builder.Configuration)
     .AddSwagger()
@@ -17,7 +19,13 @@ builder.AddData(builder.Configuration)
 
 var app = builder.Build();
 
-  
+app.UseEndpoints(endpoints =>
+{
+  endpoints.MapDefaultControllerRoute();
+
+  endpoints.MapControllers(); 
+});
+
 app.UseAuthorization();
 
 
