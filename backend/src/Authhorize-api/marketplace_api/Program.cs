@@ -12,7 +12,8 @@ builder.Services.AddControllers();
 builder.AddData(builder.Configuration)
     .AddSwagger()
     .AddServices()
-    .AddAuth();
+    .AddAuth()
+    .AddMapping();
 
 var app = builder.Build();
 

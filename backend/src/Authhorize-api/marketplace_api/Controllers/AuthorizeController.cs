@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace marketplace_api.Controllers;
 
 [ApiController]
-[Route("auth")]
+[Route("auths")]
 public class AuthorizeController : ControllerBase
 {
   private readonly IAuthService _authService;
@@ -18,7 +18,7 @@ public class AuthorizeController : ControllerBase
   [HttpPost("reg")]
   public async Task<IActionResult> Register(RegisterDto registerDto)
   {
-    var result = await _authService.RegisterAsync(registerDto);
+    var result = await _authService.RegisterAsync(registerDto, Models.Role.User);
 
     return Created("register user", result);
   }
