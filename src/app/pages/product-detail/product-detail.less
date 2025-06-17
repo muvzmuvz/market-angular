@@ -157,7 +157,8 @@
 
     .modal {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
       background: rgba(28, 32, 66, 0.85);
@@ -201,7 +202,7 @@
         border: 2px solid @border-color;
         border-radius: 12px;
         resize: vertical;
-        box-shadow: inset 0 3px 6px rgba(0,0,0,0.05);
+        box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
         transition: border-color 0.3s;
 
         &:focus {
@@ -261,11 +262,23 @@
 
       .comment-header {
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        /* выравнивание по вертикали */
+        gap: 12px;
+        /* расстояние между аватаркой и текстом */
         font-size: 0.9rem;
         font-weight: 600;
         color: darken(@accent-color, 25%);
         margin-bottom: 6px;
+
+        tui-avatar {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          /* круглая форма */
+          object-fit: cover;
+          /* чтобы изображение не искажалось */
+        }
       }
 
       .stars {
@@ -401,21 +414,26 @@
     }
   }
 }
+
 .loader-overlay {
-  position: fixed;           /* фиксируем относительно окна */
+  position: fixed;
+  /* фиксируем относительно окна */
   top: 40%;
   left: 0;
   right: 0;
   bottom: 0;
-        /* центрирование */
+  /* центрирование */
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8); /* затемнение при необходимости */
-  z-index: 9999;             /* убедись, что он выше всех */
-  pointer-events: none;      /* если не нужны клики */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* затемнение при необходимости */
+  z-index: 9999;
+  /* убедись, что он выше всех */
+  pointer-events: none;
+  /* если не нужны клики */
 }
 
 tui-loader {
-  transform: scale(2);       /* увеличиваем */
+  transform: scale(2);
+  /* увеличиваем */
 }
-
