@@ -8,18 +8,23 @@ import { TuiAvatar } from '@taiga-ui/kit';
 import { title } from 'process';
 import { OrderCard } from 'src/app/components/order-card/order-card';
 const username = 'rick';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-profile-page',
-  imports: [Navbar, TuiTiles, CommonModule, TuiFallbackSrcPipe, TuiTitle, TuiAvatar, OrderCard],
+  imports: [Navbar, TuiTiles, CommonModule, TuiFallbackSrcPipe, TuiTitle, TuiAvatar, OrderCard, FormsModule],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilePage {
-  editProfile() {
-    throw new Error('Method not implemented.');
-  }
   username = 'rick';
+  protected avatar = 'https://postila.ru/resize?w=460&src=%2Fs3%2Ff52%2F74%2F1fb62bf1d821948a49204406bdc.jpg';
+
+ isEditModalOpen = false; // окно редактирования открыто или нет
+
+  // Временные переменные для редактирования
+  editUsername = this.username;
+  editAvatar = this.avatar;
   orders = [
     {
       order: 101,
@@ -60,6 +65,24 @@ export class ProfilePage {
       ]
     }
   ];
-  protected avatar = 'https://postila.ru/resize?w=460&src=%2Fs3%2Ff52%2F74%2F1fb62bf1d821948a49204406bdc.jpg';
+
+  // avatar property is declared above with protected modifier
   protected recentOrders = this.orders.slice(-2).reverse();
+
+  openEditModal() {
+    this.isEditModalOpen = true;
+    this.editUsername = this.username;
+    this.editAvatar = this.avatar;
+  }
+
+  saveProfile() {
+    this.username = this.editUsername;
+    this.avatar = this.editAvatar;
+    this.isEditModalOpen = false;
+  }
+
+  cancelEdit() {
+    this.isEditModalOpen = false;
+  }
 }
+
