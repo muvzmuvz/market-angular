@@ -49,6 +49,7 @@
 
             <div class="comment" *ngFor="let comment of comments">
                 <div class="comment-header">
+                    <tui-avatar src="{{comment.userAvatar }}" />
                     <strong>{{ comment.user.name }}</strong>
                     <span>{{ formatDate(comment.dateCreated) }}</span>
                 </div>

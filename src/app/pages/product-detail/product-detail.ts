@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TuiLoader } from '@taiga-ui/core';
 import { Navbar } from 'src/app/components/navbar/navbar'; // standalone Navbar
 import { Router } from '@angular/router';
+import { TuiAvatar} from '@taiga-ui/kit';
 
 interface ProductImage {
   path: string;
@@ -26,6 +27,7 @@ interface Comment {
   description: string;
   productEvaluation: number;
   dateCreated: string;
+  userAvatar?: string;
 }
 
 @Component({
@@ -33,7 +35,7 @@ interface Comment {
   standalone: true,
   templateUrl: './product-detail.html',
   styleUrls: ['./product-detail.less'],
-  imports: [CommonModule, FormsModule, Navbar, TuiLoader] // ✅ правильный список
+  imports: [CommonModule, FormsModule, Navbar, TuiLoader, TuiAvatar] // ✅ правильный список
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
@@ -100,7 +102,8 @@ goBack(): void {
           user: { name: 'Иван' },
           description: 'Очень понравилось!',
           productEvaluation: 5,
-          dateCreated: '2024-05-10'
+          dateCreated: '2024-05-10',
+          userAvatar: 'https://i.ytimg.com/vi/Bs3-aQdqrW4/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBll8FGXj_7pmm71QvR6bweo1BNmw'
         }
       ];
 
