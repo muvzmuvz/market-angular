@@ -101,5 +101,26 @@ export class ProfilePage {
     };
     reader.readAsDataURL(file);
   }
+
+  selectedFileName: string | null = null;
+
+onEditFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (!input.files?.length) {
+    this.selectedFileName = null;
+    return;
+  }
+
+  const file = input.files[0];
+  this.selectedFileName = file.name; // сохраняем имя файла
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.editAvatar = reader.result as string;
+  };
+  reader.readAsDataURL(file);
+}
+
+
 }
 

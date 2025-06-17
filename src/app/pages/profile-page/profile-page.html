@@ -52,14 +52,23 @@
 <div class="modal-backdrop" *ngIf="isEditModalOpen">
   <div class="modal">
     <h2>Редактировать профиль</h2>
+
     <label>
       Имя пользователя:
       <input type="text" [(ngModel)]="editUsername" />
     </label>
+
     <label>
-      URL аватара:
-      <input type="text" [(ngModel)]="editAvatar" />
+      Загрузить аватар:
+      <input type="file" accept="image/*" (change)="onEditFileSelected($event)" />
     </label>
+
+    <!-- Показываем превью загруженного аватара -->
+    <div *ngIf="editAvatar" class="avatar-preview">
+      <tui-avatar size="xl" [src]="editAvatar" alt="Превью аватара" />
+    </div>
+
+
     <div class="modal-buttons">
       <button (click)="saveProfile()" class="btn-save">Сохранить</button>
       <button (click)="cancelEdit()" class="btn-cancel">Отмена</button>
