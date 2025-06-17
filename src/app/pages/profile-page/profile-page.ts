@@ -1,25 +1,24 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgForOf, NgIf } from '@angular/common';
 import { Navbar } from 'src/app/components/navbar/navbar';
-import { TuiIcon } from '@taiga-ui/core';
 import { TuiTiles } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
-import { TuiFallbackSrcPipe, TuiIconPipe, TuiTitle } from '@taiga-ui/core';
+import { TuiFallbackSrcPipe, TuiTitle } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { title } from 'process';
 import { OrderCard } from 'src/app/components/order-card/order-card';
 const username = 'rick';
 @Component({
   selector: 'app-profile-page',
-  imports: [Navbar, TuiIcon, TuiTiles, CommonModule, TuiFallbackSrcPipe, TuiIconPipe, TuiTitle, TuiAvatar, OrderCard],
+  imports: [Navbar, TuiTiles, CommonModule, TuiFallbackSrcPipe, TuiTitle, TuiAvatar, OrderCard],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilePage {
-editProfile() {
-throw new Error('Method not implemented.');
-}
+  editProfile() {
+    throw new Error('Method not implemented.');
+  }
   username = 'rick';
   orders = [
     {
