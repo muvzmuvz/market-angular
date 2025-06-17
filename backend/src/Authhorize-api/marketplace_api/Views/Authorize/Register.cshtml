@@ -1,0 +1,26 @@
+@using marketplace_api.ViewModel
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<h2 class="auth-title">Регистрация</h2>
+
+<form asp-controller="Authorize" asp-action="Register" method="post" class="auth-form">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input type="hidden" asp-for="ReturnUrl" />
+
+    <input type="text" asp-for="Name" placeholder="Имя пользователя" required>
+    <input type="email" asp-for="Email" placeholder="Email" required>
+    <input type="password" asp-for="Password" placeholder="Пароль" required>
+
+    <button type="submit" class="auth-btn">Зарегистрироваться</button>
+
+    <p class="auth-footer">
+        Уже есть аккаунт?
+        <a asp-controller="Authorize" asp-action="Login"
+           asp-route-returnUrl="@Model.ReturnUrl" class="auth-link">Войти</a>
+    </p>
+</form>

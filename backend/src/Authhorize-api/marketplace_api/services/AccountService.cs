@@ -37,11 +37,11 @@ public class AccountService : IAccountService
 
     var userDto = new UserDto()
     {
-      Email = identityUser.Email,
+      Email = identityUser!.UserName!,
       ExpenseSummary = domainUser.ExpenseSummary,
       Id = identityUser.Id,
       ImagePath = domainUser.imagePath,
-      Name = identityUser.UserName,
+      Name = identityUser.FirstName,
       Role = domainUser.Role,
     };
 
@@ -58,11 +58,11 @@ public class AccountService : IAccountService
                   on duser.IdentityId equals user.Id
                   select new UserDto()
                   {
-                    Email = user.Email,
+                    Email = user!.UserName!,
                     ExpenseSummary = duser.ExpenseSummary,
                     Id = user.Id,
                     ImagePath = duser.imagePath,
-                    Name = user.UserName,
+                    Name = user.FirstName,
                     Role = duser.Role,
                   }).ToList();
 

@@ -1,0 +1,35 @@
+@using marketplace_api.ViewModel
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<!-- !!! ДОБАВЛЯЕМ ЭТОТ БЛОК: Он будет белым фоном с тенью !!! -->
+<div class="white-box">
+
+    <h2 class="auth-title">Вход</h2>
+
+    <form asp-controller="Authorize" asp-action="Login" method="post" class="auth-form">
+        @Html.AntiForgeryToken()
+
+
+        <!-- !!! УБИРАЕМ ЭТУ СТРОКУ: CSS подключается в _Layout !!! -->
+        <!-- <link rel="stylesheet" href="~/css/main.css" /> -->
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <input type="text" asp-for="Username" placeholder="Email или Имя пользователя" required>
+        <input type="password" asp-for="Password" placeholder="Пароль" required>
+
+        <button type="submit" class="auth-btn">Войти</button>
+
+        <p class="auth-footer">
+            Нет аккаунта?
+            <a asp-controller="Authorize" asp-action="Register"
+               asp-route-returnUrl="@Model.ReturnUrl" class="auth-link">Зарегистрироваться</a>
+        </p>
+    </form>
+
+</div> <!-- !!! ЗАКРЫВАЕМ БЕЛЫЙ БЛОК !!! -->

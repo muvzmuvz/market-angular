@@ -46,13 +46,24 @@ public static class ServiceCollectionExtensions
 
   public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
   {
-    builder.Services.AddIdentityServer()
+    builder.Services.AddIdentityServer(options =>
+    {
+      options.UserInteraction.LoginUrl = "/Authorize/Login";
+
+      options.UserInteraction.LogoutUrl = "/Authorize/Logout";
+    })
        .AddDeveloperSigningCredential()
        .AddInMemoryIdentityResources(Config.IdentityResources)
        .AddInMemoryApiScopes(Config.ApiScopes)
        .AddInMemoryClients(Config.Clients)
        .AddAspNetIdentity<UserIdentity>()
        .AddProfileService<CustomProfileService>();
+
+    builder.Services.ConfigureApplicationCookie(config =>
+    {
+      config.LoginPath = "/Authorize/Login";
+      config.LogoutPath = "/Authorize/Logout";
+    });
 
     builder.Services
       .Configure<IdentityServerSettings>(builder.Configuration.GetSection(nameof(IdentityServerSettings)));
@@ -63,7 +74,6 @@ public static class ServiceCollectionExtensions
        options.Authority = "http://localhost:5042"; 
        options.Audience = "web";
 
-       // Для разработки можно отключить некоторые проверки
        if (builder.Environment.IsDevelopment())
        {
          options.TokenValidationParameters.ValidateIssuer = false;
@@ -79,7 +89,7 @@ public static class ServiceCollectionExtensions
       options.AddPolicy("ApiScope", policy =>
       {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "api"); // Должно совпадать с ApiScope
+        policy.RequireClaim("scope", "api"); 
       });
     });
 

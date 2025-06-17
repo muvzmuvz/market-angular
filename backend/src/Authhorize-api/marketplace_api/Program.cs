@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+
 
 builder.AddData(builder.Configuration)
     .AddSwagger()
@@ -17,7 +19,15 @@ builder.AddData(builder.Configuration)
 
 var app = builder.Build();
 
-  
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.UseAuthorization();
 
 
