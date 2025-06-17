@@ -48,9 +48,9 @@ public static class ServiceCollectionExtensions
   {
     builder.Services.AddIdentityServer(options =>
     {
-      options.UserInteraction.LoginUrl = "/Account/Login";
+      options.UserInteraction.LoginUrl = "/Authorize/Login";
 
-      options.UserInteraction.LogoutUrl = "/Account/Logout";
+      options.UserInteraction.LogoutUrl = "/Authorize/Logout";
     })
        .AddDeveloperSigningCredential()
        .AddInMemoryIdentityResources(Config.IdentityResources)
@@ -61,8 +61,8 @@ public static class ServiceCollectionExtensions
 
     builder.Services.ConfigureApplicationCookie(config =>
     {
-      config.LoginPath = "/Account/Login";
-      config.LogoutPath = "/Account/Logout";
+      config.LoginPath = "/Authorize/Login";
+      config.LogoutPath = "/Authorize/Logout";
     });
 
     builder.Services

@@ -19,12 +19,14 @@ builder.AddData(builder.Configuration)
 
 var app = builder.Build();
 
-app.UseEndpoints(endpoints =>
-{
-  endpoints.MapDefaultControllerRoute();
 
-  endpoints.MapControllers(); 
-});
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.UseAuthorization();
 
