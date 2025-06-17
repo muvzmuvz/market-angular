@@ -3,7 +3,9 @@ import { Router, RouterOutlet } from '@angular/router';
 import { TuiRoot } from '@taiga-ui/core';
 import { Navbar } from '../../components/navbar/navbar';
 import { ProductCard } from '../../components/product-card/product-card';
-	import {TuiButton, TuiLink} from '@taiga-ui/core';
+import { TuiButton, TuiLink } from '@taiga-ui/core';
+import { TuiPagination } from '@taiga-ui/kit';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 // 👉 Обязательно для *ngIf и *ngFor
 import { NgIf, NgFor } from '@angular/common';
@@ -24,18 +26,19 @@ interface Product {
     NgIf,
     NgFor,
     TuiButton,
-    TuiLink],
+    TuiLink, TuiPagination],
   templateUrl: './home-page.html',
-  styleUrl: './home-page.less'
+  styleUrl: './home-page.less',
+  standalone: true,  // если используешь standalone компоненты
 })
 export class HomePage {
-products: Product[] = [];
+  products: Product[] = [];
   displayedProducts: Product[] = [];
   isLoading = true;
   currentPage = 1;
   itemsPerPage = 24;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.fetchProducts();
@@ -52,7 +55,7 @@ products: Product[] = [];
         price: 1000,
         description: 'Белая футболка',
         countProduct: 10,
-        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'}],
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
       },
       {
         id: 2,
@@ -60,15 +63,15 @@ products: Product[] = [];
         price: 3000,
         description: 'Удобные кроссовки',
         countProduct: 5,
-        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'}],
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
       },
-            {
+      {
         id: 3,
         name: 'Футболка',
         price: 1000,
         description: 'Белая футболка',
         countProduct: 10,
-        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'}],
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
       },
       {
         id: 4,
@@ -76,7 +79,7 @@ products: Product[] = [];
         price: 3000,
         description: 'Удобные кроссовки',
         countProduct: 5,
-        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'}],
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
       },
       {
         id: 5,
@@ -84,7 +87,7 @@ products: Product[] = [];
         price: 1000,
         description: 'Белая футболка',
         countProduct: 10,
-        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'}],
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
       },
       {
         id: 6,
@@ -92,7 +95,159 @@ products: Product[] = [];
         price: 3000,
         description: 'Удобные кроссовки',
         countProduct: 5,
-        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'}],
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 7,
+        name: 'Футболка фывфыв фыв фыв',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 8,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 9,
+        name: 'Футболка',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 10,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 11,
+        name: 'Футболка',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 12,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 13,
+        name: 'Футболка фывфыв фыв фыв',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 14,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 15,
+        name: 'Футболка',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 16,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 17,
+        name: 'Футболка',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 18,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 19,
+        name: 'Футболка фывфыв фыв фыв',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 20,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 21,
+        name: 'Футболка',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 22,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 23,
+        name: 'Футболка',
+        price: 1000,
+        description: 'Белая футболка',
+        countProduct: 10,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 24,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
+      },
+      {
+        id: 25,
+        name: 'Кроссовки',
+        price: 3000,
+        description: 'Удобные кроссовки',
+        countProduct: 5,
+        images: [{ path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg' }],
       },
     ];
 
@@ -110,15 +265,15 @@ products: Product[] = [];
     this.router.navigate(['/product', id]);
   }
 
-  changePage(page: number) {
-    const total = Math.ceil(this.products.length / this.itemsPerPage);
-    if (page >= 1 && page <= total) {
-      this.currentPage = page;
-      this.updateDisplayedProducts();
-    }
-  }
+
 
   get totalPages(): number {
     return Math.ceil(this.products.length / this.itemsPerPage);
   }
+
+changePage(index: number) {
+  this.currentPage = index + 1;
+  this.updateDisplayedProducts();
+}
+
 }

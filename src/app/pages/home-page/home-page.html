@@ -1,4 +1,3 @@
-
 <app-navbar></app-navbar>
 
 
@@ -14,35 +13,12 @@
 
 <!-- Карточки -->
 <div *ngIf="!isLoading" class="card">
-  <app-product-card
-    *ngFor="let product of displayedProducts"
-    [product]="product"
-    (click)="goToProduct(product.id)"
-  ></app-product-card>
+  <app-product-card *ngFor="let product of displayedProducts" [product]="product"
+    (click)="goToProduct(product.id)"></app-product-card>
 
-  
+
 </div>
-
-<!-- Пагинация -->
-<div class="pagination">
-  <button
-  
-    [disabled]="currentPage === 1"
-    (click)="changePage(currentPage - 1)"
-    class="pagination__button"
-
-  >
-    Назад
-  </button>
-
-  <span class="pagination__info">Страница {{ currentPage }} из {{ totalPages }}</span>
-
-  <button
-    [disabled]="currentPage === totalPages"
-    (click)="changePage(currentPage + 1)"
-    class="pagination__button"
-  >
-    Вперёд
-  </button>
+<div class="footer">
+  <tui-pagination [index]="currentPage - 1" [length]="totalPages" (indexChange)="changePage($event)">
+  </tui-pagination>
 </div>
-
