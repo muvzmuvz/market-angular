@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+
+<div class="container" *ngIf="!isLoading; else loading">
+    <button class="back-button" (click)="goBack()">← Назад</button>
+
+    <div *ngIf="product; else notFound">
+        <div class="product-detail">
+
+            <div class="images">
+                <img [src]="product.images[activeIndex]?.path" alt="Основное изображение" class="main-image"
+                    (click)="isModalOpen = true" />
+                <div class="thumbnails">
+                    <img *ngFor="let image of product.images; index as i" [src]="image.path" alt="Миниатюра"
+                        [class.active]="i === activeIndex" (click)="activeIndex = i" />
+                </div>
+            </div>
+
+
+            <div class="modal" *ngIf="isModalOpen" (click)="isModalOpen = false">
+                <img [src]="modalImage" class="modal-image" alt="Увеличенное изображение" />
+            </div>
+
+
+            <div class="info">
+                <h1>{{ product?.name }}</h1>
+                <p class="price">{{ product?.price | currency:'RUB' }}</p>
+                <p class="description">{{ product?.description }}</p>
+                <pre class="characteristics">{{ product?.characteristic }}</pre>
+                <p>Продавец: {{ product.user?.name }}</p>
+                <button (click)="addToCart()" [class.added]="isAdded" class="add-button">
+                    {{ isAdded ? '✔ Добавлено' : '🛒 Добавить в корзину' }}
+                </button>
+            </div>
+        </div>
+
+
+        <div class="reviews">
+            <h2>Отзывы ({{ comments.length }})</h2>
+
+            <div class="new-review">
+                <textarea [(ngModel)]="newComment" placeholder="Ваш отзыв..."></textarea>
+                <div class="stars">
+                    <span *ngFor="let star of [1,2,3,4,5]" (click)="productEvaluation = star"
+                        [class.active]="star <= productEvaluation">★</span>
+                    <span>{{ productEvaluation }}/5</span>
+                </div>
+                <button (click)="postComment()">Отправить</button>
+            </div>
+
+            <div class="comment" *ngFor="let comment of comments">
+                <div class="comment-header">
+                    <strong>{{ comment.user.name }}</strong>
+                    <span>{{ formatDate(comment.dateCreated) }}</span>
+                </div>
+                <div class="stars">{{ getStars(comment.productEvaluation) }}</div>
+                <p>{{ comment.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+  <div class="loader-overlay">
+    <tui-loader size="xl" />
+  </div>
+</ng-template>
+
+
+<ng-template #notFound>
+    <p class="not-found">Товар не найден.</p>
+</ng-template>
