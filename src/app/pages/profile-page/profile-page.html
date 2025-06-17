@@ -6,20 +6,19 @@
     <div class="card-header">
       <div class="profile-info">
         <h1 class="title">Добро пожаловать, {{username}}!</h1>
-
       </div>
 
       <div class="avatar">
-        <tui-avatar size="xxl" class="lg" src="{{avatar}}"></tui-avatar>
+        <tui-avatar size="xxl" class="lg" [src]="avatar"></tui-avatar>
       </div>
     </div>
 
     <div class="card-body">
       <p class="description">Это ваша страница профиля.</p>
       <p class="description">Вы можете редактировать информацию о своем профиле здесь.</p>
-
     </div>
-            <button class="btn-edit-profile" (click)="editProfile()">Редактировать профиль</button>
+
+    <button class="btn-edit-profile" (click)="openEditModal()">Редактировать профиль</button>
   </div>
 
   <div class="card orders-card">
@@ -40,5 +39,23 @@
       <a href="/delivery" class="btn-view-all">Смотреть все заказы</a>
     </div>
   </div>
+</div>
 
+<!-- Модальное окно редактирования -->
+<div class="modal-backdrop" *ngIf="isEditModalOpen">
+  <div class="modal">
+    <h2>Редактировать профиль</h2>
+    <label>
+      Имя пользователя:
+      <input type="text" [(ngModel)]="editUsername" />
+    </label>
+    <label>
+      URL аватара:
+      <input type="text" [(ngModel)]="editAvatar" />
+    </label>
+    <div class="modal-buttons">
+      <button (click)="saveProfile()" class="btn-save">Сохранить</button>
+      <button (click)="cancelEdit()" class="btn-cancel">Отмена</button>
+    </div>
+  </div>
 </div>
