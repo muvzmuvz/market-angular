@@ -58,10 +58,15 @@
       <input type="text" [(ngModel)]="editUsername" />
     </label>
 
-    <label>
-      Загрузить аватар:
+    <label class="file-upload-label">
+      <span>Выберите файл аватара</span>
       <input type="file" accept="image/*" (change)="onEditFileSelected($event)" />
     </label>
+
+    <!-- Отображаем название выбранного файла -->
+    <div *ngIf="selectedFileName" class="file-name">
+      Выбран файл: {{ selectedFileName }}
+    </div>
 
     <!-- Показываем превью загруженного аватара -->
     <div *ngIf="editAvatar" class="avatar-preview">
