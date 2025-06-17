@@ -20,7 +20,7 @@ export class ProfilePage {
   username = 'rick';
   protected avatar = 'https://postila.ru/resize?w=460&src=%2Fs3%2Ff52%2F74%2F1fb62bf1d821948a49204406bdc.jpg';
 
- isEditModalOpen = false; // окно редактирования открыто или нет
+  isEditModalOpen = false; // окно редактирования открыто или нет
 
   // Временные переменные для редактирования
   editUsername = this.username;
@@ -83,6 +83,23 @@ export class ProfilePage {
 
   cancelEdit() {
     this.isEditModalOpen = false;
+  }
+
+
+  hover = false;
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+
+    // Создаем URL для отображения изображения в аватаре
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.avatar = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 }
 
