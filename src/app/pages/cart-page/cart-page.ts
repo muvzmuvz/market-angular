@@ -33,7 +33,7 @@ export class CartPage {
         'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'
     }
   ];
-  delivery = { name: '', phone: '', address: '' };
+  delivery = { name: '', phone: '', address: '', postCode: '' };  
   paymentMethod: string = '';
   card = { number: '', expiry: '', cvv: '' };
 
@@ -42,7 +42,7 @@ export class CartPage {
   }
 
   submitDelivery() {
-    if (this.delivery.name && this.delivery.phone && this.delivery.address) {
+    if (this.delivery.name && this.delivery.phone && this.delivery.address && this.delivery.postCode) {
       this.step = 3;
     }
   }

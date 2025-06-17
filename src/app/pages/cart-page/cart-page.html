@@ -44,9 +44,14 @@
         <input type="tel" name="phone" [(ngModel)]="delivery.phone" required #phone="ngModel" />
       </label>
       <label>
+        Индекс:
+        <input type="text" name="postCode" [(ngModel)]="delivery.postCode" required #postCode="ngModel" />
+      </label>
+      <label>
         Адрес:
         <input type="text" name="address" [(ngModel)]="delivery.address" required #address="ngModel" />
       </label>
+
     </form>
   </div>
 
