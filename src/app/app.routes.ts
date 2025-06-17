@@ -4,21 +4,25 @@ import { ProfilePage } from './pages/profile-page/profile-page';
 import { DeliveryPage } from './pages/delivery-page/delivery-page';
 import { CartPage } from './pages/cart-page/cart-page';
 import { Install } from './pages/install/install';
+import { ProductDetailComponent } from './pages/product-detail/product-detail';
 
 export const routes: Routes = [
     {
-        path:'', component: HomePage
+        path: '', component: HomePage
     },
     {
-        path:'profile', component: ProfilePage
+        path: 'profile', component: ProfilePage
     },
     {
-        path:'delivery', component: DeliveryPage
+        path: 'delivery', component: DeliveryPage
     },
     {
-        path:'cart', component: CartPage
+        path: 'cart', component: CartPage
     },
-        {
-        path:'install', component: Install
-    }
+    {
+        path: 'install', component: Install
+    },
+       {
+        path: 'product/:id', component: ProductDetailComponent
+    },
 ];
