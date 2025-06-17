@@ -1,4 +1,98 @@
 <app-navbar></app-navbar>
 
+<div class="cart-container">
 
-<p>cart-page works!</p>
+  <h1>Корзина</h1>
+
+  <!-- Шаг 1: Список товаров -->
+  <div *ngIf="step === 1" class="cart-items">
+    <div *ngFor="let item of cartItems; let i = index" class="cart-item">
+      <img [src]="item.image" alt="{{ item.name }}" width="80" height="80" />
+
+      <div class="item-info">
+        <p>{{ item.name }}</p>
+        <p>Цена: {{ item.price }} ₽</p>
+
+        <!-- Кнопки управления количеством -->
+        <div class="quantity-controls">
+          <button (click)="decreaseQuantity(i)" class="qty-btn">−</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="increaseQuantity(i)" class="qty-btn">+</button>
+        </div>
+
+        <!-- Кнопка удаления -->
+        <button class="btn-delete" (click)="removeItem(i)">Удалить</button>
+      </div>
+
+      <div class="item-total">
+        <p>Итого: {{ item.price * item.quantity }} ₽</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Шаг 2: Форма доставки -->
+  <div *ngIf="step === 2" class="delivery-form">
+    <h2>Данные для доставки</h2>
+
+    <form #orderForm="ngForm" (ngSubmit)="submitDelivery()" novalidate>
+      <label>
+        Имя:
+        <input type="text" name="name" [(ngModel)]="delivery.name" required #name="ngModel" />
+      </label>
+      <label>
+        Телефон:
+        <input type="tel" name="phone" [(ngModel)]="delivery.phone" required #phone="ngModel" />
+      </label>
+      <label>
+        Адрес:
+        <input type="text" name="address" [(ngModel)]="delivery.address" required #address="ngModel" />
+      </label>
+    </form>
+  </div>
+
+  <!-- Шаг 3: Способ оплаты -->
+  <div *ngIf="step === 3" class="payment-step">
+    <h2>Выберите способ оплаты</h2>
+
+    <label for="payment-method">Способ оплаты:</label>
+    <select id="payment-method" [(ngModel)]="paymentMethod" name="paymentMethod" required>
+      <option value="" disabled>Выберите способ оплаты</option>
+      <option value="card">Банковская карта</option>
+      <option value="sbp">СБП</option>
+    </select>
+
+    <div *ngIf="paymentMethod === 'card'" class="card-details">
+      <label>
+        Номер карты:
+        <input type="text" maxlength="19" placeholder="1234 5678 9012 3456" [(ngModel)]="card.number" name="cardNumber"
+          required #cardNumber="ngModel" />
+      </label>
+      <label>
+        Срок действия (ММ/ГГ):
+        <input type="text" maxlength="5" placeholder="12/24" [(ngModel)]="card.expiry" name="cardExpiry" required
+          (input)="formatExpiryDate()" />
+      </label>
+      <label>
+        CVV:
+        <input type="password" maxlength="3" placeholder="123" [(ngModel)]="card.cvv" name="cardCvv" required
+          #cardCvv="ngModel" />
+      </label>
+    </div>
+
+    <div *ngIf="paymentMethod === 'sbp'" class="sbp-info">
+      <p>Оплата через СБП — следуйте инструкции в банке.</p>
+    </div>
+  </div>
+  <div class="cart-total">
+    <p><strong>Общая сумма:</strong> {{ getTotalPrice() }} ₽</p>
+  </div>
+  <!-- Кнопки управления -->
+  <div class="sticky-footer">
+    <button class="btn-primary" [disabled]="isButtonDisabled()" (click)="nextStep()">
+      {{ getButtonLabel() }}
+    </button>
+    <button *ngIf="step > 1" class="btn-secondary" (click)="goBack(step - 1)">
+      Назад
+    </button>
+  </div>
+</div>
