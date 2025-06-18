@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProfilePage {
   username = 'rick';
-  protected avatar = 'https://postila.ru/resize?w=460&src=%2Fs3%2Ff52%2F74%2F1fb62bf1d821948a49204406bdc.jpg';
+  protected avatar = '';
 
   isEditModalOpen = false; // окно редактирования открыто или нет
 

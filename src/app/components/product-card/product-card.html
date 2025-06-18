@@ -1,21 +1,32 @@
 <div class="card-items">
-  <img
-    [src]="product.images[0].path"
-    [alt]="product.name"
-    class="card-img"
-  />
+  <div class="card-img-wrapper">
+    <img [src]="product.images[0].path" [alt]="product.name" class="card-img" />
+
+    <!-- Процент скидки (бэйдж) -->
+    <div class="discount-badge">
+
+      <tui-badge class="t-badge">-{{ product.discount }}%</tui-badge>
+    </div>
+  </div>
+
 
   <p class="card--descripion elipse">{{ product.name }}</p>
-  <p class="card-coast">Цена: {{ product.price }} ₽</p>
+
+  <!-- Блок с ценой -->
+  <div class="price-section">
+    <span class="discounted-price">
+      {{ getDiscountedPrice(product.price, product.discount) }} ₽
+    </span>
+
+    <span class="original-price">
+      {{ product.price }} ₽
+    </span>
+  </div>
+
   <p class="card--ps text-gray-500">
     Осталось: {{ product.countProduct }} шт.
   </p>
 
-  <button
-    tuiButton
-    appearance="primary"
-    type="button"
-    class="order--buton"
-    size="m"
+  <button tuiButton appearance="primary" type="button" class="order--buton" size="m"
     (click)="addToCart()">Заказать</button>
 </div>

@@ -1,21 +1,38 @@
 <div class="order-card" *ngIf="order">
-  <p class="title">Номер заказа: {{ order.order }}</p>
-  <p class="description">Дата заказа: {{ order.date | date: 'dd.MM.yyyy' }}</p>
-  <p class="description">Сумма заказа: {{ order.amount | currency:'RUB' }}</p>
+  <div class="order-header">
+    <p class="order-number">Номер заказа: {{ order.order }}</p>
+    <p class="order-date">{{ order.date | date: 'dd.MM.yyyy' }}</p>
+  </div>
 
-  <div class="items-list">
-    <div class="item-card" *ngFor="let item of visibleItems">
-      <img [src]="item.image" alt="{{item.title}}" class="item-img" *ngIf="item.image"/>
+  <div class="order-summary">
+    <span>Сумма заказа:</span>
+    <span>{{ order.amount }} ₽</span>
+  </div>
+
+  <div class="items-list" [class.expanded]="isExpanded">
+    <div class="item-card" *ngFor="let item of stackedItems">
+      <img [src]="item.image" alt="{{ item.title }}" class="item-img" *ngIf="item.image" />
       <div class="item-info">
-        <p class="item-title">{{ item.title }}</p>
-
-        <p class="item-price">{{ item.price | currency:'RUB' }}</p>
+        <p class="item-title">
+          {{ item.title }}
+          <span *ngIf="item.count > 1" class="item-count">×{{ item.count }}</span>
+        </p>
+        <p class="item-price">
+          {{ item.price }} ₽
+          <span *ngIf="item.count > 1" class="unit-price">
+            ({{ item.price / item.count  }} ₽ за шт.)
+          </span>
+        </p>
       </div>
     </div>
   </div>
 
-  <!-- Кнопка для разворота, показываем только если товаров больше 2 -->
-  <button *ngIf="order.items.length > 2" (click)="toggleExpand()" class="toggle-btn">
+  <button
+    (click)="toggleExpand()"
+    class="toggle-btn"
+    [class.hidden]="order.items.length <= 1"
+  >
     {{ isExpanded ? 'Скрыть' : 'Показать все' }}
+    <span class="arrow" [class.up]="isExpanded">▾</span>
   </button>
 </div>

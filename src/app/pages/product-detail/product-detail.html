@@ -23,7 +23,16 @@
 
             <div class="info">
                 <h1>{{ product?.name }}</h1>
-                <p class="price">{{ product?.price | currency:'RUB' }}</p>
+                <div class="price-wrapper">
+                    <p class="price-discounted" *ngIf="hasDiscount">
+                        {{ discountedPrice }} ₽
+                        <span class="price-original">{{ product?.price }} ₽</span>
+                        <tui-badge size="l" class="discount-percent">-{{ product?.discountPercent }}%</tui-badge>
+                    </p>
+                    <p class="price" *ngIf="!hasDiscount">
+                        {{ product?.price  }} ₽
+                    </p>
+                </div>
                 <p class="description">{{ product?.description }}</p>
                 <pre class="characteristics">{{ product?.characteristic }}</pre>
                 <p>Продавец: {{ product.user?.name }}</p>
@@ -49,7 +58,7 @@
 
             <div class="comment" *ngFor="let comment of comments">
                 <div class="comment-header">
-                    <tui-avatar [src]="comment.userAvatar || 'https://postila.ru/resize?w=460&src=%2Fs3%2Ff52%2F74%2F1fb62bf1d821948a49204406bdc.jpg' " />
+                    <tui-avatar [src]="comment.userAvatar || '/assets/icon/no-avatar.jpg' " />
                     <strong>{{ comment.user.name }}</strong>
                     <span>{{ formatDate(comment.dateCreated) }}</span>
                 </div>
@@ -61,9 +70,9 @@
 </div>
 
 <ng-template #loading>
-  <div class="loader-overlay">
-    <tui-loader size="xl" />
-  </div>
+    <div class="loader-overlay">
+        <tui-loader size="xl" />
+    </div>
 </ng-template>
 
 

@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { TuiLoader } from '@taiga-ui/core';
 import { Navbar } from 'src/app/components/navbar/navbar'; // standalone Navbar
 import { Router } from '@angular/router';
-import { TuiAvatar} from '@taiga-ui/kit';
+import { TuiAvatar } from '@taiga-ui/kit';
+import { TuiBadge } from '@taiga-ui/kit';
 
 interface ProductImage {
   path: string;
@@ -15,6 +16,7 @@ interface Product {
   id: string | null;
   name: string;
   description: string;
+  discountPercent?: number;
   price: number;
   characteristic: string;
   user: { name: string };
@@ -35,7 +37,7 @@ interface Comment {
   standalone: true,
   templateUrl: './product-detail.html',
   styleUrls: ['./product-detail.less'],
-  imports: [CommonModule, FormsModule, Navbar, TuiLoader, TuiAvatar] // ✅ правильный список
+  imports: [CommonModule, FormsModule, Navbar, TuiLoader, TuiAvatar,TuiBadge] // ✅ правильный список
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
@@ -47,23 +49,23 @@ export class ProductDetailComponent implements OnInit {
   activeIndex = 0;
   isAdded = false;
 
-constructor(
-  private route: ActivatedRoute,
-  private location: Location,
-  private router: Router
-) {}
+  constructor(
+    private route: ActivatedRoute,
+    private location: Location,
+    private router: Router
+  ) { }
 
-goBack(): void {
-  console.log('goBack called');
+  goBack(): void {
+    console.log('goBack called');
 
-  if (window.history.length > 1) {
-    console.log('using location.back()');
-    this.location.back();
-  } else {
-    console.log('fallback: navigating to /');
-    this.router.navigate(['/']);
+    if (window.history.length > 1) {
+      console.log('using location.back()');
+      this.location.back();
+    } else {
+      console.log('fallback: navigating to /');
+      this.router.navigate(['/']);
+    }
   }
-}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -84,11 +86,15 @@ goBack(): void {
         name: `Футболка Angular (ID ${id})`,
         description: 'Удобная и стильная футболка с логотипом Angular.',
         price: 1999,
+        discountPercent: 30,
         characteristic: 'Размеры: S, M, L, XL\nЦвет: Красный',
         user: { name: 'Анна' },
         images: [
           {
             path: 'https://ae04.alicdn.com/kf/Sf73c6b0b761343abb82901fa276c7c36x.jpg_480x480.jpg'
+          },
+          {
+            path: 'https://c1.cprnt.com/storage/p/t1/aw/lwh/8d/bcc/c35e91145a61f1f09fe24b3b31d/bb93552490a04d75aea502d2c1ed3257.webp'
           },
           {
             path: 'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'
@@ -141,5 +147,16 @@ goBack(): void {
       month: 'long',
       day: '2-digit'
     });
+  }
+
+  get hasDiscount(): boolean {
+    return !!this.product?.discountPercent && this.product.discountPercent > 0;
+  }
+
+  get discountedPrice(): number {
+    if (!this.product || !this.hasDiscount) return this.product?.price || 0;
+
+    const discount = (this.product.price * this.product.discountPercent!) / 100;
+    return Math.round(this.product.price - discount);
   }
 }

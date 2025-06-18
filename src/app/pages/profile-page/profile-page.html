@@ -10,7 +10,7 @@
 
       <div class="avatar" (mouseenter)="hover = true" (mouseleave)="hover = false" (click)="fileInput.click()"
         style="position: relative; cursor: pointer;">
-        <tui-avatar size="xxl" class="lg" [src]="avatar"></tui-avatar>
+        <tui-avatar size="xxl" class="lg" [src]="avatar || '/assets/icon/no-avatar.jpg'"></tui-avatar>
 
         <div *ngIf="hover" class="avatar-overlay">
           Изменить
