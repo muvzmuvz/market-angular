@@ -1,105 +1,232 @@
+@color-bg: #f2f4f7;
+@color-white: #ffffff;
+@color-border: #d9dee3;
+@color-primary: #1976d2;
+@color-text: #333;
+
 .order-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
-  background-color: #fafafa;
-  overflow-y: hidden;
-  /* Включаем flex и фиксируем высоту */
+  background: @color-white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  min-height: 270px;
-  justify-content: space-between; /* равномерное распределение элементов по высоте */
+  gap: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  transition: box-shadow 0.3s ease;
 }
 
-/* Ограничиваем высоту блока с описанием */
-.item-info {
+.order-header {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  overflow: hidden; /* прячем лишний текст */
-  text-overflow: ellipsis; /* добавляем троеточие при обрезке текста */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Позволяет переносить содержимое при узких экранах */
+  gap: 8px;
 }
 
-/* Список товаров растягивается и прокручивается при необходимости */
+.order-number {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0;
+  color: @color-text;
+  flex: 1 1 auto; /* Занимает доступное пространство */
+}
+
+.order-date {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.order-summary {
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: @color-text;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .items-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 10px;
-  flex-grow: 1; /* занимает доступное пространство */
-  overflow-y: auto; /* вертикальная прокрутка при переполнении */
-}
+  overflow: hidden;
+  max-height: 100px;
+  transition: max-height 0.4s ease;
 
-/* Остальной CSS без изменений */
+  &.expanded {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
 
 .item-card {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: flex-start;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  background-color: #fff;
+  background: @color-bg;
+  border-radius: 12px;
+  padding: 12px;
+  transition: background 0.3s ease;
+}
+
+.item-card:hover {
+  background: lighten(@color-bg, 3%);
 }
 
 .item-img {
-  width: 100px;
-  height: 80px;
+  width: 80px;
+  height: 70px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
   flex-shrink: 0;
 }
 
-.item-title {
-  font-weight: 600;
-  font-size: 16px;
-  margin: 0;
+.item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.item-description {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-    overflow: hidden; /* прячем лишний текст */
-  text-overflow: ellipsis; /* добавляем троеточие при обрезке текста */
+.item-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap; /* Чтобы название и счетчик не ломали верстку */
+}
+
+.item-count {
+  font-weight: 400;
+  font-size: 13px;
+  color: #888;
 }
 
 .item-price {
-  font-weight: 700;
-  color: #1976d2;
-  margin-top: auto;
   font-size: 15px;
+  font-weight: 700;
+  color: @color-primary;
+}
+
+.unit-price {
+  font-size: 12px;
+  color: #999;
+  margin-left: 8px;
 }
 
 .toggle-btn {
-  background-color: transparent;
+  background: none;
   border: none;
-  color: #1976d2;
-  cursor: pointer;
+  color: @color-primary;
   font-weight: 600;
-  padding: 5px 0;
-  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  transition: color 0.2s;
 }
 
 .toggle-btn:hover {
-  text-decoration: underline;
+  color: darken(@color-primary, 10%);
 }
 
-/* Адаптив */
+.toggle-btn.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.arrow.up {
+  transform: rotate(180deg);
+}
+
+/* === Адаптив === */
+@media (max-width: 900px) {
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .order-number {
+    font-size: 16px;
+  }
+
+  .order-date {
+    font-size: 13px;
+  }
+
+  .order-summary {
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .items-list.expanded {
+    max-height: 250px;
+  }
+}
+
 @media (max-width: 600px) {
+  .items-list {
+    max-height: 250px !important; /* Достаточно места для прокрутки */
+    overflow-y: auto !important;  /* Обязательно прокрутка */
+  }
+
   .item-card {
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 8px; /* Немного уменьшим отступы */
   }
-  
+
   .item-img {
-    width: 80px;
-    height: 70px;
+    width: 100%;     /* Картинка растягивается на всю ширину */
+    height: auto;    /* Высота подстраивается по пропорциям */
+    max-height: 150px; /* Чтобы не была слишком большой */
+    border-radius: 12px;
+    object-fit: contain; /* Изображение целиком видно */
   }
-  
+
   .item-info {
     align-items: center;
-    text-align: center;
+    padding: 8px 0 0 0;
+    width: 100%;
+  }
+
+  .toggle-btn {
+    align-self: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .order-card {
+    padding: 16px 12px;
+  }
+
+  .order-number {
+    font-size: 15px;
+  }
+
+  .order-date {
+    font-size: 12px;
+  }
+
+  .item-price {
+    font-size: 14px;
+  }
+
+  .item-count {
+    font-size: 12px;
   }
 }

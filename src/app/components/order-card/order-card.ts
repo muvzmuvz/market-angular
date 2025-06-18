@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-order-card',
@@ -8,20 +8,32 @@ import { Component, Input} from '@angular/core';
   styleUrl: './order-card.less'
 })
 export class OrderCard {
-   @Input() order: any; // позже можно типизировать
-    isExpanded = false;
+  @Input() order: any; // позже можно типизировать
+  isExpanded = false;
 
-  // Метод переключения состояния
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
   }
 
-  // Получаем список товаров, который нужно показать
-  get visibleItems() {
-    if (this.isExpanded) {
-      return this.order.items; // Показываем все
-    } else {
-      return this.order.items.slice(0, 1); // Показываем первые 2
+  get stackedItems() {
+    if (!this.order?.items) return [];
+
+    const map = new Map();
+
+    for (const item of this.order.items) {
+      const key = item.id ?? item.title;
+
+      if (!map.has(key)) {
+        map.set(key, { ...item, count: 1 });
+      } else {
+        const existing = map.get(key);
+        existing.count += 1;
+        existing.price += item.price;
+      }
     }
+
+    const items = Array.from(map.values());
+    return this.isExpanded ? items : items.slice(0, 1);
   }
 }
+
