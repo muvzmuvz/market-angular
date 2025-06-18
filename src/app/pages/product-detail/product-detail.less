@@ -566,3 +566,109 @@ tui-loader {
     max-height: 80vh;
   }
 }
+
+
+.container { /* твой CSS, плюс: */
+  .top-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: @spacing;
+  }
+  .fav-btn, .share-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    &:hover { color: @accent-hover; }
+  }
+  .availability {
+    margin: 12px 0;
+    font-weight: 600;
+  }
+  .characteristics-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: @spacing;
+    td {
+      padding: 8px;
+      border-bottom: 1px solid @border-color;
+      &:first-child { font-weight: 600; width: 40%; }
+    }
+  }
+  .similar-products {
+    margin-top: 3 * @spacing;
+    .grid-similar {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      .card {
+        min-width: 150px;
+        padding: 8px;
+        background: white;
+        border: 1px solid @border-color;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px @shadow-color;
+        cursor: pointer;
+        text-align: center;
+        img { width: 100%; border-radius: 6px; }
+        p { margin: 8px 0; font-size: 0.9rem; }
+      }
+    }
+  }
+
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(28, 32, 66, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+
+  // блокирует скролл фоном
+  overflow: hidden;
+
+  .modal-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+    object-fit: contain;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Анимация появления
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Адаптив: на мобилках делаем немного меньше и безопаснее
+@media (max-width: 576px) {
+  .modal {
+    .modal-image {
+      max-width: 95%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+  }
+}

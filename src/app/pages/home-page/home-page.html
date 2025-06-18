@@ -1,24 +1,25 @@
 <app-navbar></app-navbar>
 
+<div class="container">
 
-
-<!-- Загрузка -->
-<div *ngIf="isLoading" class="loading">
-  <div class="flex flex-wrap gap-4">
-    <div *ngFor="let n of [].constructor(100)" class="skeleton">
-      <!-- Заглушка -->
+  <!-- Загрузка -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="flex flex-wrap gap-4">
+      <div *ngFor="let n of [].constructor(100)" class="skeleton">
+        <!-- Заглушка -->
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Карточки -->
-<div *ngIf="!isLoading" class="card">
-  <app-product-card *ngFor="let product of displayedProducts" [product]="product"
-    (click)="goToProduct(product.id)"></app-product-card>
+  <!-- Карточки -->
+  <div *ngIf="!isLoading" class="card">
+    <app-product-card *ngFor="let product of displayedProducts" [product]="product"
+      (click)="goToProduct(product.id)"></app-product-card>
 
 
-</div>
-<div class="footer">
-  <tui-pagination [index]="currentPage - 1" [length]="totalPages" (indexChange)="changePage($event)">
-  </tui-pagination>
+  </div>
+  <div class="footer">
+    <tui-pagination [index]="currentPage - 1" [length]="totalPages" (indexChange)="changePage($event)">
+    </tui-pagination>
+  </div>
 </div>
