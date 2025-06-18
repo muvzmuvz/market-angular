@@ -15,26 +15,51 @@
                 </div>
             </div>
 
-
-            <div class="modal" *ngIf="isModalOpen" (click)="isModalOpen = false">
-                <img [src]="modalImage" class="modal-image" alt="Увеличенное изображение" />
-            </div>
-
-
             <div class="info">
-                <h1>{{ product?.name }}</h1>
+                <div class="top-row">
+                    <h1>{{ product.name }}</h1>
+                    <!-- <button class="fav-btn" (click)="toggleFavorite()">
+                        {{ product.isFav ? '💖' : '🤍' }}
+                    </button>
+                    <button class="share-btn" (click)="share()">📤</button> -->
+                </div>
+
                 <div class="price-wrapper">
                     <p class="price-discounted" *ngIf="hasDiscount">
                         {{ discountedPrice }} ₽
-                        <span class="price-original">{{ product?.price }} ₽</span>
-                        <tui-badge size="l" class="discount-percent">-{{ product?.discountPercent }}%</tui-badge>
+                        <span class="price-original">{{ product.price }} ₽</span>
+                        <tui-badge size="l" class="discount-percent">-{{ product.discountPercent }}%</tui-badge>
                     </p>
                     <p class="price" *ngIf="!hasDiscount">
-                        {{ product?.price  }} ₽
+                        {{ product.price }} ₽
                     </p>
                 </div>
-                <p class="description">{{ product?.description }}</p>
-                <pre class="characteristics">{{ product?.characteristic }}</pre>
+
+                <div class="product-options">
+                    <p>Цвет:</p>
+                    <div class="colors">
+                        <span *ngFor="let color of product.colors" [class.active]="color === selectedColor"
+                            (click)="selectedColor = color">{{ color }}</span>
+                    </div>
+                    <p>Размер:</p>
+                    <div class="sizes">
+                        <span *ngFor="let size of product.sizes" [class.active]="size === selectedSize"
+                            (click)="selectedSize = size">{{ size }}</span>
+                    </div>
+                </div>
+
+                <p class="availability">{{ product.availability }}</p>
+                <p class="description">{{ product.description }}</p>
+
+                <div class="characteristics-table">
+                    <table>
+                        <tr *ngFor="let pair of product.characteristic | keyvalue">
+                            <td>{{ pair.key }}</td>
+                            <td>{{ pair.value }}</td>
+                        </tr>
+                    </table>
+                </div>
+
                 <p>Продавец: {{ product.user?.name }}</p>
                 <button (click)="addToCart()" [class.added]="isAdded" class="add-button">
                     {{ isAdded ? '✔ Добавлено' : '🛒 Добавить в корзину' }}
@@ -42,10 +67,8 @@
             </div>
         </div>
 
-
         <div class="reviews">
             <h2>Отзывы ({{ comments.length }})</h2>
-
             <div class="new-review">
                 <textarea [(ngModel)]="newComment" placeholder="Ваш отзыв..."></textarea>
                 <div class="stars">
@@ -55,27 +78,28 @@
                 </div>
                 <button (click)="postComment()">Отправить</button>
             </div>
-
             <div class="comment" *ngFor="let comment of comments">
                 <div class="comment-header">
-                    <tui-avatar [src]="comment.userAvatar || '/assets/icon/no-avatar.jpg' " />
+                    <tui-avatar [src]="comment.userAvatar || '/assets/icon/no-avatar.jpg'"></tui-avatar>
                     <strong>{{ comment.user.name }}</strong>
-                    <span>{{ formatDate(comment.dateCreated) }}</span>
+                    <span>{{ comment.dateCreated | date:'shortDate' }}</span>
                 </div>
                 <div class="stars">{{ getStars(comment.productEvaluation) }}</div>
                 <p>{{ comment.description }}</p>
             </div>
         </div>
+
+
     </div>
 </div>
 
 <ng-template #loading>
-    <div class="loader-overlay">
-        <tui-loader size="xl" />
-    </div>
+    <div class="loader-overlay"><tui-loader size="xl"></tui-loader></div>
 </ng-template>
-
-
 <ng-template #notFound>
     <p class="not-found">Товар не найден.</p>
 </ng-template>
+
+<div class="modal" *ngIf="isModalOpen" (click)="isModalOpen = false">
+    <img [src]="product?.images?.[activeIndex]?.path" class="modal-image" alt="Увеличенное изображение" />
+</div>
