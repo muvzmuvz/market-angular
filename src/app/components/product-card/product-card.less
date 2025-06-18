@@ -71,6 +71,23 @@
 	min-width: 100%;
 }
 
+.colors span,
+.sizes span {
+	cursor: pointer;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	margin-right: 5px;
+	user-select: none;
+}
+
+.colors span.active,
+.sizes span.active {
+	border-color: #007bff;
+	background-color: #cce5ff;
+	font-weight: bold;
+}
+
+
 .card--ps {
 	font-size: 1rem;
 
@@ -106,7 +123,7 @@
 .discounted-price {
 	font-size: 1.1rem;
 	font-weight: bold;
-	color: #d41010; // ярко-красная цена, как Wildberries
+	color: #e53935; // ярко-красная цена, как Wildberries
 }
 
 .original-price {
@@ -128,7 +145,7 @@
 }
 
 .t-badge {
-	background-color: #d41010;
+	background-color: #e53935;
 }
 
 .card-img-wrapper {
