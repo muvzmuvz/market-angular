@@ -5,6 +5,7 @@ import { DeliveryPage } from './pages/delivery-page/delivery-page';
 import { CartPage } from './pages/cart-page/cart-page';
 import { Install } from './pages/install/install';
 import { ProductDetailComponent } from './pages/product-detail/product-detail';
+import { StorePage } from './pages/store-page/store-page';
 
 export const routes: Routes = [
     {
@@ -22,7 +23,10 @@ export const routes: Routes = [
     {
         path: 'install', component: Install
     },
-       {
+    {
         path: 'product/:id', component: ProductDetailComponent
+    },
+    {
+        path: 'store', component: StorePage
     },
 ];
