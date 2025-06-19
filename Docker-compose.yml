@@ -1,0 +1,39 @@
+services:
+  auth-service:
+    image: ${DOCKER_REGISTRY-}auth-service
+    build:
+      context: ./backend/src/Authhorize-api/marketplace_api
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5042
+    ports:
+    - "5042:5042"
+    volumes:
+      - ./Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+    container_name: auth-service
+    networks:
+      - market
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password13246!
+      POSTGRES_DB: marketplace
+    ports:
+      - "5432:5432"  
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    container_name: postgres-db
+    networks:
+      - market
+
+networks:
+  market:
+    driver: bridge  
+
+volumes:
+  db_data:
