@@ -1,21 +1,23 @@
+<main class="install-page" *ngIf="!error">
+  <h1 class="install-title">Установка маркетплейса</h1>
 
-<main class="install-page">
-<h1 class="install-title">Установка маркетплейса</h1>
+  <form (ngSubmit)="install()" class="install-form">
+    <label class="install-label">Название сайта</label>
+    <input class="install-input" [(ngModel)]="form.siteName" name="siteName" required />
 
-<form (ngSubmit)="install() " class="install-form">
-  <label class="install-label">Название сайта</label>
-  <input class="install-input" [(ngModel)]="form.siteName" name="siteName" required />
+    <label class="install-label">Имя администратора</label>
+    <input class="install-input" [(ngModel)]="form.name" name="name" required />
 
-  <label class="install-label">Email администратора</label>
-  <input class="install-input" [(ngModel)]="form.adminEmail" name="adminEmail" required />
+    <label class="install-label">Email администратора</label>
+    <input class="install-input" [(ngModel)]="form.email" name="email" required />
 
-  <label class="install-label">Пароль администратора</label>
-  <input class="install-input" type="password" [(ngModel)]="form.adminPassword" name="adminPassword" required />
+    <label class="install-label">Пароль администратора</label>
+    <input class="install-input" type="password" [(ngModel)]="form.password" name="password" required />
 
-  <button
-        tuiButton
-        appearance="primary"
-        type="submit">Установить</button>
-</form>
-
+    <button tuiButton appearance="primary" type="submit">Установить</button>
+  </form>
 </main>
+
+<div *ngIf="error" class="error-message">
+  {{ error }}
+</div>

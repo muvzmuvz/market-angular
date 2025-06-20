@@ -6,10 +6,12 @@ import { CartPage } from './pages/cart-page/cart-page';
 import { Install } from './pages/install/install';
 import { ProductDetailComponent } from './pages/product-detail/product-detail';
 import { StorePage } from './pages/store-page/store-page';
-
+import { initGuard } from './guards/init/init-guard';
+import { startupRedirectGuard } from './guards/startup-redirect-guard';
+//canActivate: [startupRedirectGuard],
 export const routes: Routes = [
     {
-        path: '', component: HomePage
+        path: '',  component: HomePage
     },
     {
         path: 'profile', component: ProfilePage
@@ -21,7 +23,7 @@ export const routes: Routes = [
         path: 'cart', component: CartPage
     },
     {
-        path: 'install', component: Install
+        path: 'install', loadComponent: () => import('./pages/install/install').then(m => m.Install), canActivate: [initGuard]
     },
     {
         path: 'product/:id', component: ProductDetailComponent
