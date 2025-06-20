@@ -14,8 +14,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddCors(options => options
     .AddPolicy("CorsPolicy", builder =>
     {
-      builder.WithOrigins("http://127.0.0.1:4200")
-          .AllowAnyMethod()
+      builder.WithOrigins("http://127.0.0.1:4200", "http://localhost:4200")
+          .AllowAnyMethod() 
           .AllowAnyHeader()
           .AllowCredentials();
     }));
@@ -29,6 +29,8 @@ builder.AddData(builder.Configuration)
 var app = builder.Build();
 
 
+app.UseCors("CorsPolicy"); 
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -36,8 +38,6 @@ app.UseRouting();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.UseAuthorization();
 
 
 app.UseIdentityServer();
