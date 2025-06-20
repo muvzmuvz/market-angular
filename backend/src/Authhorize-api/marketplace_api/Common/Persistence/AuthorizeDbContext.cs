@@ -12,6 +12,7 @@ public class AuthorizeDbContext : IdentityDbContext<UserIdentity, IdentityRole<G
 {
   public DbSet<DomainUser> DomainUser { get; set; }
   public DbSet<SiteConfiguration> SiteConfigurations { get; set; }
+  public DbSet<Shop> Shops { get; set; }
 
   public AuthorizeDbContext(DbContextOptions<AuthorizeDbContext> options)
        : base(options)

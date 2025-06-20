@@ -1,13 +1,14 @@
-namespace marketplace_api.Models;
+using marketplace_api.Models;
 
-public class Shop : BaseEntity
+namespace marketplace_api.ModelsDto;
+
+public class ShopDto
 {
   public string Name { get; set; }
-  public bool IsActive { get; set; } = false;  
   public string Description { get; set; }
   public Guid OwnerId { get; set; }
   public DomainUser Owner { get; set; }
   public decimal Profit { get; set; }
-  public Guid UserId  { get; set; }
+  public Guid UserId { get; set; }
   public ICollection<ShopSeller> Sellers { get; set; }
 }
