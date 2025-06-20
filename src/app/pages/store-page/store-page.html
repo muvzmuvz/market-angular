@@ -61,7 +61,10 @@
     <tui-avatar src="AI" />
 </header>
 <div [style.display]="'flex'">
-    <aside [style.height.rem]="27" [tuiNavigationAside]="expanded()">
+    <aside [tuiNavigationAside]="expanded()" [ngStyle]="{
+    'max-height': expanded() ? '100vh' : '27rem',
+    'overflow-y': 'auto'
+  }">
         <header>
             <button iconStart="@tui.home" tuiAsideItem type="button">
                 <span tuiFade>A very very long product name</span>

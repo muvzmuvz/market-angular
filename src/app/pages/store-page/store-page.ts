@@ -1,5 +1,5 @@
-import { KeyValuePipe, NgForOf, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { KeyValuePipe, NgForOf, NgIf , CommonModule} from '@angular/common';
+import { ChangeDetectionStrategy, Component, signal, } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { tuiAsPortal, TuiPortals, TuiRepeatTimes } from '@taiga-ui/cdk';
@@ -61,12 +61,14 @@ const ICON =
     TuiTabs,
     TuiTextfield,
     TuiTitle,
+    CommonModule
   ],
   templateUrl: './store-page.html',
   styleUrl: './store-page.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Ignore portal related code, it is only here to position drawer inside the example block
   providers: [TuiDropdownService, tuiAsPortal(TuiDropdownService)],
+  standalone: true
 })
 export class StorePage {
   protected expanded = signal(false);
