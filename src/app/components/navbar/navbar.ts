@@ -13,6 +13,7 @@ import {
   SiteConfig
 } from 'src/app/service/SiteConfigService/site-config-service';
 
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -37,6 +38,7 @@ export class Navbar implements OnInit {
     this.siteConfigService.getConfig().subscribe({
       next: (config: SiteConfig) => {
         this.siteName = config.siteName;
+        
       },
       error: () => {
         this.siteName = ''; // дефолтное значение на случай ошибки

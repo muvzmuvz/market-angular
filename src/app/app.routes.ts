@@ -7,11 +7,11 @@ import { Install } from './pages/install/install';
 import { ProductDetailComponent } from './pages/product-detail/product-detail';
 import { StorePage } from './pages/store-page/store-page';
 import { initGuard } from './guards/init/init-guard';
-import { startupRedirectGuard } from './guards/startup-redirect-guard';
+import { StartupRedirectGuard } from './guards/startup-redirect-guard';
 //canActivate: [startupRedirectGuard],
 export const routes: Routes = [
     {
-        path: '',  component: HomePage
+        path: '',  component: HomePage , canActivate: [StartupRedirectGuard]
     },
     {
         path: 'profile', component: ProfilePage

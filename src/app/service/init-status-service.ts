@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, catchError, of } from 'rxjs';
+import { Observable, map, catchError, of, shareReplay } from 'rxjs';
+
+interface InitConfig {
+  initializedAt?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class InitStatusService {
-  constructor(private http: HttpClient) { }
+  private apiUrl = 'http://localhost:5042/initials/config';
 
-  isInitialized() {
-    return this.http.get<{ initializedAt?: string }>('http://localhost:5042/initials/config').pipe(
-      map(response => !!response.initializedAt), // если есть дата — сайт установлен
-      catchError(() => of(false)) // если ошибка — считаем, что не установлен
+  constructor(private http: HttpClient) {}
+
+  isInitialized(): Observable<boolean> {
+    return this.http.get<{ initializedAt?: string }>(this.apiUrl).pipe(
+      map(response => !!response.initializedAt),
+      catchError(() => of(false)) // При ошибке считаем, что не инициализировано
     );
   }
 }
