@@ -14,21 +14,21 @@ export const routes: Routes = [
         path: '',  component: HomePage , canActivate: [StartupRedirectGuard]
     },
     {
-        path: 'profile', component: ProfilePage
+        path: 'profile', component: ProfilePage, canActivate: [StartupRedirectGuard]
     },
     {
-        path: 'delivery', component: DeliveryPage
+        path: 'delivery', component: DeliveryPage, canActivate: [StartupRedirectGuard]
     },
     {
-        path: 'cart', component: CartPage
+        path: 'cart', component: CartPage, canActivate: [StartupRedirectGuard]
     },
     {
         path: 'install', loadComponent: () => import('./pages/install/install').then(m => m.Install), canActivate: [initGuard]
     },
     {
-        path: 'product/:id', component: ProductDetailComponent
+        path: 'product/:id', component: ProductDetailComponent, canActivate: [StartupRedirectGuard]
     },
     {
-        path: 'store', component: StorePage
+        path: 'store', component: StorePage, canActivate: [StartupRedirectGuard]
     },
 ];
