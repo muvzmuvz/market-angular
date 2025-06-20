@@ -1,8 +1,12 @@
-import { KeyValuePipe, NgForOf, NgIf , CommonModule} from '@angular/common';
+import { KeyValuePipe, NgForOf, NgIf, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal, } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { tuiAsPortal, TuiPortals, TuiRepeatTimes } from '@taiga-ui/cdk';
+import {
+  SiteConfigService,
+  SiteConfig
+} from 'src/app/service/SiteConfigService/site-config-service';
 import {
   TuiAppearance,
   TuiButton,
@@ -92,5 +96,19 @@ export class StorePage {
 
   protected handleToggle(): void {
     this.expanded.update((e) => !e);
+  }
+  constructor(private siteConfigService: SiteConfigService) { }
+  siteName: string = '';
+
+  ngOnInit(): void {
+    this.siteConfigService.getConfig().subscribe({
+      next: (config: SiteConfig) => {
+        this.siteName = config.siteName;
+
+      },
+      error: () => {
+        this.siteName = ''; // дефолтное значение на случай ошибки
+      }
+    });
   }
 }

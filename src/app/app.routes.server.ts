@@ -3,7 +3,7 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   {
     path: '',           // Главная страница
-    renderMode: RenderMode.Server
+    renderMode: RenderMode.Prerender
   },
   {
     path: 'profile',    // Пользовательский профиль — SSR, так как данные специфичны для пользователя
@@ -15,7 +15,7 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'cart',       // Корзина — если хранится на клиенте, можно оставить Prerender или CSR, но обычно лучше CSR
-    renderMode: RenderMode.Client
+    renderMode: RenderMode.Prerender
   },
   {
     path: 'install',    // Страница установки — Prerender
@@ -23,7 +23,7 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'product/:id', // Динамический продукт — Prerender, если продукты не меняются часто, иначе Server
-    renderMode: RenderMode.Client,
+    renderMode: RenderMode.Server
     // можно добавить getPrerenderParams для генерации страниц с разными id
   },
   {
