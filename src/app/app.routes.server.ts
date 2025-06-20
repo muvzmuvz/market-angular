@@ -23,7 +23,7 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: 'product/:id', // Динамический продукт — Prerender, если продукты не меняются часто, иначе Server
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
     // можно добавить getPrerenderParams для генерации страниц с разными id
   },
   {
