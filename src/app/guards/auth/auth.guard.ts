@@ -1,17 +1,23 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { map } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-export const authGuard: CanActivateFn = () => {
-  const oidc = inject(OidcSecurityService);
-  const router = inject(Router);
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthGuard implements CanActivate {
+  constructor(private oidcSecurityService: OidcSecurityService, private router: Router) {}
 
-  return oidc.isAuthenticated$.pipe(
-    map(({ isAuthenticated }) => {
-      if (isAuthenticated) return true;
-      router.navigate(['/login']);
-      return false;
-    })
-  );
-};
+  canActivate() {
+    return this.oidcSecurityService.isAuthenticated$.pipe(
+      map((isAuthenticated) => {
+        if (!isAuthenticated) {
+          this.oidcSecurityService.authorize();
+          return false;
+        }
+        return true;
+      })
+    );
+  }
+}

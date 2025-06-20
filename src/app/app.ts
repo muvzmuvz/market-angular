@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-
+import { provideRouter } from '@angular/router';
 
 
 @Component({
@@ -11,6 +11,7 @@ import { Router, RouterOutlet } from '@angular/router';
   ],
   templateUrl: './app.html',
   styleUrl: './app.less',
+  
 })
 export class App {
 }
