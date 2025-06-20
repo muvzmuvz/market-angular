@@ -107,14 +107,14 @@ public static class ServiceCollectionExtensions
       .AddEntityFrameworkStores<AuthorizeDbContext>()
       .AddDefaultTokenProviders();
 
-
-
     return builder;
   }
 
   public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
   {
     builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IShopRepository, ShopRepository>();
+    builder.Services.AddScoped<IShopService, ShopService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IAccountService, AccountService>();
@@ -127,8 +127,24 @@ public static class ServiceCollectionExtensions
 
   public static WebApplicationBuilder AddMapping(this WebApplicationBuilder builder)
   {
-    builder.Services.AddAutoMapper(typeof(UserProfile));
+    builder.Services.AddAutoMapper(
+        typeof(UserProfile)
+      , typeof(ShopProfile));
 
     return builder; 
+  }
+
+  public static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
+  {
+    builder.Services.AddCors(options => options
+    .AddPolicy("CorsPolicy", builder =>
+    {
+      builder.WithOrigins("http://127.0.0.1:4200", "http://localhost:4200")
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+          .AllowCredentials();
+    }));
+
+    return builder;
   }
 }
