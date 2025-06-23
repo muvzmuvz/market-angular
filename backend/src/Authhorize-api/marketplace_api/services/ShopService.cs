@@ -10,29 +10,32 @@ public class ShopService : IShopService
 {
   private readonly IShopRepository _shopRepository;
   private readonly IMapper _mapper;
-  private readonly IUserRepository _userRepository;
   private readonly IUnitOfWork _unitOfWork;
+  private readonly IShopSellerRepository _shopSellerRepository;
+  private readonly IUserRepository _userRepository;
 
   public ShopService(IShopRepository shopRepository
-    , IMapper mapper
-    , IUserRepository userRepository,
-      IUnitOfWork unitOfWork)
+    , IMapper mapper,
+      IUnitOfWork unitOfWork,
+      IShopSellerRepository shopSellerRepository
+    , IUserRepository userRepository)
   {
     _shopRepository = shopRepository;
     _mapper = mapper;
-    _userRepository = userRepository;
     _unitOfWork = unitOfWork;
+    _shopSellerRepository = shopSellerRepository;
+    _userRepository = userRepository;
   }
 
-  public async Task<ShopDto> ActivateTheShop(Guid shopId, Guid userId)
+  public async Task<ShopDto> ActivateTheShop(Guid shopId)
   {
-    var shop = await _shopRepository.ActivateTheShop(shopId);
+    var shop = await _shopRepository.GetShop(shopId);
 
-    await _userRepository.UpdateRole(Role.Seller, userId);
-
-    var shopDto = _mapper.Map<ShopDto>(shop);
+    shop.Activate();
 
     await _unitOfWork.commitChange();
+
+    var shopDto = _mapper.Map<ShopDto>(shop);
 
     return shopDto;
   }
@@ -42,8 +45,7 @@ public class ShopService : IShopService
     if(shopDtoRequest == null)
       throw new ArgumentNullException(nameof(shopDtoRequest));
 
-    var user = await _userRepository
-      .GetUser(shopDtoRequest.UserId);
+    var user = await _userRepository.GetUser(shopDtoRequest.UserId);
 
     var shop = new Shop()
     {
@@ -53,32 +55,60 @@ public class ShopService : IShopService
       OwnerId = user.Id,
       UserId = user.IdentityId,
     };
+
+    var shopSeller = new ShopSeller()
+    {
+      Seller = user,
+      SellerId = user.Id,
+      Shop = shop,
+      ShopId = shop.Id,
+    };
+    shop.Sellers.Add(shopSeller);
+
+    await _shopSellerRepository.CreateShopSeller(shopSeller);
+
     await _shopRepository.CreateShop(shop);
 
     await _unitOfWork.commitChange();
 
-    var shopDto = _mapper.Map<ShopDto>(_shopRepository);
+    var shopDto = _mapper.Map<ShopDto>(shop);
 
     return shopDto;
   }
 
-  public Task<List<ShopDto>> GetActiveShops()
+  public async Task<List<ShopDto>> GetActiveShops()
   {
-    throw new NotImplementedException();
+    var shops = await _shopRepository.GetActiveShops();
+
+    var shopsDto = _mapper.Map<List<ShopDto>>(shops);
+
+    return shopsDto;
   }
 
-  public Task<List<ShopDto>> GetInActiveShops()
+  public async Task<List<ShopDto>> GetInActiveShops()
   {
-    throw new NotImplementedException();
+    var shops = await _shopRepository.GetInActiveShops();
+
+    var shopsDto = _mapper.Map<List<ShopDto>>(shops);
+
+    return shopsDto;
   }
 
-  public Task<ShopDto> GetMyShop(Guid sellerId)
+  public async Task<ShopDto> GetMyShop(Guid sellerId)
   {
-    throw new NotImplementedException();
+    var shop = await _shopRepository.GetMyShop(sellerId);
+
+    var shopDto = _mapper.Map<ShopDto>(shop);
+
+    return shopDto;
   }
 
-  public Task<ShopDto> GetShop(Guid shopId)
+  public async Task<ShopDto> GetShop(Guid shopId)
   {
-    throw new NotImplementedException();
+    var shop = await _shopRepository.GetShop(shopId);
+
+    var shopDto = _mapper.Map<ShopDto>(shop);
+
+    return shopDto;
   }
 }

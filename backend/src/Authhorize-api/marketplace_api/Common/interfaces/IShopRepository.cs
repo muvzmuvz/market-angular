@@ -10,5 +10,4 @@ public interface IShopRepository
   public Task<List<Shop>> GetInActiveShops();
   public Task<Shop> GetMyShop(Guid sellerId);
   public Task<Shop> CreateShop(Shop shop);
-  public Task<Shop> ActivateTheShop(Guid shopId);
 }

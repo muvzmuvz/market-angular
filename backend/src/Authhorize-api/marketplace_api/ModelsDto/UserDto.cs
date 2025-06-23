@@ -9,5 +9,5 @@ public class UserDto
   public string Email { get; set; }
   public string ImagePath { get; set; }
   public decimal ExpenseSummary { get; set; }
-  public Role Role { get; set; }
+  public IList<string> Roles { get; set; }
 }

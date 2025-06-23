@@ -9,5 +9,4 @@ public interface IAccountService
   public Task<List<UserDto>> GetUsers();
   public Task<string> UpdateImage(string newImageBase64, string accountId);
   public Task<string> UpdateName(string newName, string accountId);
-  public Task<Role> UpdateRole(Role role, string accountId);
 }

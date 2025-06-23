@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Reflection;
 
 namespace marketplace_api.Extensions;
 
@@ -51,6 +52,8 @@ public static class ServiceCollectionExtensions
       options.UserInteraction.LoginUrl = "/Authorize/Login";
 
       options.UserInteraction.LogoutUrl = "/Authorize/Logout";
+
+      options.Authentication.CookieAuthenticationScheme = IdentityConstants.ApplicationScheme;
     })
        .AddDeveloperSigningCredential()
        .AddInMemoryIdentityResources(Config.IdentityResources)
@@ -115,12 +118,16 @@ public static class ServiceCollectionExtensions
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IShopRepository, ShopRepository>();
     builder.Services.AddScoped<IShopService, ShopService>();
+    builder.Services.AddScoped<IShopSellerRepository, ShopSellerRepository>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddScoped<ISiteInitializerService, SiteInitializerService>();
     builder.Services.AddScoped<IUnitOfWork>(
       serviceProvider => serviceProvider.GetRequiredService<AuthorizeDbContext>());
+
+    builder.Services.AddMediatR(cfg =>
+      cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
     return builder;
   }
@@ -129,7 +136,8 @@ public static class ServiceCollectionExtensions
   {
     builder.Services.AddAutoMapper(
         typeof(UserProfile)
-      , typeof(ShopProfile));
+      , typeof(ShopProfile)
+      , typeof(ShopSellerProfile));
 
     return builder; 
   }

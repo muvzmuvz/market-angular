@@ -1,5 +1,6 @@
 using marketplace_api.Common.Persistence;
 using marketplace_api.Extensions;
+using marketplace_api.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,6 +38,9 @@ app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseMiddleware<DomainEventsMiddleware>();
+app.UseMiddleware<ExceptionMiddlaware>();
 
 app.MapControllers();
 

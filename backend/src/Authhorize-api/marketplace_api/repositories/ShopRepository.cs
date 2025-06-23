@@ -15,15 +15,6 @@ public class ShopRepository : IShopRepository
     _context = context;
   }
 
-  public async Task<Shop> ActivateTheShop(Guid shopId)
-  {
-    var shop = await _context.Shops.FindAsync(shopId)
-        ?? throw new ShopNotFoundException($" не был найдет магазин с таким Id: {nameof(shopId)}");
-    shop.IsActive = true;
-
-    return shop;
-  }
-
   public async Task<Shop> CreateShop(Shop shop)
   {
     await _context.AddAsync(shop);
@@ -34,6 +25,7 @@ public class ShopRepository : IShopRepository
   public async Task<List<Shop>> GetActiveShops()
   {
     var shops = await _context.Shops
+      .Include(shop => shop.Sellers)
       .Where(shp => shp.IsActive == true)
       .ToListAsync();
 
@@ -43,6 +35,7 @@ public class ShopRepository : IShopRepository
   public async Task<List<Shop>> GetInActiveShops()
   {
     var shops = await _context.Shops
+      .Include(shop => shop.Sellers)
       .Where(shp => shp.IsActive == false)
       .ToListAsync();
 
@@ -51,7 +44,9 @@ public class ShopRepository : IShopRepository
 
   public async Task<Shop> GetMyShop(Guid sellerId)
   {
-    var shop = await _context.Shops.FirstOrDefaultAsync(shp => shp.OwnerId == sellerId)
+    var shop = await _context.Shops
+      .Include(shop => shop.Sellers)
+      .FirstOrDefaultAsync(shp => shp.OwnerId == sellerId)
         ?? throw new ShopNotFoundException($" не был найдет магазин Для пользователя с таким id: {nameof(sellerId)}");
 
     return shop;
@@ -59,7 +54,9 @@ public class ShopRepository : IShopRepository
 
   public async Task<Shop> GetShop(Guid shopId)
   {
-    var shop = await _context.Shops.FindAsync(shopId)
+    var shop = await _context.Shops
+      .Include(shop => shop.Sellers)
+      .FirstOrDefaultAsync(shop => shop.Id == shopId)
         ?? throw new ShopNotFoundException($" не был найдет магазин с таким Id: {nameof(shopId)}");
     return shop;
   }
