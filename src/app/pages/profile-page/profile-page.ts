@@ -11,8 +11,6 @@ import { TuiFallbackSrcPipe, TuiTitle } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { OrderCard } from 'src/app/components/order-card/order-card';
 import { FormsModule } from '@angular/forms';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { AuthGuard } from 'src/app/guards/auth/auth.guard';
 
 @Component({
   selector: 'app-profile-page',
@@ -29,24 +27,17 @@ import { AuthGuard } from 'src/app/guards/auth/auth.guard';
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AuthGuard],
 })
 export class ProfilePage implements OnInit {
   username = 'rick';
   protected avatar = '';
 
-
-
   isEditModalOpen = false;
-
   editUsername = this.username;
   editAvatar = this.avatar;
 
   hover = false;
   selectedFileName: string | null = null;
-
-  isAuthenticated = false;
-  accessToken = '';
 
   orders = [
     {
@@ -88,19 +79,8 @@ export class ProfilePage implements OnInit {
 
   protected recentOrders = this.orders.slice(-2).reverse();
 
-  constructor(private oidcSecurityService: OidcSecurityService) { }
-
   ngOnInit(): void {
-    if (typeof window !== 'undefined') {  // ✅ проверка — только в браузере
-      this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
-        this.isAuthenticated = isAuthenticated;
-        this.accessToken = accessToken;
-
-        if (!isAuthenticated) {
-          this.oidcSecurityService.authorize(); // редирект на вход
-        }
-      });
-    }
+    // 🔁 Никакой авторизации больше нет
   }
 
   openEditModal() {
@@ -117,31 +97,6 @@ export class ProfilePage implements OnInit {
 
   cancelEdit() {
     this.isEditModalOpen = false;
-  }
-
-  async testAuth() {
-    if (!this.isAuthenticated || !this.accessToken) {
-      alert('Вы не авторизованы');
-      return;
-    }
-
-    try {
-      const response = await fetch('http://localhost:5042/accounts/me', {
-        headers: {
-          Authorization: 'Bearer ' + this.accessToken,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Ошибка при получении данных: ' + response.statusText);
-      }
-
-      const data = await response.json();
-      console.log('Данные пользователя:', data);
-      alert('Успешно! Смотри консоль.');
-    } catch (error: any) {
-      alert('Ошибка: ' + error.message);
-    }
   }
 
   onFileSelected(event: Event): void {

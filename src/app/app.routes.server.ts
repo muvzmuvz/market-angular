@@ -34,5 +34,10 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: '**',         // Все остальные пути — серверный рендеринг (SSR)
     renderMode: RenderMode.Server
+  },
+    {
+    path: '',         // Все остальные пути — серверный рендеринг (SSR)
+    renderMode: RenderMode.Server
   }
 ];
+
