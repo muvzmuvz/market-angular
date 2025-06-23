@@ -36,7 +36,7 @@ export class ProfilePage implements OnInit {
   protected avatar = '';
 
 
-  
+
   isEditModalOpen = false;
 
   editUsername = this.username;
@@ -91,14 +91,16 @@ export class ProfilePage implements OnInit {
   constructor(private oidcSecurityService: OidcSecurityService) { }
 
   ngOnInit(): void {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
-      this.isAuthenticated = isAuthenticated;
-      this.accessToken = accessToken;
+    if (typeof window !== 'undefined') {  // ✅ проверка — только в браузере
+      this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
+        this.isAuthenticated = isAuthenticated;
+        this.accessToken = accessToken;
 
-      if (!isAuthenticated) {
-        this.oidcSecurityService.authorize(); // Редирект на вход
-      }
-    });
+        if (!isAuthenticated) {
+          this.oidcSecurityService.authorize(); // редирект на вход
+        }
+      });
+    }
   }
 
   openEditModal() {
