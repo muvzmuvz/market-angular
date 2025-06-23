@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { provideRouter } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,17 +10,23 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
     RouterOutlet,
   ],
   templateUrl: './app.html',
-  styleUrl: './app.less',
-
+  styleUrls: ['./app.less'], // исправил на styleUrls
 })
 export class App {
   constructor(
     private oidcSecurityService: OidcSecurityService,
-    private router: Router
-  ) { }
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object  // внедряем платформу
+  ) {}
 
   ngOnInit(): void {
-    // Проверяем, есть ли параметры авторизации в URL
+    // Проверяем, что код запускается в браузере
+    if (!isPlatformBrowser(this.platformId)) {
+      // Если не браузер — ничего не делаем
+      return;
+    }
+
+    // Безопасно используем window
     const url = new URL(window.location.href);
     const hasAuthParams = url.searchParams.has('code') && url.searchParams.has('state');
 
