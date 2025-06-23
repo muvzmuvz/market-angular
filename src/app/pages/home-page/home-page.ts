@@ -40,7 +40,8 @@ export class HomePage {
   itemsPerPage = 24;
 
   constructor(private router: Router) { }
-
+  isAuthenticated = false;
+  accessToken = '';
   ngOnInit(): void {
     this.fetchProducts();
   }
@@ -298,9 +299,32 @@ export class HomePage {
     return Math.ceil(this.products.length / this.itemsPerPage);
   }
 
-changePage(index: number) {
-  this.currentPage = index + 1;
-  this.updateDisplayedProducts();
-}
+  changePage(index: number) {
+    this.currentPage = index + 1;
+    this.updateDisplayedProducts();
+  }
+  async testAuth() {
+    if (!this.isAuthenticated || !this.accessToken) {
+      alert('Вы не авторизованы');
+      return;
+    }
 
+    try {
+      const response = await fetch('http://localhost:5042/accounts/me', {
+        headers: {
+          Authorization: 'Bearer ' + this.accessToken,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка при получении данных: ' + response.statusText);
+      }
+
+      const data = await response.json();
+      console.log('Данные пользователя:', data);
+      alert('Успешно! Смотри консоль.');
+    } catch (error: any) {
+      alert('Ошибка: ' + error.message);
+    }
+  }
 }
