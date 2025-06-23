@@ -36,7 +36,7 @@ public static class Config
                 ClientId = "web",
                 ClientSecrets = { new Secret("wildbobr".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
-                RedirectUris = { "http://localhost:4200/" },
+                RedirectUris = { "http://localhost:4200" },
                 PostLogoutRedirectUris = { "http://localhost:4200" },
                 AllowedCorsOrigins = { "http://localhost:4200"},
                 AllowOfflineAccess = true,

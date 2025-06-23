@@ -66,6 +66,9 @@ public static class ServiceCollectionExtensions
     {
       config.LoginPath = "/Authorize/Login";
       config.LogoutPath = "/Authorize/Logout";
+      config.Cookie.HttpOnly = true;
+      config.Cookie.SameSite = SameSiteMode.Lax; 
+      config.Cookie.SecurePolicy = CookieSecurePolicy.None;
     });
 
     builder.Services
