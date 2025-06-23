@@ -8,28 +8,50 @@ import { ProductDetailComponent } from './pages/product-detail/product-detail';
 import { StorePage } from './pages/store-page/store-page';
 import { initGuard } from './guards/init/init-guard';
 import { StartupRedirectGuard } from './guards/startup-redirect-guard';
-import { AuthGuard } from './guards/auth/auth.guard';
-//canActivate: [startupRedirectGuard],
+import { AuthGuard } from './guards/auth/auth.guard'; // больше не нужен
+// import { Callback } from './callback/callback'; // не используется напрямую
+
 export const routes: Routes = [
-    {
-        path: '',  component: HomePage , canActivate: [StartupRedirectGuard]
-    },
-    {
-        path: 'profile', loadComponent: () => import('./pages/profile-page/profile-page').then(m => m.ProfilePage), canActivate: [StartupRedirectGuard,]
-    },
-    {
-        path: 'delivery', component: DeliveryPage, canActivate: [StartupRedirectGuard]
-    },
-    {
-        path: 'cart', component: CartPage, canActivate: [StartupRedirectGuard]
-    },
-    {
-        path: 'install', loadComponent: () => import('./pages/install/install').then(m => m.Install), canActivate: [initGuard]
-    },
-    {
-        path: 'product/:id', component: ProductDetailComponent, canActivate: [StartupRedirectGuard]
-    },
-    {
-        path: 'store', component: StorePage, canActivate: [StartupRedirectGuard]
-    },
+  {
+    path: '',
+    component: HomePage,
+    canActivate: [StartupRedirectGuard],
+  },
+{
+  path: 'profile',
+  loadComponent: () =>
+    import('./pages/profile-page/profile-page').then((m) => m.ProfilePage),
+  canActivate: [StartupRedirectGuard, AuthGuard], // 👈 оставляем!
+},
+  {
+    path: 'delivery',
+    component: DeliveryPage,
+    canActivate: [StartupRedirectGuard, AuthGuard],
+  },
+  {
+    path: 'cart',
+    component: CartPage,
+    canActivate: [StartupRedirectGuard],
+  },
+  {
+    path: 'install',
+    loadComponent: () =>
+      import('./pages/install/install').then((m) => m.Install),
+    canActivate: [initGuard],
+  },
+  {
+    path: 'product/:id',
+    component: ProductDetailComponent,
+    canActivate: [StartupRedirectGuard],
+  },
+  {
+    path: 'store',
+    component: StorePage,
+    canActivate: [StartupRedirectGuard, AuthGuard],
+  },
+  {
+    path: 'callback',
+    loadComponent: () =>
+      import('./callback/callback').then((m) => m.Callback),
+  },
 ];

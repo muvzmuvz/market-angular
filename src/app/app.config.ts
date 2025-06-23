@@ -10,9 +10,9 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 // Без редиректа! Просто возвращаем адрес приложения
 const getRedirectUrl = () => {
   if (typeof window !== 'undefined') {
-    return window.location.origin; // http://localhost:4200
+    return window.location.origin ; // http://localhost:4200
   }
-  return 'http://localhost:4200'; // fallback
+  return 'http://localhost:4200/callback' // fallback
   
 };
 // Removed direct call to this.oidcSecurityService.authorize() as 'this' is undefined in this context.
@@ -36,7 +36,7 @@ export const appConfig: ApplicationConfig = {
         scope: 'openid profile roles api',
         responseType: 'code',
         silentRenew: true,
-        useRefreshToken: true,
+        useRefreshToken: true
       },
     }),
   ],
