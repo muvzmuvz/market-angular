@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Silent Renew</title>
+</head>
+<body>
+  <script>
+    // Этот скрипт инициирует silent renew для OIDC клиента
+    if (window.parent && window.parent.postMessage) {
+      window.addEventListener('load', () => {
+        // Сообщаем родительскому окну, что iframe загрузился
+        window.parent.postMessage('oidc-silent-renew-message', window.location.origin);
+      });
+    }
+  </script>
+</body>
+</html>

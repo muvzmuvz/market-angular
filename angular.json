@@ -37,7 +37,9 @@
                 "glob": "**/*",
                 "input": "node_modules/@taiga-ui/icons/src",
                 "output": "assets/taiga-ui/icons"
-              }
+              },
+              "src/silent-renew.html"
+
             ],
             "styles": [
               "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
@@ -108,6 +110,7 @@
             "styles": [
               "src/styles.less"
             ]
+            
           }
         }
       }

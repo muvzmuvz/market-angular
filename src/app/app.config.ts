@@ -15,6 +15,13 @@ const getRedirectUrl = () => {
   return 'http://localhost:4200/callback' // fallback
   
 };
+function getSilentRenewUrl(): string {
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}/silent-renew.html`;
+  }
+  return 'http://localhost:4200/silent-renew.html';
+}'http://localhost:4200/silent-renew.html';
+
 // Removed direct call to this.oidcSecurityService.authorize() as 'this' is undefined in this context.
 // If you need to trigger authorization, do it inside a component or service where oidcSecurityService is injected.
 
@@ -34,6 +41,7 @@ export const appConfig: ApplicationConfig = {
         postLogoutRedirectUri: 'http://localhost:4200',
         clientId: 'web',
         scope: 'openid profile roles api',
+        silentRenewUrl: getSilentRenewUrl(),
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true
