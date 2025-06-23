@@ -10,7 +10,7 @@ const authConfigServer: ApplicationConfig = {
   providers: [
     provideAuth({
       config: {
-        authority: 'https://localhost:5042', // ← замени на своего провайдера
+        authority: 'http://localhost:5042', // ← замени на своего провайдера
         redirectUrl: 'http://localhost:4200',             // ← адрес клиента (SSR)
         postLogoutRedirectUri: 'http://localhost:4200',
         clientId: 'web',                       // ← client_id из настроек провайдера

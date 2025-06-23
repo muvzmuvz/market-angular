@@ -5,8 +5,8 @@ export const authConfig: ApplicationConfig = {
   providers: [
     provideAuth({
       config: {
-        authority: 'https://localhost:5042',
-        redirectUrl: window.location.origin,
+        authority: 'http://localhost:5042',
+        redirectUrl: window.location.href = 'http://localhost:5042/Authorize/Login?returnUrl=' + encodeURIComponent(window.location.href),
         postLogoutRedirectUri: window.location.origin,
         clientId: 'web',
         scope: 'openid profile roles api offline_access',

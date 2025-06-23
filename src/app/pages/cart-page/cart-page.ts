@@ -14,8 +14,13 @@ import { Navbar } from 'src/app/components/navbar/navbar';
   styleUrls: ['./cart-page.less'],
   standalone: true,
 })
+
 export class CartPage {
   step = 1; // текущий шаг
+  date = new Date();
+
+ 
+
 
   cartItems = [
     {
@@ -33,7 +38,7 @@ export class CartPage {
         'https://modano.ru/wa-data/public/shop/products/08/15/1508/images/203949/203949.635x953@2x.jpg'
     }
   ];
-  delivery = { name: '', phone: '', address: '', postCode: '' };  
+  delivery = { name: '', phone: '', address: '', postCode: '' };
   paymentMethod: string = '';
   card = { number: '', expiry: '', cvv: '' };
 
@@ -46,6 +51,7 @@ export class CartPage {
       this.step = 3;
     }
   }
+
 
   submitPayment() {
     // Обработка оплаты
