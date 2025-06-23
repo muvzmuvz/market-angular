@@ -13,7 +13,10 @@ const getRedirectUrl = () => {
     return window.location.origin; // http://localhost:4200
   }
   return 'http://localhost:4200'; // fallback
+  
 };
+// Removed direct call to this.oidcSecurityService.authorize() as 'this' is undefined in this context.
+// If you need to trigger authorization, do it inside a component or service where oidcSecurityService is injected.
 
 export const appConfig: ApplicationConfig = {
   providers: [
