@@ -2,7 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -13,23 +13,30 @@ export class AuthGuard implements CanActivate {
     private oidcSecurityService: OidcSecurityService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {}
 
   canActivate(): Observable<boolean> {
-    // ✅ Проверка, в браузере ли мы
+    // Проверяем, что код выполняется в браузере (не на сервере SSR)
     if (!isPlatformBrowser(this.platformId)) {
-      // ⛔ SSR — возвращаем true, чтобы не ломать рендер
+      // Для SSR просто разрешаем активацию, чтобы рендер не ломался
       return of(true);
     }
 
-    // ✅ Только в браузере вызываем checkAuth()
+    // В браузере проверяем, аутентифицирован ли пользователь
     return this.oidcSecurityService.checkAuth().pipe(
-      map(({ isAuthenticated }) => {
+      tap(({ isAuthenticated }) => {
         if (!isAuthenticated) {
+          // Если не аутентифицирован — инициируем авторизацию
+          // Через роутер для корректного Angular-навигейшена
+          this.router.navigate(['/']);
           this.oidcSecurityService.authorize();
-          return false;
         }
-        return true;
+      }),
+      map(({ isAuthenticated }) => isAuthenticated),
+      catchError((error) => {
+        // В случае ошибки логируем и блокируем доступ
+        console.error('Ошибка в AuthGuard:', error);
+        return of(false);
       })
     );
   }
