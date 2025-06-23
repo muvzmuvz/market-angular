@@ -34,14 +34,13 @@ public static class Config
             new Client
             {
                 ClientId = "web",
-                ClientSecrets = { new Secret("wildbobr".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
                 RedirectUris = { "http://localhost:4200" },
                 PostLogoutRedirectUris = { "http://localhost:4200" },
                 AllowedCorsOrigins = { "http://localhost:4200"},
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "api", "roles", "offline_access" },
-                RequireClientSecret = true,
+                RequireClientSecret = false,
                 RequirePkce = true
             },
             
