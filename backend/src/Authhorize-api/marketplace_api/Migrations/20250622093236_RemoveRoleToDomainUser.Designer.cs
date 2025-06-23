@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using marketplace_api.Common.Persistence;
@@ -11,9 +12,11 @@ using marketplace_api.Common.Persistence;
 namespace marketplace_api.Migrations
 {
     [DbContext(typeof(AuthorizeDbContext))]
-    partial class AuthorizeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250622093236_RemoveRoleToDomainUser")]
+    partial class RemoveRoleToDomainUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,7 +227,7 @@ namespace marketplace_api.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.ToTable("ShopSellers");
+                    b.ToTable("ShopSeller");
                 });
 
             modelBuilder.Entity("marketplace_api.Models.SiteConfiguration", b =>

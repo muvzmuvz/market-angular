@@ -20,7 +20,6 @@ public class UserProfile : Profile
           .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
 
     CreateMap<RegisterDto, DomainUser>()
-        .ForMember(dest => dest.Role, opt => opt.MapFrom(_ => Role.User)) 
         .ForMember(dest => dest.ExpenseSummary, opt => opt.MapFrom(_ => 0m)) 
         .ForMember(dest => dest.imagePath, opt => opt.Ignore());
   }

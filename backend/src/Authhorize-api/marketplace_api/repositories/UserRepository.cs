@@ -53,13 +53,4 @@ public class UserRepository : IUserRepository
 
     return domainUser;
   }
-
-  public async Task<DomainUser> UpdateRole(Role newRole, Guid identityUserId)
-  {
-    var domainUser = await GetUser(identityUserId);
-
-    domainUser.Role = newRole;
-
-    return domainUser;
-  }
 }

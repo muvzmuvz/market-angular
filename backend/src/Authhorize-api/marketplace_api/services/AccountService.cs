@@ -34,6 +34,7 @@ public class AccountService : IAccountService
     var domainUser = await _userRepository.GetUser(new Guid(accountId));
 
     var identityUser = await _userManager.FindByIdAsync(accountId);
+    var roles = await _userManager.GetRolesAsync(identityUser);
 
     var userDto = new UserDto()
     {
@@ -42,7 +43,7 @@ public class AccountService : IAccountService
       Id = identityUser.Id,
       ImagePath = domainUser.imagePath,
       Name = identityUser.FirstName,
-      Role = domainUser.Role,
+      Roles = roles,
     };
 
     return userDto;
@@ -51,20 +52,25 @@ public class AccountService : IAccountService
   public async Task<List<UserDto>> GetUsers()
   {
     var domainUsers = await _userRepository.GetUsers();
-    var idenittyUsers = await _userManager.Users.ToListAsync();
+    var identityUsers = await _userManager.Users.ToListAsync();
 
-    var usersDto = (from duser in domainUsers
-                  join user in idenittyUsers
-                  on duser.IdentityId equals user.Id
-                  select new UserDto()
-                  {
-                    Email = user!.UserName!,
-                    ExpenseSummary = duser.ExpenseSummary,
-                    Id = user.Id,
-                    ImagePath = duser.imagePath,
-                    Name = user.FirstName,
-                    Role = duser.Role,
-                  }).ToList();
+    var usersDto = new List<UserDto>();
+
+    foreach (var user in identityUsers)
+    {
+      var domainUser = domainUsers.FirstOrDefault(du => du.IdentityId == user.Id);
+      if (domainUser == null) continue;
+
+      usersDto.Add(new UserDto()
+      {
+        Email = user.UserName,
+        ExpenseSummary = domainUser.ExpenseSummary,
+        Id = user.Id,
+        ImagePath = domainUser.imagePath,
+        Name = user.FirstName,
+        Roles = await _userManager.GetRolesAsync(user)
+      });
+    }
 
     return usersDto;
   }
@@ -91,23 +97,5 @@ public class AccountService : IAccountService
     await _unitOfWork.commitChange();
 
     return newName;
-  }
-
-  public async Task<Role> UpdateRole(Role role, string accountId)
-  {
-    if (role == Role.Administrator || role == Role.Admin)
-      throw new NotPErmissionDenied("не имеете  прав");
-
-    var domainUser = await _userRepository.GetUser(new Guid(accountId));
-
-    var identityUser = await _userManager.FindByIdAsync(accountId)
-      ?? throw new UserNotFoundException($"пользователя нет с таким {accountId}  в identity");
-
-    await _userManager.RemoveFromRolesAsync(identityUser, await _userManager.GetRolesAsync(identityUser));
-    await _userManager.AddToRoleAsync(identityUser, role.ToString());
-
-    await _userManager.UpdateAsync(identityUser);
-
-    return role;
   }
 }

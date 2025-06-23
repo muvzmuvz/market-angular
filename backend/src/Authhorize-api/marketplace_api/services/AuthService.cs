@@ -63,7 +63,6 @@ public class AuthService : IAuthService
     await _userManager.AddToRoleAsync(user, role.ToString());
 
     var domainUser = _mapper.Map<DomainUser>(registerDto);
-    domainUser.Role = role;
     domainUser.IdentityId = user.Id;
     await _userRepository.CreateUser(domainUser);
 
@@ -78,7 +77,7 @@ public class AuthService : IAuthService
       Id = user.Id,
       ImagePath = domainUser.imagePath,
       Name = user.FirstName,
-      Role = domainUser.Role,
+      Roles = new List<string>() { role.ToString()},
     };
 
     return RegistrationResult.Success(userDto);

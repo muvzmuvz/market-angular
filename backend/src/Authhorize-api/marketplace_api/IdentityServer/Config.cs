@@ -36,11 +36,13 @@ public static class Config
                 ClientId = "web",
                 ClientSecrets = { new Secret("wildbobr".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
-                RedirectUris = { "http://localhost:4200/signin-oidc" },
+                RedirectUris = { "http://localhost:4200/" },
+                PostLogoutRedirectUris = { "http://localhost:4200" },
                 AllowedCorsOrigins = { "http://localhost:4200"},
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "api", "roles" },
-                RequireClientSecret = true
+                AllowedScopes = { "openid", "profile", "api", "roles", "offline_access" },
+                RequireClientSecret = true,
+                RequirePkce = true
             },
             
 

@@ -10,5 +10,5 @@ public interface IShopService
   public Task<List<ShopDto>> GetInActiveShops();
   public Task<ShopDto> GetMyShop(Guid sellerId);
   public Task<ShopDto> CreateShop(ShopDtoRequest shop);
-  public Task<ShopDto> ActivateTheShop(Guid shopId, Guid userId);
+  public Task<ShopDto> ActivateTheShop(Guid shopId);
 }
