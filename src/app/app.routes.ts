@@ -15,7 +15,7 @@ export const routes: Routes = [
         path: '',  component: HomePage , canActivate: [StartupRedirectGuard]
     },
     {
-        path: 'profile', loadComponent: () => import('./pages/profile-page/profile-page').then(m => m.ProfilePage), canActivate: [StartupRedirectGuard, AuthGuard]
+        path: 'profile', component: ProfilePage, canActivate: [StartupRedirectGuard, AuthGuard]
     },
     {
         path: 'delivery', component: DeliveryPage, canActivate: [StartupRedirectGuard]
