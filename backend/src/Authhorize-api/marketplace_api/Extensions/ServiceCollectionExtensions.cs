@@ -51,6 +51,8 @@ public static class ServiceCollectionExtensions
     {
       options.UserInteraction.LoginUrl = "/Authorize/Login";
 
+      options.KeyManagement.Enabled = false;
+
       options.UserInteraction.LogoutUrl = "/Authorize/Logout";
 
       options.Authentication.CookieAuthenticationScheme = IdentityConstants.ApplicationScheme;
