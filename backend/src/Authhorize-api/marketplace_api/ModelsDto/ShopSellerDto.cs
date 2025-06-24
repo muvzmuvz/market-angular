@@ -6,5 +6,5 @@ public class ShopSellerDto
 {
   public Guid ShopId { get; set; }
 
-  public Guid SellerId { get; set; }
+  public Guid UserId { get; set; }
 }

@@ -30,7 +30,7 @@ public class ShopController : ControllerBase
   {
     var shop = await _shopService.CreateShop(dto);
 
-    return Created("создание магазина успешно",shop);
+    return Created("create",shop);
   }
 
   [HttpGet("inactive")]
@@ -60,4 +60,13 @@ public class ShopController : ControllerBase
 
     return Ok(shop);
   }
+
+  [HttpPatch("activate/{shopId}")]
+  public async Task<IActionResult> ActivateShop(Guid shopId)
+  {
+    var activateShop = await _shopService.ActivateTheShop(shopId);
+
+    return Ok(activateShop);
+  }
+
 }
