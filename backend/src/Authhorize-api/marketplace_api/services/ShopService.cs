@@ -47,25 +47,10 @@ public class ShopService : IShopService
 
     var user = await _userRepository.GetUser(shopDtoRequest.UserId);
 
-    var shop = new Shop()
-    {
-      Name = shopDtoRequest.Name,
-      Description = shopDtoRequest.Description,
-      Owner = user,
-      OwnerId = user.Id,
-      UserId = user.IdentityId,
-    };
-
-    var shopSeller = new ShopSeller()
-    {
-      Seller = user,
-      SellerId = user.Id,
-      Shop = shop,
-      ShopId = shop.Id,
-    };
-    shop.Sellers.Add(shopSeller);
-
-    await _shopSellerRepository.CreateShopSeller(shopSeller);
+    var shop = Shop.Create(
+        shopDtoRequest.Description
+      , shopDtoRequest.Name
+      , user);
 
     await _shopRepository.CreateShop(shop);
 

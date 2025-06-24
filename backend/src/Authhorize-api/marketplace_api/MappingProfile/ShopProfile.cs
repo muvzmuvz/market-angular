@@ -8,7 +8,14 @@ public class ShopProfile : Profile
 {
   public ShopProfile()
   {
-    CreateMap<Shop, ShopDto>();
+
+    CreateMap<Shop, ShopDto>()
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Owner.IdentityId))
+            .ForMember(dest => dest.Sellers, opt => opt.MapFrom(src => src.Sellers));
+
+    CreateMap<ShopDtoRequest, Shop>();
+    CreateMap<Shop, ShopDtoRequest>();
+
     CreateMap<ShopDto, Shop>();
 
     CreateMap<ShopDtoRequest, Shop>();
