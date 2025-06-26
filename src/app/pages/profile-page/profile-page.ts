@@ -14,6 +14,8 @@ import { OrderCard } from 'src/app/components/order-card/order-card';
 import { FormsModule } from '@angular/forms';
 import { ImageUploadService } from 'src/app/service/image-upload/image-upload';
 import { AuthService } from 'src/app/auth/auth.service';
+import { FetchProfile } from 'src/app/service/fetchprofile/fetprofile';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile-page',
@@ -38,13 +40,13 @@ export class ProfilePage implements OnInit {
   isEditModalOpen = false;
   editUsername = this.username;
   editAvatar = this.avatar;
-  role: string = '';
+  role$!: Observable<string>;
   hover = false;
   selectedFileName: string | null = null;
   constructor(
     private cdr: ChangeDetectorRef,
     private imageUploadService: ImageUploadService,
-    public auth: AuthService
+    public auth: AuthService, public fetchProfile: FetchProfile
   ) { }
 
 
@@ -88,10 +90,7 @@ export class ProfilePage implements OnInit {
 
   protected recentOrders = this.orders.slice(-2).reverse();
   ngOnInit() {
-    this.auth.fetchUserRole().subscribe((role) => {
-      this.role = role;
-      this.cdr.detectChanges(); // Обновляем DOM
-    });
+   this.role$ = this.fetchProfile.role$;  // присваиваем Observable роли из сервиса
   }
 
   openEditModal() {
