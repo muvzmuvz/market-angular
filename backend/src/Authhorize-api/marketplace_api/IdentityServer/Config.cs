@@ -6,6 +6,17 @@ namespace marketplace_api.IdentityServer;
 
 public static class Config
 {
+  public static IEnumerable<ApiResource> ApiResources =>
+    new List<ApiResource>
+    {
+        new ApiResource("api", "internal API", new[]
+        {JwtClaimTypes.Name})
+        {
+            Scopes = { "api" }
+        }
+    };
+
+
   public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
         {
@@ -18,7 +29,7 @@ public static class Config
       new ApiScope[]
       {
             new ApiScope("web", "web API"),
-            new ApiScope("api", "internal API")
+            new ApiScope("api", "internal API"),
       };
 
   public static IEnumerable<Client> Clients =>
