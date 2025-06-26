@@ -25,7 +25,7 @@ public class SiteInitializeController : ControllerBase
   {
     await _siteInitializerService.InitializeAsync(dto);
 
-    return Created("сайт создан", dto);
+    return Created("create site", dto);
   }
 
   [HttpGet("config")]

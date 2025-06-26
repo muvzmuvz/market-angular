@@ -25,7 +25,9 @@ public class ShopRepository : IShopRepository
   public async Task<List<Shop>> GetActiveShops()
   {
     var shops = await _context.Shops
+      .Include(shop => shop.Owner)
       .Include(shop => shop.Sellers)
+      .ThenInclude(seller => seller.Seller)
       .Where(shp => shp.IsActive == true)
       .ToListAsync();
 
