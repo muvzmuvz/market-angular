@@ -62,6 +62,7 @@ public static class ServiceCollectionExtensions
        .AddInMemoryIdentityResources(Config.IdentityResources)
        .AddInMemoryApiScopes(Config.ApiScopes)
        .AddInMemoryClients(Config.Clients)
+       .AddInMemoryApiResources(Config.ApiResources)
        .AddAspNetIdentity<UserIdentity>()
        .AddProfileService<CustomProfileService>();
 
@@ -87,11 +88,22 @@ public static class ServiceCollectionExtensions
     {
       config.DefaultAuthenticateScheme =
           JwtBearerDefaults.AuthenticationScheme;
+      config.DefaultChallengeScheme =
+          JwtBearerDefaults.AuthenticationScheme;
     })
      .AddJwtBearer("Bearer", options =>
      {
        options.Authority = "http://localhost:5042"; 
-       options.Audience = "api";
+       options.Audience = "api"; 
+
+       options.Events = new JwtBearerEvents
+       {
+         OnAuthenticationFailed = context =>
+         {
+           Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+           return Task.CompletedTask;
+         }
+       };
 
        if (builder.Environment.IsDevelopment())
        {
