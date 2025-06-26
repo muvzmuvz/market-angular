@@ -29,15 +29,15 @@ export class FetchProfile {
       return;
     }
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
+    const headers = {
+      'Authorization': 'Bearer ' + token
+    };
 
     this.http.get<any>('http://localhost:5042/accounts/me', { headers }).pipe(
       map(user => user?.roles?.[0] || 'Guest'),
       catchError(err => {
         if (err.error && typeof err.error === 'string' && err.error.startsWith('<!DOCTYPE')) {
-          console.warn('Получена HTML страница вместо JSON — вероятно, пользователь не авторизован');
+          console.warn('Получена HTML страница вместо JSON — возможно, пользователь не авторизован');
         } else {
           console.error('Ошибка при загрузке роли пользователя:', err);
         }

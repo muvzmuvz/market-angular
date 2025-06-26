@@ -48,7 +48,7 @@
       <a href="/delivery" class="btn-view-all">Смотреть все заказы</a>
     </div>
   </div>
-  <div class="seller" *ngIf="(role$ | async) === 'Administrator'">
+  <div class="seller" *ngIf="(role$ | async) != 'Administrator'">
     <div class="card profile-card">
       <div class="card-header">
         <div class="profile-info">
