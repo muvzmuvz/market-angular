@@ -90,7 +90,7 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
     this.auth.fetchUserRole().subscribe((role) => {
       this.role = role;
-      console.log(this.role)
+      this.cdr.detectChanges(); // Обновляем DOM
     });
   }
 
