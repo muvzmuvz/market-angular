@@ -9,25 +9,18 @@ namespace marketplace_api.services;
 
 public class AuthService : IAuthService
 {
-  private readonly IUserRepository _userRepository;
   private readonly UserManager<UserIdentity> _userManager;
   private readonly IMapper _mapper;
-  private readonly IUnitOfWork _unitOfWork;
   private readonly SignInManager<UserIdentity> _signInManager;
 
 
   public AuthService(
-    IUserRepository userRepository
-    , UserManager<UserIdentity> userManager
+     UserManager<UserIdentity> userManager
     , IMapper mapper,
-      IUnitOfWork unitOfWork,
       SignInManager<UserIdentity> signInManager)
   {
-    _userRepository = userRepository;
     _userManager = userManager;
     _mapper = mapper;
-    _unitOfWork = unitOfWork;
-    _signInManager = signInManager;
     _signInManager = signInManager;
   }
 
@@ -62,20 +55,14 @@ public class AuthService : IAuthService
 
     await _userManager.AddToRoleAsync(user, role.ToString());
 
-    var domainUser = _mapper.Map<DomainUser>(registerDto);
-    domainUser.IdentityId = user.Id;
-    await _userRepository.CreateUser(domainUser);
-
-    await _unitOfWork.commitChange();
-
     await _signInManager.SignInAsync(user, isPersistent: false);
 
     var userDto = new UserDto
     {
       Email = user.Email!,
-      ExpenseSummary = domainUser.ExpenseSummary,
+      ExpenseSummary = user.ExpenseSummary,
       Id = user.Id,
-      ImagePath = domainUser.imagePath,
+      ImagePath = user.imagePath,
       Name = user.FirstName,
       Roles = new List<string>() { role.ToString()},
     };

@@ -22,7 +22,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Password13246!
-      POSTGRES_DB: marketplace
+      POSTGRES_DB: authorize-db
     ports:
       - "5432:5432"  
     volumes:

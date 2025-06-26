@@ -10,7 +10,6 @@ namespace marketplace_api.Common.Persistence;
 
 public class AuthorizeDbContext : IdentityDbContext<UserIdentity, IdentityRole<Guid>, Guid>, IUnitOfWork
 {
-  public DbSet<DomainUser> DomainUser { get; set; }
   public DbSet<SiteConfiguration> SiteConfigurations { get; set; }
   public DbSet<Shop> Shops { get; set; }
   public DbSet<ShopSeller> ShopSellers { get; set; }
