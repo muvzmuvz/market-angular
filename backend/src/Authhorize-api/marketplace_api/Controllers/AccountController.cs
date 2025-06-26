@@ -20,7 +20,8 @@ public class AccountController : ControllerBase
   [Authorize]
   public async Task<IActionResult> GetAccount()
   {
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+          ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
     var userDto = await _accountService.GetUser(userId);
     return Ok(userDto);
