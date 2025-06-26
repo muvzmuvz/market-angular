@@ -9,6 +9,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 // 👉 Обязательно для *ngIf и *ngFor
 import { NgIf, NgFor } from '@angular/common';
+import { DeliveryMap } from "../../components/delivery-map/delivery-map";
 
 interface Product {
   id: number;
@@ -27,7 +28,7 @@ interface Product {
     NgIf,
     NgFor,
     TuiButton,
-    TuiLink, TuiPagination],
+    TuiLink, TuiPagination, DeliveryMap],
   templateUrl: './home-page.html',
   styleUrl: './home-page.less',
   standalone: true,  // если используешь standalone компоненты

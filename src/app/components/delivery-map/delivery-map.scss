@@ -1,0 +1,49 @@
+.delivery-selector {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .options {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .option {
+    flex: 1 1 200px;
+  }
+
+  .map-wrapper {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .map-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .map-iframe {
+    border: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

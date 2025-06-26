@@ -1,0 +1,84 @@
+<div class="page-wrapper">
+
+    <h2 class="title">Создать магазин</h2>
+
+    <!-- Шаг 0: Информация о странице -->
+    <section *ngIf="step === 0" class="info-step">
+        <p>
+            Добро пожаловать на страницу создания магазина! Здесь вы сможете быстро и удобно
+            зарегистрировать свой магазин, указав всю необходимую информацию.
+        </p>
+        <p>
+            Нажмите <strong>Далее</strong>, чтобы перейти к заполнению данных.
+        </p>
+        <button class="btn btn-next" (click)="nextStep()">Далее </button>
+    </section>
+
+    <form [formGroup]="storeForm" (ngSubmit)="onSubmit()" novalidate *ngIf="step > 0" class="form-step">
+
+        <!-- Шаг 1 -->
+        <section *ngIf="step === 1">
+            <h3>Информация о магазине</h3>
+
+            <label>
+                Название магазина
+                <input formControlName="storeName" placeholder="Введите название" />
+                <small *ngIf="storeForm.get('storeName')?.invalid && storeForm.get('storeName')?.touched"
+                    class="error">Название обязательно</small>
+            </label>
+
+            <label>
+                Адрес магазина
+                <input formControlName="storeAddress" placeholder="Введите адрес" />
+                <small *ngIf="storeForm.get('storeAddress')?.invalid && storeForm.get('storeAddress')?.touched"
+                    class="error">Адрес обязателен</small>
+            </label>
+
+            <label>
+                Телефон магазина
+                <input formControlName="storePhone" placeholder="+1234567890" />
+                <small *ngIf="storeForm.get('storePhone')?.invalid && storeForm.get('storePhone')?.touched"
+                    class="error">Телефон обязателен и должен содержать только цифры (возможно с +)</small>
+            </label>
+            <div class="button-wrapper">
+                <button tuiButton size="m" type="button" class="btn btn-back" (click)="prevStep()"> Назад</button>
+                <button tuiButton size="m" type="button" class="btn btn-next" (click)="nextStep()">Далее </button>
+                
+
+            </div>
+        </section>
+
+        <!-- Шаг 2 -->
+        <section *ngIf="step === 2">
+            <h3>Информация о владельце</h3>
+
+            <label>
+                Имя владельца
+                <input formControlName="ownerName" placeholder="Введите имя" />
+                <small *ngIf="storeForm.get('ownerName')?.invalid && storeForm.get('ownerName')?.touched"
+                    class="error">Имя обязательно</small>
+            </label>
+
+            <label>
+                Email владельца
+                <input formControlName="ownerEmail" placeholder="example@mail.com" />
+                <small *ngIf="storeForm.get('ownerEmail')?.invalid && storeForm.get('ownerEmail')?.touched"
+                    class="error">Введите корректный Email</small>
+            </label>
+
+            <label>
+                Телефон владельца
+                <input formControlName="ownerPhone" placeholder="+1234567890" />
+                <small *ngIf="storeForm.get('ownerPhone')?.invalid && storeForm.get('ownerPhone')?.touched"
+                    class="error">Телефон обязателен и должен содержать только цифры (возможно с +)</small>
+            </label>
+
+            <div class="buttons-row">
+                <button tuiButton type="button" class="btn btn-back" (click)="prevStep()">Назад</button>
+                <button tuiButton type="submit" class="btn btn-submit" [disabled]="storeForm.invalid">Создать
+                    магазин</button>
+            </div>
+        </section>
+
+    </form>
+</div>
