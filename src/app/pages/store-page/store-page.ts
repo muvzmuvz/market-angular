@@ -5,6 +5,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { tuiAsPortal, TuiPortals, TuiRepeatTimes } from '@taiga-ui/cdk';
 import { TuiAxes, TuiBarChart } from '@taiga-ui/addon-charts';
 import { tuiCeil } from '@taiga-ui/cdk';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
+
 import {
   SiteConfigService,
   SiteConfig
@@ -113,18 +116,24 @@ export class StorePage {
   protected handleToggle(): void {
     this.expanded.update((e) => !e);
   }
-
-  constructor(private siteConfigService: SiteConfigService) { }
+  constructor(
+    private siteConfigService: SiteConfigService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
   siteName: string = '';
-
+  isMobile = false;
   ngOnInit(): void {
     this.siteConfigService.getConfig().subscribe({
       next: (config: SiteConfig) => {
         this.siteName = config.siteName;
       },
       error: () => {
-        this.siteName = ''; // дефолтное значение на случай ошибки
+        this.siteName = '';
       }
     });
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    }
   }
 }

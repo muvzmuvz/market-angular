@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
 } from '@angular/core';
@@ -11,6 +12,8 @@ import { TuiFallbackSrcPipe, TuiTitle } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { OrderCard } from 'src/app/components/order-card/order-card';
 import { FormsModule } from '@angular/forms';
+import { ImageUploadService } from 'src/app/service/image-upload/image-upload';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -35,9 +38,15 @@ export class ProfilePage implements OnInit {
   isEditModalOpen = false;
   editUsername = this.username;
   editAvatar = this.avatar;
-
+  role: string = '';
   hover = false;
   selectedFileName: string | null = null;
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private imageUploadService: ImageUploadService,
+    public auth: AuthService
+  ) { }
+
 
   orders = [
     {
@@ -78,9 +87,11 @@ export class ProfilePage implements OnInit {
   ];
 
   protected recentOrders = this.orders.slice(-2).reverse();
-
-  ngOnInit(): void {
-    // 🔁 Никакой авторизации больше нет
+  ngOnInit() {
+    this.auth.fetchUserRole().subscribe((role) => {
+      this.role = role;
+      console.log(this.role)
+    });
   }
 
   openEditModal() {
@@ -127,5 +138,25 @@ export class ProfilePage implements OnInit {
       this.editAvatar = reader.result as string;
     };
     reader.readAsDataURL(file);
+  }
+
+  uploadAvatar(): void {
+    if (!this.editAvatar) {
+      alert('Сначала выберите изображение для загрузки');
+      return;
+    }
+
+    this.imageUploadService.uploadImage(this.editAvatar).subscribe({
+      next: () => {
+        alert('Аватар успешно загружен на сервер!');
+        // Можно обновить локальный аватар сразу
+        this.avatar = this.editAvatar;
+        this.isEditModalOpen = false;
+        this.cdr.markForCheck(); // Обновляем отображение
+      },
+      error: (error) => {
+        alert('Ошибка при загрузке аватара: ' + error.message);
+      },
+    });
   }
 }

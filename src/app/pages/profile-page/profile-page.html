@@ -24,8 +24,10 @@
       <p class="description">Это ваша страница профиля.</p>
       <p class="description">Вы можете редактировать информацию о своем профиле здесь.</p>
     </div>
-
-    <button class="btn-edit-profile" (click)="openEditModal()">Редактировать профиль</button>
+    <div class="buttons">
+      <button class="btn-edit-profile" (click)="openEditModal()">Редактировать профиль</button>
+      <a class="btn-edit-profile store" *ngIf="role === 'Administrator'" href="/store">Управление магазином</a>
+    </div>
   </div>
 
   <div class="card orders-card">
@@ -45,6 +47,17 @@
     <div class="all-orders">
       <a href="/delivery" class="btn-view-all">Смотреть все заказы</a>
     </div>
+  </div>
+  <div class="seller" *ngIf="role != 'Administrato'">
+    <div class="card profile-card">
+      <div class="card-header">
+        <div class="profile-info">
+          <h1 class="title">Стать продавцом</h1>
+        </div>
+
+      <div class="card-body">
+        <a class="btn-edit-profile store-ac"  href="/store-activate">Узнать больше</a>
+
   </div>
 </div>
 

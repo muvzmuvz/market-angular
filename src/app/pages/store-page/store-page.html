@@ -1,3 +1,11 @@
+<div *ngIf="isMobile" class="mobile-warning">
+    <div class="mobile-warning__content">
+        <h1>⚠️ Доступ только с компьютера</h1>
+        <p>Пожалуйста, откройте сайт на устройстве с большим экраном (десктоп).</p>
+    </div>
+</div>
+<div class="main">
+
 <!-- Портал для drawer -->
 <div class="custom-portal">
     <ng-container #viewContainer></ng-container>
@@ -147,5 +155,5 @@
             </tui-axes>
         </ng-container>
     </main>
-
+</div>
 </div>

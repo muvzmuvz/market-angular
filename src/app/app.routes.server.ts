@@ -14,7 +14,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender
   },
   {
-    path: 'cart',       // Корзина — если хранится на клиенте, можно оставить Prerender или CSR, но обычно лучше CSR
+    path: 'cart',       // Корзина — обычно Prerender или CSR
     renderMode: RenderMode.Prerender
   },
   {
@@ -22,22 +22,19 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender
   },
   {
-    path: 'product/:id', // Динамический продукт — Prerender, если продукты не меняются часто, иначе Server
+    path: 'product/:id', // Динамический продукт
     renderMode: RenderMode.Server
-    // можно добавить getPrerenderParams для генерации страниц с разными id
   },
   {
-    path: 'store', // Динамический продукт — Prerender, если продукты не меняются часто, иначе Server
+    path: 'store', // Магазин
     renderMode: RenderMode.Server,
-    // можно добавить getPrerenderParams для генерации страниц с разными id
   },
   {
-    path: '**',         // Все остальные пути — серверный рендеринг (SSR)
+    path: 'store-activate',  // <--- Добавляем сюда маршрут store-activate
     renderMode: RenderMode.Server
   },
-    {
-    path: '',         // Все остальные пути — серверный рендеринг (SSR)
+  {
+    path: '**',         // Все остальные пути
     renderMode: RenderMode.Server
   }
 ];
-

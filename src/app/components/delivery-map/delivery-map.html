@@ -1,0 +1,12 @@
+<main>
+
+
+    <label *ngFor="let option of deliveryOptions">
+        <input type="radio" [value]="option" name="deliveryOption" [(ngModel)]="selectedOption" />
+        {{ option }}
+    </label>
+
+    <div *ngIf="selectedOption === 'Пункт выдачи'" class="map-container">
+        <iframe [src]="mapUrl" width="100%" height="500" style="border:1px solid #ccc; border-radius: 8px;"
+            loading="lazy"></iframe>
+    </div>
