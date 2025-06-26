@@ -26,7 +26,7 @@
     </div>
     <div class="buttons">
       <button class="btn-edit-profile" (click)="openEditModal()">Редактировать профиль</button>
-      <a class="btn-edit-profile store" *ngIf="role === 'Administrator'" href="/store">Управление магазином</a>
+      <a class="btn-edit-profile store" *ngIf="(role$ | async) === 'Administrator'" href="/store">Управление магазином</a>
     </div>
   </div>
 
@@ -48,7 +48,7 @@
       <a href="/delivery" class="btn-view-all">Смотреть все заказы</a>
     </div>
   </div>
-  <div class="seller" *ngIf="role != 'Administrato'">
+  <div class="seller" *ngIf="(role$ | async) === 'Administrator'">
     <div class="card profile-card">
       <div class="card-header">
         <div class="profile-info">
