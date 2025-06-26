@@ -157,3 +157,56 @@
     }
   }
 }
+.success-step {
+  background: #e6f9f0; // нежно-зелёный фон
+  border: 1px solid #b5e6cd;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+
+  h3 {
+    color: #2e7d32; // насыщенно-зелёный
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: #3c3c3c;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn {
+    background-color: #2e7d32;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken(#2e7d32, 8%);
+    }
+
+    &:disabled {
+      background-color: #a5d6a7;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Простая анимация появления
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
