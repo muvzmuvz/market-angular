@@ -33,7 +33,7 @@ app.MapControllerRoute(
 
 
 app.UseIdentityServer();
-app.UseAuthentication();
+app.UseAuthentication();  
 app.UseAuthorization();
 
 app.UseSwagger();

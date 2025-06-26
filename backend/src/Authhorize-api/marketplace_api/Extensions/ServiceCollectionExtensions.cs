@@ -5,6 +5,7 @@ using marketplace_api.MappingProfile;
 using marketplace_api.Models;
 using marketplace_api.repositories;
 using marketplace_api.services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -66,6 +67,12 @@ public static class ServiceCollectionExtensions
 
     builder.Services.ConfigureApplicationCookie(config =>
     {
+      config.Events.OnRedirectToLogin = context =>
+      {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+      };
+
       config.LoginPath = "/Authorize/Login";
       config.LogoutPath = "/Authorize/Logout";
       config.Cookie.HttpOnly = true;
@@ -76,11 +83,15 @@ public static class ServiceCollectionExtensions
     builder.Services
       .Configure<IdentityServerSettings>(builder.Configuration.GetSection(nameof(IdentityServerSettings)));
 
-    builder.Services.AddAuthentication("Bearer")
+    builder.Services.AddAuthentication(config =>
+    {
+      config.DefaultAuthenticateScheme =
+          JwtBearerDefaults.AuthenticationScheme;
+    })
      .AddJwtBearer("Bearer", options =>
      {
        options.Authority = "http://localhost:5042"; 
-       options.Audience = "web";
+       options.Audience = "api";
 
        if (builder.Environment.IsDevelopment())
        {
