@@ -8,11 +8,9 @@ public class ShopSellerProfile : Profile
 {
   public ShopSellerProfile()
   {
-    CreateMap<ShopSeller, ShopSellerDto>()
-        .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Seller.IdentityId));
+    CreateMap<ShopSeller, ShopSellerDto>();
 
-    CreateMap<ShopSellerDto, ShopSeller>()
-        .ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => src.UserId));
+    CreateMap<ShopSellerDto, ShopSeller>();
   }
 
 }

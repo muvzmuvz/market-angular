@@ -1,3 +1,4 @@
+using AutoMapper;
 using marketplace_api.Common.interfaces;
 using marketplace_api.Exceptions;
 using marketplace_api.Models;
@@ -9,21 +10,18 @@ namespace marketplace_api.services;
 
 public class AccountService : IAccountService
 {
-  private readonly IUserRepository _userRepository;
   private readonly UserManager<UserIdentity> _userManager;
   private readonly IImageService _imageService;
-  private readonly IUnitOfWork _unitOfWork;
+  private readonly IMapper  _mapper;
 
   public AccountService(
-    IUserRepository userRepository
-    , UserManager<UserIdentity> userManager
-    , IImageService imageService,
-      IUnitOfWork unitOfWork)
+     UserManager<UserIdentity> userManager
+    , IImageService imageService
+    , IMapper mapper)
   {
-    _userRepository = userRepository;
     _userManager = userManager;
     _imageService = imageService;
-    _unitOfWork = unitOfWork;
+    _mapper = mapper;
   }
 
   public async Task<UserDto> GetUser(string accountId)
@@ -31,57 +29,40 @@ public class AccountService : IAccountService
     if(accountId == null)
         throw new ArgumentNullException(nameof(accountId));
 
-    var domainUser = await _userRepository.GetUser(new Guid(accountId));
-
     var identityUser = await _userManager.FindByIdAsync(accountId);
     var roles = await _userManager.GetRolesAsync(identityUser);
 
-    var userDto = new UserDto()
-    {
-      Email = identityUser!.UserName!,
-      ExpenseSummary = domainUser.ExpenseSummary,
-      Id = identityUser.Id,
-      ImagePath = domainUser.imagePath,
-      Name = identityUser.FirstName,
-      Roles = roles,
-    };
+    var userDto = _mapper.Map<UserDto>(identityUser);
+    userDto.Roles = roles;
 
     return userDto;
   }
 
   public async Task<List<UserDto>> GetUsers()
   {
-    var domainUsers = await _userRepository.GetUsers();
     var identityUsers = await _userManager.Users.ToListAsync();
-
-    var usersDto = new List<UserDto>();
+    var userDtoList = new List<UserDto>();
 
     foreach (var user in identityUsers)
     {
-      var domainUser = domainUsers.FirstOrDefault(du => du.IdentityId == user.Id);
-      if (domainUser == null) continue;
-
-      usersDto.Add(new UserDto()
-      {
-        Email = user.UserName,
-        ExpenseSummary = domainUser.ExpenseSummary,
-        Id = user.Id,
-        ImagePath = domainUser.imagePath,
-        Name = user.FirstName,
-        Roles = await _userManager.GetRolesAsync(user)
-      });
+      var roles = await _userManager.GetRolesAsync(user);
+      var userDto = _mapper.Map<UserDto>(user);
+      userDto.Roles = roles.ToList();
+      userDtoList.Add(userDto);
     }
 
-    return usersDto;
+    return userDtoList;
   }
 
   public async Task<string> UpdateImage(string newImageBase64, string accountId)
   {
     var newImagePath = await _imageService.AploadImage(newImageBase64);
 
-    var newDomainUser = await _userRepository.UpdateImage(newImagePath, new Guid(accountId));
-
-    await _unitOfWork.commitChange();
+    var userDto = await _userManager.FindByIdAsync(accountId)
+        ?? throw new UserNotFoundException("такой user  не найден");
+      
+    userDto.imagePath = newImagePath;
+    await _userManager.UpdateAsync(userDto);
 
     return newImageBase64;
   }
@@ -90,12 +71,10 @@ public class AccountService : IAccountService
   {
     var identityUser = await _userManager.FindByIdAsync(accountId)
             ?? throw new UserNotFoundException($"пользователя нет с таким {accountId}  в identity");
-    identityUser.UserName = newName;
+    identityUser.FirstName = newName;
     
     await _userManager.UpdateAsync(identityUser);
 
-    await _unitOfWork.commitChange();
-
-    return newName;
+    return identityUser.FirstName;
   }
 }

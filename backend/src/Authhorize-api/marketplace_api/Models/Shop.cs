@@ -1,4 +1,5 @@
 using marketplace_api.DomainEvents.Events;
+using Microsoft.AspNetCore.Identity;
 
 namespace marketplace_api.Models;
 
@@ -8,22 +9,20 @@ public class Shop : BaseEntity
   public bool IsActive { get; set; } = false;
   public string Description { get; set; }
   public Guid OwnerId { get; set; }
-  public DomainUser Owner { get; set; }
+  public UserIdentity Owner { get; set; }
   public decimal Profit { get; set; }
-  public Guid UserId { get; set; }
   public ICollection<ShopSeller> Sellers { get; set; } = new List<ShopSeller>();
 
   public static Shop Create(
       string description
     , string name
-    , DomainUser owner)
+    , UserIdentity owner)
   {
     var shop = new Shop()
     {
       Description = description,
       Name = name,
       OwnerId = owner.Id,
-      UserId = owner.IdentityId,
       Owner = owner
     };
 
@@ -45,7 +44,7 @@ public class Shop : BaseEntity
     if (IsActive == false)
     {
       IsActive = true;
-      AddDomainEvent(new ShopActivatedEvent(Id, Owner.IdentityId));
+      AddDomainEvent(new ShopActivatedEvent(Id, Owner.Id));
     }
   }
 }

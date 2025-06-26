@@ -11,16 +11,13 @@ public class UserProfile : Profile
   {
     CreateMap<UserDto, IdentityUser>();
 
-    CreateMap<UserDto, DomainUser>();
-
+    CreateMap<UserIdentity, UserDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FirstName))
+            .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src.imagePath));
 
     CreateMap<RegisterDto, UserIdentity>()
           .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email)) 
           .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Name))
           .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
-
-    CreateMap<RegisterDto, DomainUser>()
-        .ForMember(dest => dest.ExpenseSummary, opt => opt.MapFrom(_ => 0m)) 
-        .ForMember(dest => dest.imagePath, opt => opt.Ignore());
   }
 }
