@@ -120,7 +120,6 @@ public static class ServiceCollectionExtensions
 
   public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
   {
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IShopRepository, ShopRepository>();
     builder.Services.AddScoped<IShopService, ShopService>();
     builder.Services.AddScoped<IShopSellerRepository, ShopSellerRepository>();

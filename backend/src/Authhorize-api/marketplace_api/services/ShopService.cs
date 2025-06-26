@@ -3,6 +3,7 @@ using marketplace_api.Common.interfaces;
 using marketplace_api.Exceptions;
 using marketplace_api.Models;
 using marketplace_api.ModelsDto;
+using Microsoft.AspNetCore.Identity;
 
 namespace marketplace_api.services;
 
@@ -11,20 +12,18 @@ public class ShopService : IShopService
   private readonly IShopRepository _shopRepository;
   private readonly IMapper _mapper;
   private readonly IUnitOfWork _unitOfWork;
-  private readonly IShopSellerRepository _shopSellerRepository;
-  private readonly IUserRepository _userRepository;
+  private readonly UserManager<UserIdentity> _userManager;
 
-  public ShopService(IShopRepository shopRepository
+  public ShopService(
+      IShopRepository shopRepository
     , IMapper mapper,
-      IUnitOfWork unitOfWork,
-      IShopSellerRepository shopSellerRepository
-    , IUserRepository userRepository)
+      IUnitOfWork unitOfWork
+    , UserManager<UserIdentity> userManager)
   {
     _shopRepository = shopRepository;
     _mapper = mapper;
     _unitOfWork = unitOfWork;
-    _shopSellerRepository = shopSellerRepository;
-    _userRepository = userRepository;
+    _userManager = userManager;
   }
 
   public async Task<ShopDto> ActivateTheShop(Guid shopId)
@@ -45,7 +44,8 @@ public class ShopService : IShopService
     if(shopDtoRequest == null)
       throw new ArgumentNullException(nameof(shopDtoRequest));
 
-    var user = await _userRepository.GetUser(shopDtoRequest.UserId);
+    var user = await _userManager.FindByIdAsync(shopDtoRequest.UserId.ToString())
+       ?? throw new UserNotFoundException("такой user  не найден");
 
     var shop = Shop.Create(
         shopDtoRequest.Description

@@ -3,7 +3,7 @@ using Products.Api.Models;
 
 namespace Products.Api.Data;
 
-public class ApplicationDbContext : DbContext
+public class ProductDbContext : DbContext
 {
   public DbSet<ProductHistory> ProductHistories { get; set; }
   public DbSet<Cart> Carts { get; set; }
@@ -13,8 +13,8 @@ public class ApplicationDbContext : DbContext
   public DbSet<Product> Products { get; set; }
   public DbSet<Review> Reviews { get; set; }
   
-  public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+  public ProductDbContext(DbContextOptions<ProductDbContext> options) : base(options)
     {
-        
+      
     }
 } 
