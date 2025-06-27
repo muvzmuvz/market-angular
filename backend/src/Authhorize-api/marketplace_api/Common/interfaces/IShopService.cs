@@ -9,6 +9,7 @@ public interface IShopService
   public Task<List<ShopDto>> GetActiveShops();
   public Task<List<ShopDto>> GetInActiveShops();
   public Task<ShopDto> GetMyShop(Guid sellerId);
-  public Task<ShopDto> CreateShop(ShopDtoRequest shop);
+  public Task<ShopDto> CreateShop(ShopDtoRequest shop, Guid userId);
   public Task<ShopDto> ActivateTheShop(Guid shopId);
+  public Task<ShopFullInformationDto> GetFullInformtionShop(Guid shopId);
 }

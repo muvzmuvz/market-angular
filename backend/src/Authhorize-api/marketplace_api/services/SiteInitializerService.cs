@@ -13,18 +13,21 @@ public class SiteInitializerService : ISiteInitializerService
   private readonly RoleManager<IdentityRole<Guid>> _roleManager;
   private readonly IAuthService _authService;
   private readonly IUnitOfWork _unitOfWork;
+  private readonly IImageService _imageService;
 
 
   public SiteInitializerService(
     AuthorizeDbContext authorizeDbContext
     , RoleManager<IdentityRole<Guid>> roleManager
     , IAuthService authService,
-      IUnitOfWork unitOfWork)
+      IUnitOfWork unitOfWork
+    , IImageService imageService)
   {
     _authorizeDbContext = authorizeDbContext;
     _roleManager = roleManager;
     _authService = authService;
     _unitOfWork = unitOfWork;
+    _imageService = imageService;
   }
 
   public async Task<SiteConfiguration> GetCurrentConfig()
@@ -63,6 +66,20 @@ public class SiteInitializerService : ISiteInitializerService
     await _unitOfWork.commitChange();
   }
 
+  public async Task<SiteConfiguration> UpdateLogo(string imageBase64)
+  {
+    var siteConfiguration = await _authorizeDbContext.SiteConfigurations.FirstOrDefaultAsync()
+          ?? throw new Exception("Данный сайт еще не иницилизирован");
+
+    var newPath = await _imageService.AploadImage(imageBase64);
+
+    siteConfiguration.LogoPath = newPath;
+
+    await _unitOfWork.commitChange();
+
+    return siteConfiguration;
+  }
+
 
   private async Task<bool> IsSiteInitialized()
   {
@@ -93,5 +110,4 @@ public class SiteInitializerService : ISiteInitializerService
       }
     }
   }
-
 }
