@@ -1,104 +1,90 @@
 <div class="page-wrapper">
+  <h2 class="title">Создать магазин</h2>
 
-    <h2 class="title">Создать магазин</h2>
+  <!-- Шаг 0 -->
+  <section *ngIf="step === 0" class="info-step">
+    <p>
+      Добро пожаловать на страницу создания магазина! Здесь вы сможете быстро и удобно
+      зарегистрировать свой магазин, указав всю необходимую информацию.
+    </p>
+    <p>
+      Нажмите <strong>Далее</strong>, чтобы перейти к заполнению данных.
+    </p>
+    <button class="btn btn-next" (click)="nextStep()">Далее</button>
+  </section>
 
-    <!-- Шаг 0: Информация о странице -->
-    <section *ngIf="step === 0" class="info-step">
-        <p>
-            Добро пожаловать на страницу создания магазина! Здесь вы сможете быстро и удобно
-            зарегистрировать свой магазин, указав всю необходимую информацию.
-        </p>
-        <p>
-            Нажмите <strong>Далее</strong>, чтобы перейти к заполнению данных.
-        </p>
-        <button class="btn btn-next" (click)="nextStep()">Далее</button>
+  <!-- Шаги формы -->
+  <form [formGroup]="storeForm" (ngSubmit)="onSubmit()" novalidate *ngIf="step > 0 && step < 3" class="form-step">
+
+    <!-- Шаг 1: Информация о магазине -->
+    <section *ngIf="step === 1">
+      <h3>Информация о магазине</h3>
+
+      <label>
+        Название магазина
+        <input formControlName="storeName" placeholder="Введите название" />
+        <small *ngIf="storeForm.get('storeName')?.invalid && storeForm.get('storeName')?.touched" class="error">
+          Название обязательно
+        </small>
+      </label>
+
+      <label>
+        Адрес магазина
+        <input formControlName="storeAddress" placeholder="Введите адрес" />
+      </label>
+
+      <label>
+        Телефон магазина
+        <input formControlName="storePhone" placeholder="+1234567890" />
+      </label>
+
+      <div class="button-wrapper">
+        <button tuiButton size="m" type="button" class="btn btn-back" (click)="prevStep()">Назад</button>
+        <button tuiButton size="m" type="button" class="btn btn-next" (click)="nextStep()">Далее</button>
+      </div>
     </section>
 
-    <!-- Шаги формы -->
-    <form [formGroup]="storeForm" (ngSubmit)="onSubmit()" novalidate *ngIf="step > 0 && step < 3" class="form-step">
+    <!-- Шаг 2: Информация о владельце -->
+    <section *ngIf="step === 2">
+      <h3>Информация о владельце</h3>
 
-        <!-- Шаг 1: Информация о магазине -->
-        <section *ngIf="step === 1">
-            <h3>Информация о магазине</h3>
+      <label>
+        Имя владельца
+        <input formControlName="ownerName" placeholder="Введите имя" />
+        <small *ngIf="storeForm.get('ownerName')?.invalid && storeForm.get('ownerName')?.touched" class="error">
+          Имя обязательно
+        </small>
+      </label>
 
-            <label>
-                Название магазина
-                <input formControlName="storeName" placeholder="Введите название" />
-                <small *ngIf="storeForm.get('storeName')?.invalid && storeForm.get('storeName')?.touched" class="error">
-                    Название обязательно
-                </small>
-            </label>
+      <label>
+        Email владельца
+        <input formControlName="ownerEmail" placeholder="example@mail.com" />
+        <small *ngIf="storeForm.get('ownerEmail')?.invalid && storeForm.get('ownerEmail')?.touched" class="error">
+          Введите корректный Email
+        </small>
+      </label>
 
-            <label>
-                Адрес магазина
-                <input formControlName="storeAddress" placeholder="Введите адрес" />
-            </label>
+      <label>
+        Телефон владельца
+        <input formControlName="ownerPhone" placeholder="+1234567890" />
+      </label>
 
-            <label>
-                Телефон магазина
-                <input formControlName="storePhone" placeholder="+1234567890" />
-            </label>
+      <!-- Скрытое поле userId -->
+      <input formControlName="userId" type="hidden" />
 
-            <div class="button-wrapper">
-                <button tuiButton size="m" type="button" class="btn btn-back" (click)="prevStep()">Назад</button>
-                <button tuiButton size="m" type="button" class="btn btn-next" (click)="nextStep()">Далее</button>
-            </div>
-        </section>
-
-        <!-- Шаг 2: Информация о владельце -->
-        <section *ngIf="step === 2">
-            <h3>Информация о владельце</h3>
-
-            <label>
-                Имя владельца
-                <input formControlName="ownerName" placeholder="Введите имя" />
-                <small *ngIf="storeForm.get('ownerName')?.invalid && storeForm.get('ownerName')?.touched" class="error">
-                    Имя обязательно
-                </small>
-            </label>
-
-            <label>
-                Email владельца
-                <input formControlName="ownerEmail" placeholder="example@mail.com" />
-                <small *ngIf="storeForm.get('ownerEmail')?.invalid && storeForm.get('ownerEmail')?.touched"
-                    class="error">
-                    Введите корректный Email
-                </small>
-            </label>
-
-            <label>
-                Телефон владельца
-                <input formControlName="ownerPhone" placeholder="+1234567890" />
-            </label>
-
-            <!-- 🔽 Новый блок: выбор пользователя -->
-            <label>
-                Привязать к пользователю
-                <select formControlName="userId">
-                    <option value="">-- выберите --</option>
-                    <option *ngFor="let user of users" [value]="user.id">
-                        {{ user.email || user.id }}
-                    </option>
-                </select>
-                <small *ngIf="storeForm.get('userId')?.invalid && storeForm.get('userId')?.touched" class="error">
-                    Выберите пользователя
-                </small>
-            </label>
-
-            <div class="buttons-row">
-                <button tuiButton type="button" class="btn btn-back" (click)="prevStep()">Назад</button>
-                <button tuiButton type="submit" class="btn btn-submit" [disabled]="storeForm.invalid">Создать
-                    магазин</button>
-            </div>
-        </section>
-    </form>
-
-    <!-- Шаг 3: Успешное завершение -->
-    <section *ngIf="step === 3" class="success-step">
-        <h3>Заявка на создание магазина создана успешно!</h3>
-        <p>Как магазин активируется , вам прийдет уведомления</p>
-        <button tuiButton type="button" class="btn btn-primary" (click)="goToStore()">Перейти профиль</button>
+      <div class="buttons-row">
+        <button tuiButton type="button" class="btn btn-back" (click)="prevStep()">Назад</button>
+        <button tuiButton type="submit" class="btn btn-submit" [disabled]="storeForm.invalid">Создать магазин</button>
+      </div>
     </section>
+  </form>
+
+  <!-- Шаг 3: Успех -->
+  <section *ngIf="step === 3" class="success-step">
+    <h3>Заявка на создание магазина создана успешно!</h3>
+    <p>Как только магазин будет активирован, вы получите уведомление.</p>
+    <button tuiButton type="button" class="btn btn-primary" (click)="goToStore()">Перейти в профиль</button>
+  </section>
 
 
 </div>
