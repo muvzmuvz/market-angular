@@ -17,7 +17,7 @@ public class AccountController : ControllerBase
   }
 
   [HttpGet("me")]
-  [Authorize]
+  [Authorize(Roles = "User")]
   public async Task<IActionResult> GetAccount()
   {
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)

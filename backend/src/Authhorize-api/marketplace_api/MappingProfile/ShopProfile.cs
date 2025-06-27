@@ -17,5 +17,7 @@ public class ShopProfile : Profile
 
     CreateMap<ShopDtoRequest, Shop>();
     CreateMap<Shop, ShopDtoRequest>();
+
+    CreateMap<Shop, ShopFullInformationDto>();
   }
 }

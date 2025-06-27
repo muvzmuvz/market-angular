@@ -52,7 +52,8 @@ public class ShopRepository : IShopRepository
       .Include(shop => shop.Owner)
       .Include(shop => shop.Sellers)
       .ThenInclude(seller => seller.Seller)
-      .FirstOrDefaultAsync(shp => shp.OwnerId == sellerId)
+      .FirstOrDefaultAsync(shp => shp.OwnerId == sellerId ||
+      shp.Sellers.Any(seller => seller.SellerId == sellerId))
         ?? throw new ShopNotFoundException($" не был найдет магазин Для пользователя с таким id: {nameof(sellerId)}");
 
     return shop;

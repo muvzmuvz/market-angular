@@ -7,4 +7,6 @@ public interface IShopSellerRepository
   public Task<ShopSeller> CreateShopSeller(ShopSeller shopSeller);
 
   public Task DeleteShopSeller(Guid shopSellerId);
+
+  public Task<bool> IsStoreMember(Guid userId);
 }

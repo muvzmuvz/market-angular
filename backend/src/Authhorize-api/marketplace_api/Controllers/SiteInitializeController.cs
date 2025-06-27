@@ -43,4 +43,13 @@ public class SiteInitializeController : ControllerBase
 
     return Ok(admin);
   }
+
+  [HttpPatch("image")]
+  public async Task<IActionResult> UpdateLogo(string ImageBase64)
+  {
+    var newSiteConfig = await _siteInitializerService.UpdateLogo(ImageBase64);
+
+    return Ok(newSiteConfig);
+  }
+
 }

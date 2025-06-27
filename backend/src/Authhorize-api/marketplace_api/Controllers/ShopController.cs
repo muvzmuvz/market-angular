@@ -17,6 +17,14 @@ public class ShopController : ControllerBase
     _shopService = shopService;
   }
 
+  [HttpGet("shop/{shopId}/details")]
+  public async Task<IActionResult> GetFullInforamationShop(Guid shopId)
+  {
+    var shop = await _shopService.GetFullInformtionShop(shopId);
+
+    return Ok(shop);
+  }
+
   [HttpGet("active")]
   public async Task<IActionResult> GetActiveShops()
   {
@@ -25,10 +33,14 @@ public class ShopController : ControllerBase
     return Ok(shops);
   }
 
+  [Authorize]
   [HttpPost]
   public async Task<IActionResult> CreateShop(ShopDtoRequest dto)
   {
-    var shop = await _shopService.CreateShop(dto);
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+          ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    var shop = await _shopService.CreateShop(dto, new Guid(userId));
 
     return Created("create",shop);
   }

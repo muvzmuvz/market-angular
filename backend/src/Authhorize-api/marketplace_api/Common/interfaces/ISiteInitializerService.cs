@@ -7,4 +7,5 @@ public interface ISiteInitializerService
 {
   Task InitializeAsync(SiteInitializeDto dto);
   Task<SiteConfiguration> GetCurrentConfig();
+  Task<SiteConfiguration> UpdateLogo(string imageBase64);
 }

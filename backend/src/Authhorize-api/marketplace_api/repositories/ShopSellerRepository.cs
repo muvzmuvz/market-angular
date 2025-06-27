@@ -1,6 +1,7 @@
 using marketplace_api.Common.interfaces;
 using marketplace_api.Common.Persistence;
 using marketplace_api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace marketplace_api.repositories;
 
@@ -29,5 +30,18 @@ public class ShopSellerRepository : IShopSellerRepository
        ?? throw new Exception("с таким id  нет участника в магазине");
 
     _authorizeDbContext.Remove(shopSeller.Id);
+  }
+
+  public async Task<bool> IsStoreMember(Guid userId)
+  {
+    var seller = await _authorizeDbContext.ShopSellers
+      .FirstOrDefaultAsync(shopSeller => shopSeller.SellerId == userId);
+
+    if(seller == null)
+    {
+      return false;
+    }
+
+    return true;
   }
 }
