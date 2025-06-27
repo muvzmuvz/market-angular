@@ -5,6 +5,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './auth/auth-intercreptor/auth-intercreptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +16,13 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.less'], // исправил на styleUrls
+  providers: [
+        {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
 })
 export class App {
   constructor(
