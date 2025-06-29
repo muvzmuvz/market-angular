@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.Reflection;
 
@@ -179,6 +180,18 @@ public static class ServiceCollectionExtensions
           .AllowAnyHeader()
           .AllowCredentials();
     }));
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+  {
+    builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
 
     return builder;
   }

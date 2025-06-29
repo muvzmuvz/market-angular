@@ -8,10 +8,14 @@ namespace marketplace_api.Middlewares;
 public class DomainEventsMiddleware
 {
   private readonly RequestDelegate _next;
+  private readonly ILogger<DomainEventsMiddleware> _logger; 
 
-  public DomainEventsMiddleware(RequestDelegate next)
+  public DomainEventsMiddleware(
+    RequestDelegate next
+    , ILogger<DomainEventsMiddleware> logger)
   {
     _next = next;
+    _logger = logger;
   }
 
   public async Task InvokeAsync(
@@ -26,6 +30,7 @@ public class DomainEventsMiddleware
         .Where(e => e.Entity.DomainEvents.Any())
         .Select(e => e.Entity)
         .ToList();
+    _logger.LogInformation("получение всех событий {entitiesWithEvents}", entitiesWithEvents);
 
     foreach (var entity in entitiesWithEvents)
     {
@@ -34,6 +39,7 @@ public class DomainEventsMiddleware
 
       foreach (var domainEvent in events)
       {
+        _logger.LogInformation("вызов события {domainEvent}", domainEvent);
         await mediator.Publish(domainEvent);
       }
     }

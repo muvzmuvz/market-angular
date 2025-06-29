@@ -16,7 +16,8 @@ builder.AddData(builder.Configuration)
     .AddSwagger()
     .AddServices()
     .AddAuth()
-    .AddMapping();
+    .AddMapping()
+    .AddSerilog();
 
 var app = builder.Build();
 

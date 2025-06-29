@@ -10,14 +10,18 @@ namespace marketplace_api.Controllers;
 public class AccountController : ControllerBase
 {
   private readonly IAccountService _accountService;
+  private readonly ILogger<AccountController> _logger;
 
-  public AccountController(IAccountService accountService)
+  public AccountController(
+    IAccountService accountService
+    , ILogger<AccountController> logger)
   {
     _accountService = accountService;
+    _logger = logger;
   }
 
   [HttpGet("me")]
-  [Authorize(Roles = "User")]
+  [Authorize]
   public async Task<IActionResult> GetAccount()
   {
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)

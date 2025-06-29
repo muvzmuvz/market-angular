@@ -1,6 +1,11 @@
+using marketplace_api.services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Products.Api.Data;
+using Products.Api.Interfaces;
+using Products.Api.MappingProfile;
+using Products.Api.Repository;
+using Products.Api.Service;
 
 namespace marketplace_api.Extensions;
 
@@ -44,7 +49,7 @@ public static class ServiceCollectionExtensions
      .AddJwtBearer("Bearer", options =>
      {
        options.Authority = "http://localhost:5042";
-       options.Audience = "web";
+       options.Audience = "api";
 
        if (builder.Environment.IsDevelopment())
        {
@@ -68,11 +73,20 @@ public static class ServiceCollectionExtensions
 
   public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
   {
+    builder.Services.AddScoped<IProductRepository, ProductRepository>();
+    builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<IImageService, ImageService>();
+    builder.Services.AddScoped<IUnitOfWork>(
+      serviceProvider => serviceProvider.GetRequiredService<ProductDbContext>());
+
     return builder;
   }
 
   public static WebApplicationBuilder AddMapping(this WebApplicationBuilder builder)
   {
+    builder.Services.AddAutoMapper(
+       typeof(ProductProfile));
+
     return builder;
   }
 
