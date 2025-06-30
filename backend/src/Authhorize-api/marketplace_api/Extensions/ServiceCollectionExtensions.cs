@@ -1,5 +1,6 @@
 using marketplace_api.Common.interfaces;
 using marketplace_api.Common.Persistence;
+using marketplace_api.DomainEvents.DomainEventService;
 using marketplace_api.IdentityServer;
 using marketplace_api.MappingProfile;
 using marketplace_api.Models;
@@ -150,6 +151,7 @@ public static class ServiceCollectionExtensions
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IAccountService, AccountService>();
+    builder.Services.AddScoped<IMessageBus, RabbitMQMessageBus>();
     builder.Services.AddScoped<ISiteInitializerService, SiteInitializerService>();
     builder.Services.AddScoped<IUnitOfWork>(
       serviceProvider => serviceProvider.GetRequiredService<AuthorizeDbContext>());

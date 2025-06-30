@@ -68,7 +68,6 @@ public class ShopService : IShopService
       , shopDtoRequest.PassportOwner
       , shopDtoRequest.INN
       , imagePath);
-    shop.AddSeller(user); 
 
     await _shopRepository.CreateShop(shop);
 

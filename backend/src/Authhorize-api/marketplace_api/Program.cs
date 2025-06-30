@@ -1,4 +1,5 @@
 using marketplace_api.Common.Persistence;
+using marketplace_api.Configuration;
 using marketplace_api.Extensions;
 using marketplace_api.Middlewares;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<RabbitMqConfiguration>
+    (builder.Configuration.GetSection(nameof(RabbitMqConfiguration)));
+
 
 builder.AddData(builder.Configuration)
     .AddCors()

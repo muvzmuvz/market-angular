@@ -33,14 +33,14 @@ public class ShopController : ControllerBase
     return Ok(shops);
   }
 
-  [Authorize]
+  
   [HttpPost]
   public async Task<IActionResult> CreateShop(ShopDtoRequest dto)
   {
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
           ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-    var shop = await _shopService.CreateShop(dto, new Guid(userId));
+    var shop = await _shopService.CreateShop(dto, dto.UserId);
 
     return Created("create",shop);
   }
