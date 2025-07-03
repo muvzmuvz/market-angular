@@ -42,10 +42,7 @@ export class App {
     if (hasAuthParams) {
       this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, accessToken }) => {
         if (isAuthenticated) {
-          // ✅ Устанавливаем access_token в cookie
           document.cookie = `access_token=${accessToken}; path=/`;
-
-          // 🔄 Перенаправление
           const redirectUrl = localStorage.getItem('redirectAfterLogin') || '/';
           localStorage.removeItem('redirectAfterLogin');
           this.router.navigateByUrl(redirectUrl, { replaceUrl: true });
