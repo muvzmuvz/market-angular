@@ -68,7 +68,7 @@
             </tui-aside-group>
 
             <hr />
-            <button iconStart="@tui.plus" tuiAsideItem>Создать това</button>
+            <button iconStart="@tui.plus" tuiAsideItem>Создать товар</button>
 
             <footer>
                 <button tuiAsideItem iconStart="{{ expanded() ? '@tui.chevron-left' : '@tui.chevron-right' }}"
@@ -79,9 +79,6 @@
         </aside>
 
         <main tuiNavigationMain style="padding-top:64px; flex:1;">
-            <tui-axes [axisXLabels]="labelsX" [axisYLabels]="labelsY">
-                <tui-bar-chart [max]="10000" [value]="value"></tui-bar-chart>
-            </tui-axes>
 
         </main>
     </div>

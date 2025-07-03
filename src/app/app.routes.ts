@@ -10,6 +10,7 @@ import { initGuard } from './guards/init/init-guard';
 import { StartupRedirectGuard } from './guards/startup-redirect-guard';
 import { AuthGuard } from './guards/auth/auth.guard'; // больше не нужен
 import { StoreActivate } from './pages/store-activate/store-activate';
+import { Employee } from './pages/employee/employee';
 export const routes: Routes = [
   {
     path: '',
@@ -56,6 +57,11 @@ export const routes: Routes = [
   {
     path: 'store-activate',
     component: StoreActivate,
+    canActivate: [StartupRedirectGuard, AuthGuard]
+  },
+  {
+    path: 'employees',
+    component: Employee,
     canActivate: [StartupRedirectGuard, AuthGuard]
   }
 ];
