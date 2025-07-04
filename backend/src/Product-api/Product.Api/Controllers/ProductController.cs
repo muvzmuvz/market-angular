@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Products.Api.Interfaces;
 using Products.Api.ModelsDto;
@@ -16,9 +17,11 @@ public class ProductController : ControllerBase
   }
 
   [HttpPost()]
+  [Authorize]
   public async Task<IActionResult> CreateProduct(ProductCreateDto createDto)
   {
-    var productDto = await _productService.CreateProductAsync(createDto);
+    var userID = User.FindFirst("sub")?.Value;
+    var productDto = await _productService.CreateProductAsync(createDto, new Guid(userID));
 
     return Created("create product", productDto);
   }
@@ -39,9 +42,12 @@ public class ProductController : ControllerBase
   }
 
   [HttpDelete("{productId}")]
+  [Authorize]
   public async Task<IActionResult> DeleteProduct(Guid productId)
   {
-    var isDeleted = await _productService.DeleteProductAsync(productId);
+    var userID = User.FindFirst("sub")?.Value;
+
+    var isDeleted = await _productService.DeleteProductAsync(productId, new Guid(userID));
     if (isDeleted)
       return NoContent();
     return NotFound("продукт не найден");

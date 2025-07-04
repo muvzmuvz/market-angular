@@ -1,5 +1,6 @@
 using marketplace_api.services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Products.Api.Data;
 using Products.Api.Interfaces;
@@ -100,6 +101,17 @@ public static class ServiceCollectionExtensions
           .AllowAnyHeader()
           .AllowCredentials();
     }));
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddRedis(this WebApplicationBuilder builder, IConfiguration configuration)
+  {
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+      options.Configuration = configuration.GetConnectionString("Redis");
+      options.InstanceName = "";
+    });
 
     return builder;
   }

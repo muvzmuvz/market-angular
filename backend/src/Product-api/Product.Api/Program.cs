@@ -1,27 +1,28 @@
 using marketplace_api.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Products.Api.BackgroundServices;
 using Products.Api.Data;
+using Products.Api.Interfaces;
+using Products.Api.Service;
 using Products.Api.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
+builder.Services.AddHostedService<RabbitMQConsumerService>();
+builder.Services.AddSingleton<IRedisShopService, RedisShopService>();
+
 builder.Services.Configure<RabbitMQSettings>
     (builder.Configuration.GetSection(nameof(RabbitMQSettings)));
-
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-  options.Configuration = "localhost";
-  options.InstanceName = "localhost";
-});
 
 builder.AddData(builder.Configuration)
    .AddCors()
    .AddSwagger()
    .AddServices()
    .AddAuth()
-   .AddMapping();
+   .AddMapping()
+   .AddRedis(builder.Configuration);
 
 var app = builder.Build();
 
@@ -50,6 +51,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapControllers();
+app.UseMiddleware<Products.Api.Midleware.ExceptionMidleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();

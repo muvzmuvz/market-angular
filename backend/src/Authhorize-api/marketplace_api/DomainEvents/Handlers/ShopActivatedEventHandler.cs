@@ -26,7 +26,7 @@ public class ShopActivatedEventHandler : INotificationHandler<ShopActivatedEvent
 
   public async Task Handle(ShopActivatedEvent notification, CancellationToken ct)
   {
-    var user = await _userManager.FindByIdAsync(notification.UserId.ToString())
+    var user = await _userManager.FindByIdAsync(notification.SellerId.ToString())
         ?? throw new UserNotFoundException("пользователь с данным Id не был найден");
 
     if (!await _userManager.IsInRoleAsync(user, Role.Seller.ToString()))

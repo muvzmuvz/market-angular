@@ -1,10 +1,6 @@
-using marketplace_api.Common.Persistence;
 using marketplace_api.Configuration;
 using marketplace_api.Extensions;
 using marketplace_api.Middlewares;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 

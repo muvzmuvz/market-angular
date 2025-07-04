@@ -10,16 +10,21 @@ namespace Products.Api.Service;
 public class RedisShopService : IRedisShopService
 {
   private readonly IDistributedCache _cache;
+  private readonly ILogger<RedisShopService> _logger; 
 
-  public RedisShopService(IDistributedCache cache)
+  public RedisShopService(
+      IDistributedCache cache
+    , ILogger<RedisShopService> logger)
   {
     _cache = cache;
+    _logger = logger;
   }
 
   public async Task CreateShop(ShopUpdateEvent @event)
   {
     var item = await _cache.GetStringAsync($"shop:{@event.ShopId}");
-    if(item != null)
+    _logger.LogInformation("Creating shop with ID: {ShopId}", @event.ShopId);
+    if (item != null)
     {
       throw new Exception("Магазин с таким ID уже существует!");
     }
@@ -27,6 +32,7 @@ public class RedisShopService : IRedisShopService
     var shopUsers = new ShopUsersDto();
     shopUsers.UsersIds.Add(@event.SellerId);
 
+    _logger.LogInformation("Adding seller with ID: {SellerId} to shop: {ShopId}", @event.SellerId, @event.ShopId);
     await _cache.SetStringAsync(
       $"shop:{@event.ShopId}",
       JsonSerializer.Serialize(shopUsers),
@@ -34,6 +40,7 @@ public class RedisShopService : IRedisShopService
       {
         AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30)
       });
+    _logger.LogInformation("Shop with ID: {ShopId} created successfully", @event.ShopId);
   }
 
   public async Task DeleteSeller(ShopUpdateEvent @event)

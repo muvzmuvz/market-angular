@@ -2,6 +2,7 @@ using AutoMapper;
 using Products.Api.Interfaces;
 using Products.Api.Models;
 using Products.Api.ModelsDto;
+using System.Net.WebSockets;
 
 namespace Products.Api.Service;
 
@@ -12,25 +13,31 @@ public class ProductService : IProductService
   private readonly IMapper _mapper;
   private readonly IImageService _imageService;
   private readonly IUnitOfWork _unitOfWork;
+  private readonly IRedisShopService _redisShopService;
 
   public ProductService(
         IProductRepository productRepository,
         ILogger<ProductService> logger,
         IMapper mapper,
         IUnitOfWork unitOfWork,
-        IImageService imageService)
+        IImageService imageService,
+        IRedisShopService redisShopService)
   {
     _productRepository = productRepository;
     _logger = logger;
     _mapper = mapper;
     _unitOfWork = unitOfWork;
     _imageService = imageService;
+    _redisShopService = redisShopService;
   }
 
-  public async Task<ProductDto> CreateProductAsync(ProductCreateDto createProductDto)
+  public async Task<ProductDto> CreateProductAsync(ProductCreateDto createProductDto, Guid userId)
   {
     if (createProductDto == null)
       throw new ArgumentNullException(nameof(createProductDto));
+
+    var getSeller = await _redisShopService.ShopSeller(createProductDto.ShopId, userId);
+    _logger.LogInformation("проверка на наличие продавца в магазине {getSeller}", getSeller);
 
     _logger.LogInformation("маппинг обьекта  {productDto} в product ", createProductDto);
     var product = _mapper.Map<Product>(createProductDto);
@@ -51,9 +58,12 @@ public class ProductService : IProductService
     return productDto;
   }
 
-  public async Task<bool> DeleteProductAsync(Guid id)
+  public async Task<bool> DeleteProductAsync(Guid shopId, Guid userId)
   {
-    var product = await _productRepository.GetProductByIdAsync(id)
+    var getSeller = await _redisShopService.ShopSeller(shopId, userId);
+    _logger.LogInformation("проверка на наличие продавца в магазине {getSeller}", getSeller);
+
+    var product = await _productRepository.GetProductByIdAsync(shopId)
       ?? throw new Exception("такого продукта не существует");
 
     product.DeleteProduct();

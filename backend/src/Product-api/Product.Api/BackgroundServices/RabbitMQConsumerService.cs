@@ -5,10 +5,11 @@ using Products.Api.Settings;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text.Json;
+using System.Threading.Channels;
 
 namespace Products.Api.BackgroundServices;
 
-public class RabbitMQConsumerService : BackgroundService
+public class RabbitMQConsumerService : BackgroundService, IDisposable
 {
   private readonly IRedisShopService _shopCacheService;
   private readonly ILogger<RabbitMQConsumerService> _logger;
@@ -34,15 +35,24 @@ public class RabbitMQConsumerService : BackgroundService
             Password = _rabbitMQSettings.Password
         };
 
-        using var connection = await factory.CreateConnectionAsync();
-        using var channel = await connection.CreateChannelAsync();
+         var connection = await factory.CreateConnectionAsync();
+         var channel = await connection.CreateChannelAsync();
 
+        _logger.LogInformation("Starting RabbitMQ consumer for shop events...");
         await channel.ExchangeDeclareAsync(ExchangeName, ExchangeType.Topic, durable: true);
 
-        var queueDeclareOk = await channel.QueueDeclareAsync("products_service_shop_events");
+        var queueDeclareOk = await channel.QueueDeclareAsync(
+          queue : "products_service_shop_events",
+          durable: true,
+          exclusive: false,
+          autoDelete: false,
+          arguments: null
+          );
         var queueName = queueDeclareOk.QueueName;
 
+        _logger.LogInformation("Declared queue: {QueueName}", queueName);
         await channel.QueueBindAsync(queueName, ExchangeName, "shop.created");
+        _logger.LogInformation("успешное создание очереди ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
 
         stoppingToken.ThrowIfCancellationRequested();
 

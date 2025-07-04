@@ -4,7 +4,6 @@ namespace Products.Api.ModelsDto
 {
   public class ProductCreateDto
   {
-    public Guid UserID { get; set; }
     public Guid ShopId { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; } = decimal.Zero;
