@@ -18,5 +18,4 @@ public class ProductDto
   public DateTime DateCreated { get; set; }
 
   public List<Image> Images { get; set; } = new List<Image>();
-  public List<Review> Reviews { get; set; } = new List<Review>();
 }

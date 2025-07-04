@@ -14,7 +14,6 @@ public class Product : BaseEntity
   public string Characteristic { get; set; }
 
   public List<Image> Images { get; set; } = new List<Image>();
-  public List<Review> Reviews { get; set; } = new List<Review>();
 
   public void DeleteProduct()
   {

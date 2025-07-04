@@ -1,12 +1,14 @@
+using Hangfire;
+using Hangfire.PostgreSql;
 using marketplace_api.services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Products.Api.Data;
 using Products.Api.Interfaces;
 using Products.Api.MappingProfile;
 using Products.Api.Repository;
 using Products.Api.Service;
+using Serilog;
 
 namespace marketplace_api.Extensions;
 
@@ -112,6 +114,28 @@ public static class ServiceCollectionExtensions
       options.Configuration = configuration.GetConnectionString("Redis");
       options.InstanceName = "";
     });
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+  {
+    builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddHangFire(this WebApplicationBuilder builder, IConfiguration configuration) 
+  {
+    builder.Services.AddHangfire(config =>
+    config.UsePostgreSqlStorage(configuration.GetConnectionString("DbConfig")));
+
+    builder.Services.AddHangfireServer();
 
     return builder;
   }
