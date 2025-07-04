@@ -1,5 +1,6 @@
 using marketplace_api.Common.interfaces;
 using marketplace_api.Common.Persistence;
+using marketplace_api.DomainEvents.DomainEventService;
 using marketplace_api.IdentityServer;
 using marketplace_api.MappingProfile;
 using marketplace_api.Models;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.Reflection;
 
@@ -149,6 +151,7 @@ public static class ServiceCollectionExtensions
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IAccountService, AccountService>();
+    builder.Services.AddScoped<IMessageBus, RabbitMQMessageBus>();
     builder.Services.AddScoped<ISiteInitializerService, SiteInitializerService>();
     builder.Services.AddScoped<IUnitOfWork>(
       serviceProvider => serviceProvider.GetRequiredService<AuthorizeDbContext>());
@@ -179,6 +182,18 @@ public static class ServiceCollectionExtensions
           .AllowAnyHeader()
           .AllowCredentials();
     }));
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+  {
+    builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
 
     return builder;
   }

@@ -59,6 +59,7 @@ public class Shop : BaseEntity
     };
 
     Sellers.Add(shopSeller);
+    AddDomainEvent(new ShopAddUserEvent(Id, Owner.Id));
 
     return shopSeller;
   }

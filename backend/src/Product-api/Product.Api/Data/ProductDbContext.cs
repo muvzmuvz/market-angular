@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Products.Api.Interfaces;
 using Products.Api.Models;
 
 namespace Products.Api.Data;
 
-public class ProductDbContext : DbContext
+public class ProductDbContext : DbContext, IUnitOfWork
 {
   public DbSet<ProductHistory> ProductHistories { get; set; }
   public DbSet<Cart> Carts { get; set; }
@@ -17,4 +18,20 @@ public class ProductDbContext : DbContext
     {
       
     }
+
+  public async Task commitChange()
+  {
+    await using var transaction = await Database.BeginTransactionAsync();
+
+    try
+    {
+      await SaveChangesAsync();
+      await transaction.CommitAsync();
+    }
+    catch
+    {
+      await transaction.RollbackAsync();
+      throw;
+    }
+  }
 } 

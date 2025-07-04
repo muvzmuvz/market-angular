@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   auth-service:
     image: ${DOCKER_REGISTRY-}auth-service
@@ -7,33 +9,85 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=5042
+      - ConnectionStrings__Redis=rediska:6379
+      - RabbitMQSettings__HostName=rabbit-mq
     ports:
-    - "5042:5042"
+      - "5042:5042"
     volumes:
       - ./Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-    container_name: auth-service
     networks:
       - market
     depends_on:
+      - postgres
+      - rediska
+      - rabbit-mq
+
+  product-service:
+    image: product-service
+    build:
+      context: ./backend/src/Product-api/Product.Api
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5043
+      - ConnectionStrings__Redis=rediska:6379
+      - RabbitMQSettings__HostName=rabbit-mq
+    ports:
+      - "5043:5043"
+    networks:
+      - market
+    depends_on:
+      - rediska
+      - rabbit-mq
       - postgres
 
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Password13246!
-      POSTGRES_DB: authorize-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Password13246!
+      - POSTGRES_DB=authorize-db
     ports:
-      - "5432:5432"  
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-    container_name: postgres-db
     networks:
       - market
 
+  rediska:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - market
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  rabbit-mq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - market
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 networks:
   market:
-    driver: bridge  
+    driver: bridge
 
 volumes:
   db_data:
+  redis_data:
