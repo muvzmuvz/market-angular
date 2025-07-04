@@ -35,8 +35,8 @@ const ICON = 'data:image/svg+xml,…'; // твой ICON
   selector: 'app-store-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './store-page.html',
-  styleUrls: ['./store-page.less'],
+  templateUrl: './employee.html',
+  styleUrls: ['./employee.less'],
   providers: [TuiDropdownService, tuiAsPortal(TuiDropdownService)],
   imports: [
     CommonModule, FormsModule, KeyValuePipe, NgForOf, NgIf,
@@ -49,7 +49,7 @@ const ICON = 'data:image/svg+xml,…'; // твой ICON
     TuiAxes, TuiBarChart, TuiRepeatTimes,
   ],
 })
-export class StorePage {
+export class Employee {
   expanded = signal(false);
   open = false;
   darkMode = false;
