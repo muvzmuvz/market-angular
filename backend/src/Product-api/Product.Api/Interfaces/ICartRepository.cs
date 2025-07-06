@@ -4,9 +4,15 @@ namespace Products_Api.Interfaces;
 
 public interface ICartRepository
 {
-  public Task AddCartItem(CartItem cartItem);
-  public Task<List<CartItem>> GetCartItems(Guid userId);
-  public Task DeleteCartItem(Guid productId, Guid userId);
-  public Task ClearCart(Guid userId);
-  public Task CreateCart(Guid userId);
+  public Task<Cart> GetCart(Guid cartId);
+  public Task AddCartByCartId(CartItem cartItem, Guid cartId);
+  public Task<List<CartItem>> GetCartByCartIdItems(Guid cartId);
+  public Task AddCartByUserId(CartItem cartItem, Guid userId);
+  public Task<List<CartItem>> GetCartByUserIdItems(Guid userId);
+  public Task DeleteCartItemByCartId(Guid productId, Guid userId);
+  public Task DeleteCartItemByUserId(Guid productId, Guid userId);
+  public Task ClearByCartIdCart(Guid cartId);
+  public Task ClearByUserIdCart(Guid userId);
+  public Task<bool> CartExists(Guid cartId);
+  public Task CreateCart(Cart cart);
 }

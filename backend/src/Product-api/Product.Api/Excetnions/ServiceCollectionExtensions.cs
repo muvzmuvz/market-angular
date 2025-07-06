@@ -8,6 +8,9 @@ using Products.Api.Interfaces;
 using Products.Api.MappingProfile;
 using Products.Api.Repository;
 using Products.Api.Service;
+using Products_Api.Interfaces;
+using Products_Api.Repository;
+using Products_Api.Service;
 using Serilog;
 
 namespace marketplace_api.Extensions;
@@ -81,6 +84,8 @@ public static class ServiceCollectionExtensions
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IUnitOfWork>(
       serviceProvider => serviceProvider.GetRequiredService<ProductDbContext>());
+    builder.Services.AddScoped<ICartRepository, CartRepository>();
+    builder.Services.AddScoped<ICartService, CartService>();
 
     return builder;
   }
