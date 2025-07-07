@@ -16,18 +16,22 @@ public class CartRepository : ICartRepository
 
   public async Task AddCartByCartId(CartItem cartItem, Guid cartId)
   {
-      var cart = await GetCartByCartId(cartId);
+    var cart = await GetCartByCartId(cartId);
 
     var existingItem = cart.Items.FirstOrDefault(ci => ci.ProductId == cartItem.ProductId);
 
     if (existingItem != null)
     {
       existingItem.Quantity += cartItem.Quantity;
+      _productDbContext.CartItems.Update(existingItem);
     }
     else
     {
-      cart.Items.Add(cartItem);
+      cartItem.CartId = cartId;
+      await _productDbContext.CartItems.AddAsync(cartItem);
     }
+
+    await _productDbContext.SaveChangesAsync();
   }
 
   public async Task AddCartByUserId(CartItem cartItem, Guid userId)
