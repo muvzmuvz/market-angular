@@ -7,19 +7,19 @@ using RabbitMQ.Client.Events;
 using System.Text.Json;
 using System.Threading.Channels;
 
-namespace Products.Api.BackgroundServices;
+namespace Products_Api.BackgroundServices.Service;
 
-public class RabbitMQConsumerService : BackgroundService, IDisposable
+public class RabbitMQConsumerServiceShop : BackgroundService, IDisposable
 {
   private readonly IRedisShopService _shopCacheService;
-  private readonly ILogger<RabbitMQConsumerService> _logger;
+  private readonly ILogger<RabbitMQConsumerServiceShop> _logger;
   private const string ExchangeName = "shop_events";
   public RabbitMQSettings _rabbitMQSettings { get; }
 
-  public RabbitMQConsumerService(
+  public RabbitMQConsumerServiceShop(
       IOptions<RabbitMQSettings> settings,
       IRedisShopService shopCacheService,
-      ILogger<RabbitMQConsumerService> logger)
+      ILogger<RabbitMQConsumerServiceShop> logger)
   {
     _shopCacheService = shopCacheService;
     _logger = logger;
@@ -52,7 +52,7 @@ public class RabbitMQConsumerService : BackgroundService, IDisposable
 
         _logger.LogInformation("Declared queue: {QueueName}", queueName);
         await channel.QueueBindAsync(queueName, ExchangeName, "shop.created");
-        _logger.LogInformation("успешное создание очереди ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
+        _logger.LogInformation("успешное создание очереди");
 
         stoppingToken.ThrowIfCancellationRequested();
 

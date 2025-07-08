@@ -142,8 +142,27 @@ public class CartService : ICartService
     return cartItems;
   }
 
-  public Task SetUserIdToCart(Guid userId)
+  public async Task SetUserIdToCart(Guid userId)
   {
-    throw new NotImplementedException();
+    var sessionToken = _httpContextAccessor
+        .HttpContext?
+        .Request
+        .Cookies["session_token"];
+
+    if (string.IsNullOrEmpty(sessionToken))
+    {
+      var newCart = Cart.CreateCart();
+      newCart.UserId = userId;
+
+      await _cartRepository.CreateCart(newCart);
+      await _unitOfWork.commitChange();
+      return;
+    }
+
+    Guid.TryParse(sessionToken, out var cartId);
+    var cart = await _cartRepository.GetCart(cartId);
+    
+    cart.UserId = userId;
+    await _unitOfWork.commitChange();   
   }
 }

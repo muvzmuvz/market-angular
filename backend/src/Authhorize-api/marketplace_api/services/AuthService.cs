@@ -4,6 +4,7 @@ using marketplace_api.Models;
 using marketplace_api.ModelsDto;
 using marketplace_api.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using System.Data;
 
 namespace marketplace_api.services;
 
@@ -44,10 +45,12 @@ public class AuthService : IAuthService
 
   public async Task<RegistrationResult> RegisterAsync(RegisterDto registerDto, Role role)
   {
-    var user = _mapper.Map<UserIdentity>(registerDto);
-    user.SecurityStamp = Guid.NewGuid().ToString();
-    var result = await _userManager.CreateAsync(user, registerDto.Password);
+    var user = UserIdentity.CreateUser(
+      registerDto.Name,
+      registerDto.Email,
+      registerDto.Password);
 
+    var result = await _userManager.CreateAsync(user, registerDto.Password);
     if (!result.Succeeded)
     {
       return RegistrationResult.Failure(result.Errors.Select(e => e.Description));
@@ -57,15 +60,8 @@ public class AuthService : IAuthService
 
     await _signInManager.SignInAsync(user, isPersistent: false);
 
-    var userDto = new UserDto
-    {
-      Email = user.Email!,
-      ExpenseSummary = user.ExpenseSummary,
-      Id = user.Id,
-      ImagePath = user.imagePath,
-      Name = user.FirstName,
-      Roles = new List<string>() { role.ToString()},
-    };
+    var userDto = _mapper.Map<UserDto>(user);
+    userDto.Roles = new List<string>() { role.ToString() };
 
     return RegistrationResult.Success(userDto);
   }

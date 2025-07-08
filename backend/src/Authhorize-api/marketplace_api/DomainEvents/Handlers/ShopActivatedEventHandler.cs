@@ -4,7 +4,6 @@ using marketplace_api.Exceptions;
 using marketplace_api.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using RabbitMQ.Client;
 
 namespace marketplace_api.DomainEvents.Handlers;
 

@@ -8,6 +8,8 @@ using Products.Api.Interfaces;
 using Products.Api.MappingProfile;
 using Products.Api.Repository;
 using Products.Api.Service;
+using Products_Api.BackgroundServices.Service;
+using Products_Api.Cron;
 using Products_Api.Interfaces;
 using Products_Api.Repository;
 using Products_Api.Service;
@@ -86,6 +88,14 @@ public static class ServiceCollectionExtensions
       serviceProvider => serviceProvider.GetRequiredService<ProductDbContext>());
     builder.Services.AddScoped<ICartRepository, CartRepository>();
     builder.Services.AddScoped<ICartService, CartService>();
+    builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+    builder.Services.AddScoped<IProductFavourityRepository, ProductFavourityRepository>();
+
+    builder.Services.AddHostedService<RabbitMQConsumerServiceUser>();
+
+    builder.Services.AddHostedService<RabbitMQConsumerServiceShop>();
+    builder.Services.AddSingleton<IRedisShopService, RedisShopService>();
+    builder.Services.AddScoped<UpdateShopCache>();
 
     return builder;
   }

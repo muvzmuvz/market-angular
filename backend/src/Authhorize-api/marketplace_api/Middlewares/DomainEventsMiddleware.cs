@@ -1,4 +1,5 @@
 using marketplace_api.Common.Persistence;
+using marketplace_api.DomainEvents;
 using marketplace_api.Models;
 using MediatR;
 using System;
@@ -26,14 +27,20 @@ public class DomainEventsMiddleware
     await _next(httpContext);
 
     var entitiesWithEvents = dbContext.ChangeTracker
-        .Entries<BaseEntity>()
-        .Where(e => e.Entity.DomainEvents.Any())
-        .Select(e => e.Entity)
-        .ToList();
+              .Entries()
+              .Where(e => e.Entity is IHasDomainEvents)
+              .Select(e => e.Entity as IHasDomainEvents)
+              .Where(e => e?.DomainEvents.Any() == true)
+              .ToList();
     _logger.LogInformation("получение всех событий {entitiesWithEvents}", entitiesWithEvents);
 
     foreach (var entity in entitiesWithEvents)
     {
+      if (entity is UserIdentity userIdentity)
+      {
+        userIdentity.SetCreatedEventId();
+      }
+
       var events = entity.DomainEvents.ToList();
       entity.ClearDomainEvents();
 
