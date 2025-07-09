@@ -16,12 +16,11 @@ public class ProductController : ControllerBase
     _productService = productService;
   }
 
-  [HttpPost()]
-  [Authorize]
+  [HttpPost]
   public async Task<IActionResult> CreateProduct(ProductCreateDto createDto)
   {
     var userID = User.FindFirst("sub")?.Value;
-    var productDto = await _productService.CreateProductAsync(createDto, new Guid(userID));
+    var productDto = await _productService.CreateProductAsync(createDto, createDto.UserId);
 
     return Created("create product", productDto);
   }

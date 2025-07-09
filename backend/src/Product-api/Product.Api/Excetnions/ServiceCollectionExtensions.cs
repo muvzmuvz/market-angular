@@ -1,12 +1,19 @@
+using Hangfire;
+using Hangfire.PostgreSql;
 using marketplace_api.services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Products.Api.Data;
 using Products.Api.Interfaces;
 using Products.Api.MappingProfile;
 using Products.Api.Repository;
 using Products.Api.Service;
+using Products_Api.BackgroundServices.Service;
+using Products_Api.Cron;
+using Products_Api.Interfaces;
+using Products_Api.Repository;
+using Products_Api.Service;
+using Serilog;
 
 namespace marketplace_api.Extensions;
 
@@ -79,6 +86,17 @@ public static class ServiceCollectionExtensions
     builder.Services.AddScoped<IImageService, ImageService>();
     builder.Services.AddScoped<IUnitOfWork>(
       serviceProvider => serviceProvider.GetRequiredService<ProductDbContext>());
+    builder.Services.AddScoped<ICartRepository, CartRepository>();
+    builder.Services.AddScoped<ICartService, CartService>();
+    builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+    builder.Services.AddScoped<IProductFavourityRepository, ProductFavourityRepository>();
+    builder.Services.AddScoped<IProductFavourityService, ProductFavourityService>();
+
+    builder.Services.AddHostedService<RabbitMQConsumerServiceUser>();
+
+    builder.Services.AddHostedService<RabbitMQConsumerServiceShop>();
+    builder.Services.AddSingleton<IRedisShopService, RedisShopService>();
+    builder.Services.AddScoped<UpdateShopCache>();
 
     return builder;
   }
@@ -112,6 +130,28 @@ public static class ServiceCollectionExtensions
       options.Configuration = configuration.GetConnectionString("Redis");
       options.InstanceName = "";
     });
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+  {
+    builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddHangFire(this WebApplicationBuilder builder, IConfiguration configuration) 
+  {
+    builder.Services.AddHangfire(config =>
+    config.UsePostgreSqlStorage(configuration.GetConnectionString("DbConfig")));
+
+    builder.Services.AddHangfireServer();
 
     return builder;
   }

@@ -5,6 +5,7 @@ namespace Products.Api.ModelsDto
   public class ProductCreateDto
   {
     public Guid ShopId { get; set; }
+    public Guid UserId { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; } = decimal.Zero;
     public string Title { get; set; }

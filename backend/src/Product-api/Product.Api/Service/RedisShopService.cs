@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Products.Api.BackgroundServices.EventModels;
 using Products.Api.Interfaces;
 using Products.Api.ModelsDto;
+using Products_Api.Cron;
 using System.Text.Json;
 
 namespace Products.Api.Service;
@@ -88,5 +89,55 @@ public class RedisShopService : IRedisShopService
     var shopUsers = JsonSerializer.Deserialize<ShopUsersDto>(item);
 
     return shopUsers;
+  }
+
+  public async Task UpdateShopCacheAsync(List<Shop> shops)
+  {
+    _logger.LogInformation("Updating shop cache for {ShopCount} shops", shops.Count);
+    foreach (Shop shop in shops)
+    {
+      _logger.LogInformation("Processing shop with ID: {ShopId}", shop.Id);
+
+      var cache = await _cache.GetStringAsync($"shop:{shop.Id}");
+      if(cache == null)
+      {
+        var shopUsers = new ShopUsersDto();
+        foreach (var seller in shop.Sellers)
+        {
+          shopUsers.UsersIds.Add(seller.SellerId);
+        }
+
+        _logger.BeginScope("Creating cache for shop with ID: {ShopId}", shop.Id);
+        await _cache.SetStringAsync(
+          $"shop:{shop.Id}",
+          JsonSerializer.Serialize(shopUsers),
+          new DistributedCacheEntryOptions
+          {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30)
+          });
+      }
+      else
+      {
+        _logger.BeginScope("Updating cache for shop with ID: {ShopId}", shop.Id);
+        var shopUsers = JsonSerializer.Deserialize<ShopUsersDto>(cache);
+        foreach (var seller in shop.Sellers)
+        {
+          if (!shopUsers.UsersIds.Contains(seller.SellerId))
+          {
+
+            _logger.LogInformation("Adding seller with ID: {SellerId} to shop: {ShopId}", seller, shop.Id);
+            shopUsers.UsersIds.Add(seller.SellerId);
+          }
+
+          await _cache.SetStringAsync(
+                   $"shop:{shop.Id}",
+                   JsonSerializer.Serialize(shopUsers),
+                   new DistributedCacheEntryOptions
+                   {
+                     AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30)
+                   });
+        }
+      }
+    }
   }
 }

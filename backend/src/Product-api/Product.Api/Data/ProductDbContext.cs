@@ -12,7 +12,6 @@ public class ProductDbContext : DbContext, IUnitOfWork
   public DbSet<ProductFavourity> ProductFavourities { get; set; }
   public DbSet<Image> Images { get; set; }
   public DbSet<Product> Products { get; set; }
-  public DbSet<Review> Reviews { get; set; }
   
   public ProductDbContext(DbContextOptions<ProductDbContext> options) : base(options)
     {

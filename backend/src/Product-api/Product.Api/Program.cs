@@ -1,17 +1,14 @@
+using Hangfire;
 using marketplace_api.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Products.Api.BackgroundServices;
 using Products.Api.Data;
-using Products.Api.Interfaces;
-using Products.Api.Service;
 using Products.Api.Settings;
+using Products_Api.Cron;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
-
-builder.Services.AddHostedService<RabbitMQConsumerService>();
-builder.Services.AddSingleton<IRedisShopService, RedisShopService>();
+builder.Services.AddHttpClient();
 
 builder.Services.Configure<RabbitMQSettings>
     (builder.Configuration.GetSection(nameof(RabbitMQSettings)));
@@ -22,7 +19,9 @@ builder.AddData(builder.Configuration)
    .AddServices()
    .AddAuth()
    .AddMapping()
-   .AddRedis(builder.Configuration);
+   .AddRedis(builder.Configuration)
+   .AddSerilog()
+   .AddHangFire(builder.Configuration);
 
 var app = builder.Build();
 
@@ -56,6 +55,14 @@ app.UseMiddleware<Products.Api.Midleware.ExceptionMidleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseHangfireDashboard();
+
 app.UseHttpsRedirection();
+
+RecurringJob.AddOrUpdate<UpdateShopCache>(
+    "update-shop-cache-hourly",
+    x => x.GetDataFromApiAsync(),
+    Cron.Hourly);
+
 
 app.Run();
