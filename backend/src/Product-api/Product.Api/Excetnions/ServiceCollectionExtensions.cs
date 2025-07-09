@@ -90,6 +90,7 @@ public static class ServiceCollectionExtensions
     builder.Services.AddScoped<ICartService, CartService>();
     builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
     builder.Services.AddScoped<IProductFavourityRepository, ProductFavourityRepository>();
+    builder.Services.AddScoped<IProductFavourityService, ProductFavourityService>();
 
     builder.Services.AddHostedService<RabbitMQConsumerServiceUser>();
 
