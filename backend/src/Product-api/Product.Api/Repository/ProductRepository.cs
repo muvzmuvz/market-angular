@@ -66,11 +66,9 @@ public class ProductRepository : IProductRepository
 
   public async Task<ICollection<Product>> GetByName(string name)
   {
-    var products = await _context.Products.Where(p => p.Name == name).ToListAsync();
-    if (!products.Any())
-    {
-      throw new Exception("Продуктов с данным именем не существует");
-    }
+    var products = await _context.Products
+    .Where(p => EF.Functions.Like(p.Name, $"%{name}%"))
+    .ToListAsync();
 
     return products;
   }
@@ -83,5 +81,22 @@ public class ProductRepository : IProductRepository
       throw new Exception("Продуктов с данным названием не существует");
     }
     return products;
+  }
+
+  public async Task<List<Product>> GetProductsByIdsAsyncForTopProduct(IEnumerable<Guid> productIds)
+  {
+    return await _context.Products
+        .Where(p => productIds.Contains(p.Id))
+        .ToListAsync();
+  }
+
+  public Task<List<Product>> GetTopProduct()
+  {
+     var topProducts = _context.Products.Where(p => p.productStatus == ProductStatus.active)
+        .OrderByDescending(p => p.CountViewProduct)
+        .Take(1000)
+        .ToListAsync();
+
+    return topProducts;
   }
 }

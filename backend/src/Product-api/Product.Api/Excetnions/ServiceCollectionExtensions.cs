@@ -6,11 +6,13 @@ using Microsoft.OpenApi.Models;
 using Products.Api.Data;
 using Products.Api.Interfaces;
 using Products.Api.MappingProfile;
+using Products.Api.Models;
 using Products.Api.Repository;
 using Products.Api.Service;
 using Products_Api.BackgroundServices.Service;
 using Products_Api.Cron;
 using Products_Api.Interfaces;
+using Products_Api.MappingProfile;
 using Products_Api.Repository;
 using Products_Api.Service;
 using Serilog;
@@ -91,6 +93,8 @@ public static class ServiceCollectionExtensions
     builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
     builder.Services.AddScoped<IProductFavourityRepository, ProductFavourityRepository>();
     builder.Services.AddScoped<IProductFavourityService, ProductFavourityService>();
+    builder.Services.AddScoped<IProductHistoryRepository, ProductHistoryRepository>();
+    builder.Services.AddScoped<IProductHistoryService, ProductHistoryService>();
 
     builder.Services.AddHostedService<RabbitMQConsumerServiceUser>();
 
@@ -104,7 +108,9 @@ public static class ServiceCollectionExtensions
   public static WebApplicationBuilder AddMapping(this WebApplicationBuilder builder)
   {
     builder.Services.AddAutoMapper(
-       typeof(ProductProfile));
+       typeof(ProductProfile),
+       typeof(ProductHistoryProfile),
+       typeof(ProductFavourityProfile));
 
     return builder;
   }

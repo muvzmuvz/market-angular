@@ -79,4 +79,20 @@ public class ProductController : ControllerBase
     var products = await _productService.GetByTitle(title);
     return Ok(products);
   }
+
+  public async Task<IActionResult> GetTopProduct()
+  {
+    var userId = User.FindFirst("sub")?.Value;
+
+    if(userId == null)
+    {
+      var productsAnonim = await _productService.GetTopProduct( Guid.Empty);
+
+      return Ok(productsAnonim);
+    }
+
+    var products = await _productService.GetTopProduct( new Guid(userId));
+
+    return Ok(products);
+  }
 }
