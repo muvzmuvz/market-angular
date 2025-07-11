@@ -13,4 +13,6 @@ public interface IProductRepository
   Task<Product> UpdateProductAsync(Guid id, UpdateProductDto updateProductDto);
   public Task<ICollection<Product>> GetByName(string name);
   public Task<ICollection<Product>> GetByTitle(string title);
+  public Task<List<Product>> GetProductsByIdsAsyncForTopProduct(IEnumerable<Guid> productIds);
+  public Task<List<Product>> GetTopProduct();
 }

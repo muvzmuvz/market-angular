@@ -37,28 +37,50 @@ public class ProductHistoryService : IProductHistoryService
     return _mapper.Map<ProductHistoryDto>(productHistoryEntity);
   }
 
-  public Task DeleteProductHistoryAsync(Guid productHistoryId)
+  public async Task DeleteProductHistoryAsync(Guid productHistoryId)
   {
-    throw new NotImplementedException();
+    await _productHistoryRepository
+      .DeleteProductHistoryAsync(productHistoryId);
   }
 
-  public Task<IEnumerable<ProductHistoryDto>> GetAllProductHistoriesAsync()
+  public async Task<IEnumerable<ProductHistoryDto>> GetAllProductHistoriesAsync()
   {
-    throw new NotImplementedException();
+    var productHistories = await _productHistoryRepository.GetAllProductHistoriesAsync();
+
+    var productHistoryDtos = 
+       _mapper.Map<IEnumerable<ProductHistoryDto>>(productHistories);
+
+    return productHistoryDtos;
   }
 
-  public Task<IEnumerable<ProductHistoryDto>> GetProductHistoriesByProductIdAsync(Guid productId)
+  public async Task<IEnumerable<ProductHistoryDto>> GetProductHistoriesByProductIdAsync(Guid productId)
   {
-    throw new NotImplementedException();
+    var productHistories = await _productHistoryRepository
+      .GetProductHistoriesByProductIdAsync(productId);
+
+    var productHistoryDtos =
+      _mapper.Map<IEnumerable<ProductHistoryDto>>(productHistories);
+
+    return productHistoryDtos;
   }
 
-  public Task<IEnumerable<ProductHistoryDto>> GetProductHistoriesByUserId(Guid userId)
+  public async Task<IEnumerable<ProductHistoryDto>> GetProductHistoriesByUserId(Guid userId)
   {
-    throw new NotImplementedException();
+    var productHistories = await _productHistoryRepository
+      .GetProductHistoriesByUserId(userId);
+
+    var productHistoryDtos =  _mapper.Map<IEnumerable<ProductHistoryDto>>(productHistories);
+
+    return productHistoryDtos;
   }
 
-  public Task<ProductHistoryDto> GetProductHistoryByIdAsync(Guid productHistoryId)
+  public async Task<ProductHistoryDto> GetProductHistoryByIdAsync(Guid productHistoryId)
   {
-    throw new NotImplementedException();
+    var productHistory = await _productHistoryRepository
+      .GetProductHistoryByIdAsync(productHistoryId);
+
+    var productHistoryDto = _mapper.Map<ProductHistoryDto>(productHistory);
+
+    return productHistoryDto;
   }
 }
