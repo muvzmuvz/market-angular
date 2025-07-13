@@ -80,6 +80,7 @@ public class ProductController : ControllerBase
     return Ok(products);
   }
 
+  [HttpGet("search/catalog/")]
   public async Task<IActionResult> GetTopProduct()
   {
     var userId = User.FindFirst("sub")?.Value;
