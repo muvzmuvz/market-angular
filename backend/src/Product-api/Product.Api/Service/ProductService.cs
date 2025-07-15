@@ -42,6 +42,8 @@ public class ProductService : IProductService
 
     var getSeller = await _redisShopService.ShopSeller(createProductDto.ShopId, userId);
     _logger.LogInformation("проверка на наличие продавца в магазине {getSeller}", getSeller);
+    if (!getSeller)
+      throw new Exception("продавец не найден в магазине");
 
     _logger.LogInformation("маппинг обьекта  {productDto} в product ", createProductDto);
     var product = _mapper.Map<Product>(createProductDto);

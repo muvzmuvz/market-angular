@@ -1,0 +1,74 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.swp
+*.DS_Store
+*.vscode/
+*.vs/
+TestResults/
+*.log
+*.ncrunch*
+_ReSharper*/
+*.resharper
+*.DotSettings.user
+.idea/
+*.sln.ide
+# Rider
+.idea/
+*.sln.iml
+# Visual Studio Code
+.vscode/
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+# Azure Pipelines
+*.azure-pipelines.yml
+# Local History for Visual Studio
+.localhistory/
+# Windows image file caches
+Thumbs.db
+# Folder config file
+Desktop.ini
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+# VS Code directories
+.history/
+# NCrunch
+.ncrunch*
+# DotCover
+*.dotCover
+# TeamCity
+_TeamCity*
+# DotTrace
+*.dotTrace
+# DotMemory
+*.dotMemory
+# Rider
+.idea/
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+# Mono Auto Generated Files
+test-results/
+# Windows image file caches
+Thumbs.db
+# Folder config file
+Desktop.ini
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+# VS Code directories
+.history/
+# Rider
+.idea/
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates 
