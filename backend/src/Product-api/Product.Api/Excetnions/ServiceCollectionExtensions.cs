@@ -1,6 +1,8 @@
+using FluentValidation;
 using Hangfire;
 using Hangfire.PostgreSql;
 using marketplace_api.services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Products.Api.Data;
@@ -15,6 +17,7 @@ using Products_Api.Interfaces;
 using Products_Api.MappingProfile;
 using Products_Api.Repository;
 using Products_Api.Service;
+using Products_Api.Validation;
 using Serilog;
 
 namespace marketplace_api.Extensions;
@@ -158,6 +161,19 @@ public static class ServiceCollectionExtensions
     config.UsePostgreSqlStorage(configuration.GetConnectionString("DbConfig")));
 
     builder.Services.AddHangfireServer();
+
+    return builder;
+  }
+
+  public static WebApplicationBuilder AddMediator(this WebApplicationBuilder builder)
+  {
+    builder.Services.AddMediatR(typeof(Program));
+    builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+    builder.Services.AddTransient(
+        typeof(IPipelineBehavior<,>),
+        typeof(ValidateBehavior<,>)
+    );
 
     return builder;
   }

@@ -21,7 +21,8 @@ builder.AddData(builder.Configuration)
    .AddMapping()
    .AddRedis(builder.Configuration)
    .AddSerilog()
-   .AddHangFire(builder.Configuration);
+   .AddHangFire(builder.Configuration)
+   .AddMediator();
 
 var app = builder.Build();
 
